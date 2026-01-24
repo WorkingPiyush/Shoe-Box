@@ -2,7 +2,7 @@ import React from 'react'
 
 function HomeCategory() {
     return (
-        <div className='h-fit w-70 shadow-xl/30'>
+        <div className='h-fit w-[20%] shadow-xl/30'>
             <div className=' p-2 shadow-[0px_6px_0px_0px_rgba(0,0,0,0.1)]'>
                 <h1 className='p-4 uppercase w-full font-bold'>Campany</h1>
                 <div className='px-4 flex items-center justify-start gap-2'>
