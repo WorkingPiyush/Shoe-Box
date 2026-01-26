@@ -20,14 +20,14 @@ const indianShoeCollection = [
         id: 3,
         fullName: "Sparx SM-679 Performance Sports",
         brand: "Sparx",
-        imageUrl: "https://images.unsplash.com/photo-1605348532760-6753d2c43329?q=80&w=800&auto=format&fit=crop",
+        imageUrl: "https://www.jiomart.com/images/product/original/rvarjpwoth/sparx-men-sm-679-white-black-sports-shoes-product-images-rvarjpwoth-2-202205270822.jpg?im=Resize=(600,750)",
         price: 1199
     },
     {
         id: 4,
-        fullName: "Campus Custom Men's Sneakers",
+        fullName: "STOMP Off White Men's Sneakers",
         brand: "Campus",
-        imageUrl: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=800&auto=format&fit=crop",
+        imageUrl: "https://www.campusshoes.com/cdn/shop/files/STOMP_22G-13389_OFFWHT-CREAM_02_900x.jpg?v=1767873657",
         price: 1899
     },
     {
@@ -39,23 +39,23 @@ const indianShoeCollection = [
     },
     {
         id: 6,
-        fullName: "Mochi Women White Casual Sneakers",
+        fullName: "Men White Walking Shoes",
         brand: "Mochi",
-        imageUrl: "https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=800&auto=format&fit=crop",
+        imageUrl: "https://redtape.com/cdn/shop/files/RSO2165_3.jpg?v=1758797535",
         price: 1345
     },
     {
         id: 7,
-        fullName: "Campus North Plus Running Shoes",
+        fullName: "NORTH PLUS Black Men's Running Shoes",
         brand: "Campus",
-        imageUrl: "https://images.unsplash.com/photo-1584735175315-9d58238a0b21?q=80&w=800&auto=format&fit=crop",
+        imageUrl: "https://www.campusshoes.com/cdn/shop/products/11G-677-G-BLK_1.jpg?v=1757593914",
         price: 1599
     },
     {
         id: 8,
-        fullName: "Red Tape Classic Sporty Shoes",
+        fullName: "Dial Lace ETPU Athleisure Shoes for Men",
         brand: "Red Tape",
-        imageUrl: "https://images.unsplash.com/photo-1512374382149-4332c6c02151?q=80&w=800&auto=format&fit=crop",
+        imageUrl: "https://redtape.com/cdn/shop/files/RSO4322_4..jpg?v=1766137825",
         price: 1352
     },
     {
@@ -77,9 +77,10 @@ const indianShoeCollection = [
 
 function HomeImgSection() {
     return (
-        <div className='w-[90%] bg-amber-800 flex flex-wrap'>
+        <div className='p-4 bg-gray-100 rounded-2xl grid grid-cols-2 place-items-center justify-evenly relative md:flex md:flex-wrap md:justify-evenly'>
+            <h1 className='absolute left-5 -top-8 font-bold text-3xl italic'>Featured Shoes</h1>
             {indianShoeCollection.map((shoe) => {
-                return <ImgCard props={shoe} />
+                return <ImgCard key={shoe.id} props={shoe} />
             })}
         </div>
     )
