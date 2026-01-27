@@ -16,8 +16,9 @@ function App() {
   return (
     <div className="min-h-screen w-full bg-white">
 
+      <Navbar />
       <Routes>
-        <Route path="/" element={<><Navbar /><Hero /><TypeofShoes /> <HomeImgSection /><CompanyCrousel /><GetAllUpdates /><Footer /></>} />
+        <Route path="/" element={<><Hero /><TypeofShoes /> <HomeImgSection /><CompanyCrousel /><GetAllUpdates /><Footer /></>} />
         <Route path="/men" element={<SearchPage />} />
         <Route path="/women" element={<SearchPage />} />
         <Route path="/kids" element={<SearchPage />} />
