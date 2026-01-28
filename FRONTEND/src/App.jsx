@@ -9,6 +9,7 @@ import GetAllUpdates from './components/GetAllUpdates'
 import Footer from './components/Footer'
 import { Route, Routes } from 'react-router-dom'
 import SearchPage from './components/SearchPage'
+import ProductList from './components/ProductList'
 
 
 function App() {
@@ -19,9 +20,9 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<><Hero /><TypeofShoes /> <HomeImgSection /><CompanyCrousel /><GetAllUpdates /><Footer /></>} />
-        <Route path="/men" element={<SearchPage />} />
-        <Route path="/women" element={<SearchPage />} />
-        <Route path="/kids" element={<SearchPage />} />
+        <Route path="/men" element={<ProductList />} />
+        <Route path="/women" element={<ProductList />} />
+        <Route path="/kids" element={<ProductList />} />
       </Routes>
     </div>
   );

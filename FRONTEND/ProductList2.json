@@ -1,0 +1,441 @@
+[
+    {
+        "id": 1,
+        "brand": "bata",
+        "name": "BATA Men’s Fashion Casual Shoes",
+        "price": 2297,
+        "sizes": [
+            7,
+            8,
+            9,
+            10
+        ],
+        "rating": 3.3,
+        "gender": "male",
+        "category": "Casual Shoes",
+        "description": "BATA Men’s Fashion Casual Shoes, Stylish Lace-Up Flats with Cushioned Insole, Durable Sole & Classic Stitch Detailing, Comfortable Everyday Shoes for Outing Work, Office & Travel.",
+        "isNew": true,
+        "image": [
+            "src/assets/Images/product-list/bata_Casual Shoes.jpg",
+            "src/assets/Images/product-list/bata_Casual Shoes-2.jpg"
+        ]
+    },
+    {
+        "id": 2,
+        "brand": "bata",
+        "name": "BATA Men's Formal Derby Dress Shoes",
+        "price": 1837,
+        "sizes": [
+            7,
+            8,
+            9,
+            10
+        ],
+        "rating": 3.9,
+        "gender": "male",
+        "category": "formal",
+        "description": "BATA Men's Formal Derby Dress Shoes, Classic Oxford-Style Lace-Up, Comfortable & Durable Shoes for Office, Church, Business Meetings, Weddings, Daily Wear & Suit Outfits.",
+        "isNew": true,
+        "image": [
+            "src/assets/Images/product-list/bata_Formal Derby Dress Shoes (2).jpg",
+            "src/assets/Images/product-list/bata_Formal Derby Dress Shoes.jpg"
+        ]
+    },
+    {
+        "id": 3,
+        "brand": "bata",
+        "name": "BATA Men's Oxford Classic Lace-Up Dress Shoes",
+        "price": 1837,
+        "sizes": [
+            7,
+            8,
+            9,
+            10
+        ],
+        "rating": 3.5,
+        "gender": "male",
+        "category": "formal",
+        "description": "BATA Men's Oxford Classic Lace-Up Dress Shoes, Comfortable Formal Shoes for Men, Cushioned Insole Derby Fit Ideal for Church, Wedding, Office & Daily Wear.",
+        "isNew": true,
+        "image": ""
+    },
+    {
+        "id": 4,
+        "brand": "adidas",
+        "name": "Adidas Avery",
+        "price": 5514,
+        "sizes": [
+            7,
+            8,
+            9,
+            10
+        ],
+        "rating": 4.5,
+        "category": "running",
+        "description": "Ultralight running shoes with a neutral fit.",
+        "isNew": true,
+        "image": [
+            "src/assets/Images/product-list/adidas_running 1.jpg",
+            "src/assets/Images/product-list/adidas_running 2.jpg"
+        ]
+    },
+    {
+        "id": 5,
+        "brand": "adidas",
+        "name": "Adidas Campus 00 Mens Shoes",
+        "price": 9100,
+        "sizes": [
+            7,
+            8,
+            9,
+            10,
+            11
+        ],
+        "rating": 5,
+        "category": "running",
+        "description": "High-performance adidas running shoes designed for maximum durability.",
+        "isNew": true,
+        "image": [
+            "src/assets/Images/product-list/Adidas_running.jpg",
+            "src/assets/Images/product-list/Adidas_running 02.jpg"
+        ]
+    },
+    {
+        "id": 6,
+        "brand": "nike",
+        "name": "Nike Mens V5 Runner",
+        "price": 6250,
+        "sizes": [
+            6,
+            7,
+            8,
+            9,
+            10
+        ],
+        "rating": 4.5,
+        "category": [
+            "running",
+            "gym",
+            "training",
+            "sports"
+        ],
+        "description": "Mesh upper with synthetic leather overlays is breathable and durable.",
+        "isNew": false,
+        "image": [
+            "src/assets/Images/product-list/nike_running 02.jpg",
+            "src/assets/Images/product-list/nike_running.jpg"
+        ]
+    },
+    {
+        "id": 7,
+        "brand": "nike",
+        "name": "Nike Free 2025",
+        "price": 7650,
+        "sizes": [
+            6,
+            7,
+            8,
+            9,
+            10
+        ],
+        "rating": 4.5,
+        "category": "running",
+        "description": "Men's Workout Shoes.",
+        "isNew": true,
+        "image": [
+            "src/assets/Images/product-list/nike_free 2025 running 01.avif",
+            "src/assets/Images/product-list/nike_free 2025 running.avif"
+        ]
+    },
+    {
+        "id": 8,
+        "brand": "nike",
+        "name": "Nike Free 2025",
+        "price": 7650,
+        "sizes": [
+            6,
+            7,
+            8,
+            9,
+            10
+        ],
+        "rating": 4.5,
+        "category": "sports",
+        "description": "Men's Workout Shoes.",
+        "isNew": true,
+        "image": [
+            "src/assets/Images/product-list/nike_free 2025 running 01.avif",
+            "src/assets/Images/product-list/nike_free 2025 running.avif"
+        ]
+    },
+    {
+        "id": 9,
+        "brand": "nike",
+        "name": "Nike Men's React Infinity Pro Golf Shoes",
+        "price": 5339,
+        "sizes": [
+            8,
+            9,
+            10
+        ],
+        "rating": 4.5,
+        "category": "sports",
+        "description": "Built with revolutionary cushioning & innovative traction, the Nike Men's React Infinity Pro Golf Shoes give you the support, comfort and grip you need to play at your best.",
+        "isNew": true,
+        "image": [
+            "src/assets/Images/product-list/nike_infinity_sports.webp",
+            "src/assets/Images/product-list/nike_infinity_sports 02.webp"
+        ]
+    },
+    {
+        "id": 10,
+        "brand": "nike",
+        "name": "Nike Men's Jordan NU Retro 1 G Golf Shoes",
+        "price": 10235,
+        "sizes": [
+            9,
+            10
+        ],
+        "rating": 5,
+        "category": "sports",
+        "description": "An instant classic on the course, the Jordan NU Retro 1 G melds iconic Jordan style with our latest golf technology. A rubber heel and durable plastic forefoot plate help give you stability and comfortable cushioning. Seven removable spikes add traction, so you're ready for swift swings and walking the course.",
+        "isNew": true,
+        "image": [
+            "src/assets/Images/product-list/nike_jordan 01.webp",
+            "src/assets/Images/product-list/nike_jordan 02.webp"
+        ]
+    },
+    {
+        "id": 11,
+        "brand": "adidas",
+        "name": "adidas Mens Campus 00S Sneakers Shoes Casual -Blue - Size 11.5 M",
+        "price": 5648,
+        "sizes": [
+            8,
+            9,
+            10,
+            11
+        ],
+        "rating": 5,
+        "category": "sneakers",
+        "description": " Campus 00S Shoes For Men, A Nod To The Iconic Primary Colours Of The 2000S. Crafted From Leather And Textile With A Rubber Outsole, These Shoes Are An Update On The Classic Campus 80S Silhouette.",
+        "isNew": true,
+        "image": [
+            "src/assets/Images/product-list/campus_00s sneakers 01.jpg",
+            "src/assets/Images/product-list/campus_00s sneakers.jpg"
+        ]
+    },
+    {
+        "id": 12,
+        "brand": "campus",
+        "name": "ROCKET PRO Training & Gym Shoes For Men",
+        "price": 808,
+        "sizes": [
+            7,
+            8,
+            9,
+            10
+        ],
+        "rating": 4.5,
+        "category": "sports",
+        "description": "High-performance campus sports shoes designed for maximum durability.",
+        "isNew": false,
+        "image": [
+            "src/assets/Images/product-list/campus_sports 01.webp",
+            "src/assets/Images/product-list/campus_sport 02.webp"
+        ]
+    },
+    {
+        "id": 13,
+        "brand": "campus",
+        "name": "OXYFIT (N) Men's Casual Shoes | Memory Foam & PilloFoam Comfort | Slip-On Walking Shoes For Men",
+        "price": 679,
+        "sizes": [
+            6,
+            7,
+            8,
+            9,
+            10
+        ],
+        "rating": 4.5,
+        "category": "sports",
+        "description": "Memory Foam & PilloFoam Comfort | Slip-On Walking Shoes For Men.",
+        "isNew": true,
+        "image": [
+            "src/assets/Images/product-list/campus_OXYFIT 01.webp",
+            "src/assets/Images/product-list/campus_OXYFIT 02.webp",
+            "src/assets/Images/product-list/campus_OXYFIt 03.webp"
+        ]
+    },
+    {
+        "id": 14,
+        "brand": "campus",
+        "name": "EVARO Running Shoes For Men",
+        "price": 798,
+        "sizes": [
+            6,
+            7,
+            8,
+            9,
+            10
+        ],
+        "rating": 4.5,
+        "category": "running",
+        "description": "High-performance campus running shoes designed for maximum durability.",
+        "isNew": true,
+        "image": [
+            "src/assets/Images/product-list/campus_runnng 01.webp",
+            "src/assets/Images/product-list/campus_running 02.webp"
+        ]
+    },
+    {
+        "id": 15,
+        "brand": "campus",
+        "name": "RELTO Running Shoes For Men",
+        "price": 1132,
+        "sizes": [
+            6,
+            7
+        ],
+        "rating": 4,
+        "category": "running",
+        "description": "High-performance campus running shoes designed for maximum durability.",
+        "isNew": false,
+        "image": [
+            "src/assets/Images/product-list/campus_RELTO.webp",
+            "src/assets/Images/product-list/campus_RELTO 02.webp"
+        ]
+    },
+    {
+        "id": 16,
+        "brand": "mochi",
+        "name": "Slip On Sneakers For Men",
+        "price": 1694,
+        "sizes": [
+            6,
+            7,
+            8,
+            9,
+            10
+        ],
+        "rating": 4.5,
+        "category": "sneakers",
+        "description": "Best Sneakers For Men .",
+        "isNew": true,
+        "image": ""
+    },
+    {
+        "id": 17,
+        "brand": "mochi",
+        "name": "Casual shoe For Men",
+        "price": 2233,
+        "sizes": [
+            6,
+            7,
+            8,
+            9,
+            10
+        ],
+        "rating": 4.3,
+        "category": "Casual Shoes",
+        "description": "Casual shoes For Men.",
+        "isNew": false,
+        "image": ""
+    },
+    {
+        "id": 1,
+        "brand": "",
+        "name": "",
+        "price": 0,
+        "sizes": [],
+        "rating": 0,
+        "category": "",
+        "description": "High-performance {BRAND} {CATEGORY} shoes designed for maximum durability.",
+        "isNew": 0,
+        "image": ""
+    },
+    {
+        "id": 1,
+        "brand": "",
+        "name": "",
+        "price": 0,
+        "sizes": [],
+        "rating": 0,
+        "category": "",
+        "description": "High-performance {BRAND} {CATEGORY} shoes designed for maximum durability.",
+        "isNew": 0,
+        "image": ""
+    },
+    {
+        "id": 1,
+        "brand": "",
+        "name": "",
+        "price": 0,
+        "sizes": [],
+        "rating": 0,
+        "category": "",
+        "description": "High-performance {BRAND} {CATEGORY} shoes designed for maximum durability.",
+        "isNew": 0,
+        "image": ""
+    },
+    {
+        "id": 1,
+        "brand": "",
+        "name": "",
+        "price": 0,
+        "sizes": [],
+        "rating": 0,
+        "category": "",
+        "description": "High-performance {BRAND} {CATEGORY} shoes designed for maximum durability.",
+        "isNew": 0,
+        "image": ""
+    },
+    {
+        "id": 1,
+        "brand": "",
+        "name": "",
+        "price": 0,
+        "sizes": [],
+        "rating": 0,
+        "category": "",
+        "description": "High-performance {BRAND} {CATEGORY} shoes designed for maximum durability.",
+        "isNew": 0,
+        "image": ""
+    },
+    {
+        "id": 1,
+        "brand": "",
+        "name": "",
+        "price": 0,
+        "sizes": [],
+        "rating": 0,
+        "category": "",
+        "description": "High-performance {BRAND} {CATEGORY} shoes designed for maximum durability.",
+        "isNew": 0,
+        "image": ""
+    },
+    {
+        "id": 1,
+        "brand": "",
+        "name": "",
+        "price": 0,
+        "sizes": [],
+        "rating": 0,
+        "category": "",
+        "description": "High-performance {BRAND} {CATEGORY} shoes designed for maximum durability.",
+        "isNew": 0,
+        "image": ""
+    },
+    {
+        "id": 1,
+        "brand": "",
+        "name": "",
+        "price": 0,
+        "sizes": [],
+        "rating": 0,
+        "category": "",
+        "description": "High-performance {BRAND} {CATEGORY} shoes designed for maximum durability.",
+        "isNew": 0,
+        "image": ""
+    }
+]
