@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+ProductList2.json
+/ProductList.js
+/assets
+*.json
+src/assets/
