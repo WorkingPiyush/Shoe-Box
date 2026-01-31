@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ImCross } from "react-icons/im";
 
-function SlidingMenu({open, setOpen}) {
+function SlidingMenu({ open, setOpen }) {
     const menuBar = useRef(null)
     useEffect(() => {
         const handleclickOutside = (event) => {

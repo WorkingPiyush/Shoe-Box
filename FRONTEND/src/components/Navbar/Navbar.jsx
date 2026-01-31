@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FaShoppingCart } from "react-icons/fa";
 import { RiMenu3Fill } from "react-icons/ri";
-import SlidingMenu from './SlidingMenu';
+import SlidingMenu from '../SlidingMenu/SlidingMenu';
 import { Link, Route, Routes } from 'react-router-dom';
-import SearchPage from './SearchPage';
 function Navbar() {
   const menuBar = useRef(null)
   const [open, setOpen] = useState(false)
@@ -30,11 +29,10 @@ function Navbar() {
         <div className="flex gap-9 font-bold max-md:hidden">
 
           <div><Link to="/">HOME</Link></div>
-          <div><Link to="/men">MEN</Link></div>
-          <div><Link to="/women">WOMEN</Link></div>
+          <div><Link to="/male">MEN</Link></div>
+          <div><Link to="/female">WOMEN</Link></div>
           <div><Link to="/kids">KIDS</Link></div>
         </div>
-        <SlidingMenu ref={menuBar} open={open} setOpen={setOpen} />
         <div className='flex gap-4 font-bold justify-center items-center'>
           <div>PIYUSH</div>
           <FaShoppingCart className='cursor-pointer' />

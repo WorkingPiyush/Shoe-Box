@@ -1,15 +1,14 @@
 import { useState } from 'react'
 import './App.css'
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import TypeofShoes from './components/TypeofShoes'
-import HomeImgSection from './components/HomeImgSection'
-import CompanyCrousel from './components/CompanyCarousel'
+import Navbar from './components/Navbar/Navbar'
+import Hero from './sections/Hero'
+import TypeofShoes from './components/TypesOfShoes/TypeofShoes'
+import HomeImgSection from './sections/HomeImgSection'
+import CompanyCrousel from './components/CompanyCarousel/CompanyCarousel'
 import GetAllUpdates from './components/GetAllUpdates'
-import Footer from './components/Footer'
+import Footer from './components/Footer/Footer'
 import { Route, Routes } from 'react-router-dom'
-import SearchPage from './components/SearchPage'
-import ProductList from './components/ProductList'
+import ProductList from './Pages/Product/ProductList'
 
 
 function App() {
@@ -20,8 +19,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<><Hero /><TypeofShoes /> <HomeImgSection /><CompanyCrousel /><GetAllUpdates /><Footer /></>} />
-        <Route path="/men" element={<ProductList />} />
-        <Route path="/women" element={<ProductList />} />
+        <Route path="/male" element={<ProductList />} />
+        <Route path="/female" element={<ProductList />} />
         <Route path="/kids" element={<ProductList />} />
       </Routes>
     </div>

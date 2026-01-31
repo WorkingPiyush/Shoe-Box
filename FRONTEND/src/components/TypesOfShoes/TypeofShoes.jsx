@@ -1,18 +1,17 @@
-import React from 'react'
-import shoe1 from '../assets/Images/Type-of-Shoes/running-shoe.png'
-import shoe2 from '../assets/Images/Type-of-Shoes/gym-shoe.png'
-import shoe3 from '../assets/Images/Type-of-Shoes/training-shoe.png'
-import shoe4 from '../assets/Images/Type-of-Shoes/basketballl-shoe.png'
-import shoe5 from '../assets/Images/Type-of-Shoes/running-shoe.png'
-import shoe6 from '../assets/Images/Type-of-Shoes/walking-shoe.png'
+import shoe1 from '/src/assets/Images/Type-of-Shoes/running-shoe.png'
+import shoe2 from '/src/assets/Images/Type-of-Shoes/gym-shoe.png'
+import shoe3 from '/src/assets/Images/Type-of-Shoes/Sneakers.png'
+import shoe4 from '/src/assets/Images/Type-of-Shoes/basketballl-shoe.png'
+import shoe5 from '/src/assets/Images/Type-of-Shoes/running-shoe.png'
+import shoe6 from '/src/assets/Images/Type-of-Shoes/walking-shoe.png'
 
 const shoeImg = [
     { id: 1, src: shoe1, title: "Runnig Shoes" },
-    { id: 2, src: shoe2, title: "Gym Shoes" },
-    { id: 3, src: shoe3, title: "Training Shoes" },
-    { id: 4, src: shoe4, title: "Basketball Shoes" },
     { id: 5, src: shoe5, title: "Sports Shoes" },
+    { id: 3, src: shoe3, title: "Sneakers Shoes" },
+    { id: 2, src: shoe2, title: "Gym Shoes" },
     { id: 6, src: shoe6, title: "Walking Shoes" },
+    { id: 4, src: shoe4, title: "Training Shoes" },
 ]
 
 function TypeofShoes() {

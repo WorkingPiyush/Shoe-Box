@@ -1,10 +1,10 @@
 import React, { useEffect, useEffectEvent, useState } from 'react'
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
-import img1 from '../assets/Images/hero-images/hero-image-1.webp'
-import img2 from '../assets/Images/hero-images/hero-image-2.webp'
-import img3 from '../assets/Images/hero-images/hero-image-3.webp'
-import img4 from '../assets/Images/hero-images/hero-image-4.jpg'
-import img5 from '../assets/Images/hero-images/hero-image-5.jpg'
+import img1 from '/src/assets/Images/hero-images/hero-image-1.webp'
+import img2 from '/src/assets/Images/hero-images/hero-image-2.webp'
+import img3 from '/src/assets/Images/hero-images/hero-image-3.webp'
+import img4 from '/src/assets/Images/hero-images/hero-image-4.jpg'
+import img5 from '/src/assets/Images/hero-images/hero-image-5.jpg'
 
 const imgList = [
     { id: 1, src: img1 },
