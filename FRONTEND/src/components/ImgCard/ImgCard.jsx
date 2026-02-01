@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { IoStarSharp } from "react-icons/io5";
 
-function ImgCard({ props}) {
+function ImgCard({ props }) {
     return (
         <div className='flex p-1'>
             <div className='bg-white p-1 m-1 w-38 h-78 border border-dashed rounded-4xl cursor-pointer hover:shadow-lg hover:scale-101 md:h-68 md:w-70 md:p-4'>
@@ -15,7 +15,7 @@ function ImgCard({ props}) {
                         <IoStarSharp />
                         <p className='text-white'>{props.rating}</p>
                     </div>
-                    <p className='text-center'>₹{props.price}</p>
+                    <p className='text-center'>₹{props.price.toLocaleString('en-IN')}</p>
                 </div>
             </div>
         </div>

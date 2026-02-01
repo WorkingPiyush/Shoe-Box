@@ -1,24 +1,26 @@
-import React from 'react'
-import ImgCard from '../../components/ImgCard/ImgCard'
-import ProductListArr from "../../data/ProductList2.json"
+import React, { useState } from 'react'
 import Filters from '../../sections/Filters'
 import { useLocation } from 'react-router-dom'
 import Sorting from '../../sections/Sorting'
+import ProductGrid from '../../sections/ProductGrid'
 function ProductList() {
     const websiteDir = useLocation()
     const gender = websiteDir.pathname.slice(1)
+    const [selectedBrand, setSelectedBrand] = useState('all')
+    const [selectedSlab, setSelectedSlab] = useState('all')
+    const [selectedSize, setSelectedSize] = useState("all")
+    const [selectCategory, setSelectCategory] = useState('all')
+    const [sortOrder, setSortOrder] = useState('none')
+    const [isNew, setIsNew] = useState(false)
+    console.log(isNew)
     return (
         <div>
             <div>
-                <div className='text-4xl text-center font-bold p-2 flex justify-center mt-20'><h1 className='uppercase'>{gender === "male" ? "Men's Section" : ""}</h1></div>
-                <Filters />
-                <Sorting />
-                <div className='flex justify-center flex-wrap mt-1 w-fit bg-gray-500/15 rounded-xl'>
-                    {ProductListArr.slice(0, 16).map(item => {
-                        if (item.gender == gender) {
-                            return <ImgCard key={item.id} props={item} />
-                        }
-                    })}
+                <div className='text-4xl text-center font-bold p-2 flex justify-center mt-20'><h1 className='uppercase'>{`${gender}'s Section`}</h1></div>
+                <Filters updatefilter={setSelectedBrand} updatePriceSlab={setSelectedSlab} updateSize={setSelectedSize} updateCategory={setSelectCategory} />
+                <Sorting sortHtLOrder={setSortOrder} sortHtLOrderVal={sortOrder} sortIsNewVal={isNew} sortIsNew={setIsNew} />
+                <div className='flex justify-center'>
+                    <ProductGrid routedGender={gender} selectedBrand={selectedBrand} selectedSlab={selectedSlab} selectedSize={selectedSize} selectedCategory={selectCategory} sortedHtLOrder={sortOrder} sortIsNewVal={isNew} />
                 </div>
             </div>
 
