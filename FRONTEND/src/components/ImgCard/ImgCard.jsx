@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { IoStarSharp } from "react-icons/io5";
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 function ImgCard({ props }) {
+    const navigate = useNavigate();
     return (
-        <div className='flex p-1'>
+        <div onClick={() => navigate(`/male/${props.id}`)} className='flex p-1'>
             <div className='bg-white p-1 m-1 w-38 h-78 border border-dashed rounded-4xl cursor-pointer hover:shadow-lg hover:scale-101 md:h-68 md:w-70 md:p-4'>
                 <img className='p-1 h-[40%] w-50 md:h-[50%] md:w-full md:p-3' style={{
                     objectFit: 'contain',
@@ -19,6 +21,7 @@ function ImgCard({ props }) {
                 </div>
             </div>
         </div>
+
     )
 }
 

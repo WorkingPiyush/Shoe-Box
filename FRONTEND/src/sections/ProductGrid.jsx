@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import ProductListArr from '../data/ProductList2.json'
 import ImgCard from '../components/ImgCard/ImgCard'
+import { Link } from 'react-router-dom';
 function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, selectedCategory, sortedHtLOrder, sortIsNewVal }) {
     const priceSlabsLog = [
         ["slab-1", [0, 1000]],
@@ -55,7 +56,7 @@ function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, 
                     return <ImgCard key={item.id} props={item} />
                 }
             })}
-        </div>
+        </div >
     )
 }
 
