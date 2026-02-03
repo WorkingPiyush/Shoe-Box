@@ -11,8 +11,6 @@ import { Route, Routes } from 'react-router-dom'
 import ProductList from './Pages/Product/ProductList'
 import ProductViewPage from './Pages/Product/ProductViewPage'
 
-
-
 function App() {
 
   return (

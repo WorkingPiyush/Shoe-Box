@@ -28,3 +28,4 @@ ProductList2.json
 *.json
 src/assets/
 /data
+public/product-list
