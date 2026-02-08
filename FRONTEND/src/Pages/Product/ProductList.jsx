@@ -12,7 +12,6 @@ function ProductList() {
     const [selectCategory, setSelectCategory] = useState('all')
     const [sortOrder, setSortOrder] = useState('none')
     const [isNew, setIsNew] = useState(false)
-    console.log(isNew)
     return (
         <div>
             <div>

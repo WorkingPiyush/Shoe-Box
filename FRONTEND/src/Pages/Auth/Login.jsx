@@ -1,11 +1,22 @@
 import React from 'react'
 import { useForm } from "react-hook-form"
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const { register, handleSubmit, reset, watch, formState: { errors }, } = useForm()
-    const onSubmit = (data) => {
-        console.log(data)
-        reset()
+    const navigate = useNavigate()
+    const onSubmit = async (data) => {
+        const res = await fetch('http://localhost:3000/users/login', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+            credentials: "include"
+        })
+        const response = await res.json();
+        if (response.success) {
+            navigate('/', { replace: true })
+        }
+
     };
     return (
         <div className='h-screen bg-gray-100 p-25'>
@@ -16,7 +27,7 @@ function Login() {
                 <div className='w-full mt-12 p-8 md:w-1/2'>
                     <form className='flex flex-col gap-1 justify-center items-center' onSubmit={handleSubmit(onSubmit)}>
                         <h1 className='font-bold text-3xl w-80'>Let's Continue</h1>
-                        <input className='bg-gray-400 text-shadow-black h-10 w-90 p-2 rounded outline-none text-xl' placeholder='Email' {...register("Email", {
+                        <input className='bg-gray-400 text-shadow-black h-10 w-90 p-2 rounded outline-none text-xl' placeholder='Email' {...register("email", {
                             required: "Email is required", pattern: {
                                 value: /^\S+@\S+$/i,
                                 message: "Invalid email",

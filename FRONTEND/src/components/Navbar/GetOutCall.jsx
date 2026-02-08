@@ -1,0 +1,28 @@
+import React, { useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { UserContext } from '../../Context/UserContext';
+function GetOutCall({ setIsIconClicked }) {
+    const navigate = useNavigate();
+    const { setUser } = useContext(UserContext);
+
+    const logout = async () => {
+        const res = await fetch('http://localhost:3000/users/logout', {
+            method: "POST",
+            credentials: "include"
+        })
+        const response = await res.json();
+        if (response.success) {
+            setUser(null)
+            navigate('/', { replace: true });
+            setIsIconClicked(false)
+        }
+    }
+    return (
+        <div className='absolute top-11 left-4 cursor-pointer flex flex-col justify-around items-center border bg-gray-100 rounded p-2 h-18 w-35 z-9999 '>
+            <div onClick={logout} className='bg-black w-full text-center text-white p-2 rounded border hover:text-black hover:bg-white'>LOGOUT</div>
+        </div>
+    )
+}
+
+export default GetOutCall
+

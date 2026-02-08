@@ -1,14 +1,22 @@
 import React from 'react'
 import { useForm } from "react-hook-form"
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
     const { register, handleSubmit, reset, watch, formState: { errors }, } = useForm()
+    const navigate = useNavigate();
     const onSubmit = async (data) => {
         const res = await fetch('http://localhost:3000/users/signup', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data),
+            body: JSON.stringify(data)
         })
+        const response = await res.json();
+        reset()
+        console.log(response.success)
+        if (response.success) {
+            navigate("/login")
+        }
     };
     return (
         <div className='h-screen bg-gray-100 p-25'>
@@ -21,7 +29,7 @@ function Signup() {
                         <h1 className='font-bold text-3xl w-80'>Create Your Account</h1>
                         <input className='bg-gray-400 text-shadow-black h-10 w-90 p-2 rounded outline-none text-xl' placeholder='Name' {...register("name", { required: "Name is required" })} />
                         {errors.name && <p className='text-red-500'>{errors.name.message}</p>}
-                        <input className='bg-gray-400 text-shadow-black h-10 w-90 p-2 rounded outline-none text-xl' placeholder='email' {...register("Email", {
+                        <input className='bg-gray-400 text-shadow-black h-10 w-90 p-2 rounded outline-none text-xl' placeholder='email' {...register("email", {
                             required: "Email is required", pattern: {
                                 value: /^\S+@\S+$/i,
                                 message: "Invalid email",
