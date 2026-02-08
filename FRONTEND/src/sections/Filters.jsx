@@ -43,7 +43,7 @@ function Filters({ updatefilter, updatePriceSlab, updateSize, updateCategory }) 
         { value: "slab-6", label: "₹5,000+" },
     ];
     return (
-        <div className='sticky top-20 h-15 z-999 w-full rounded bg-white backdrop-blur-lg flex items-center justify-center gap-5'>
+        <div className='sticky top-20 h-15 w-full rounded bg-white backdrop-blur-lg flex items-center justify-center gap-5'>
             <div className="relative rounded bg-gray-100 text-sm cursor-pointer border">
                 <button onClick={() => setOpen(!open)} className="w-18 cursor-pointer bg-gray-100 border border-gray-300 text-xs rounded py-1 px-1 flex justify-between items-center md:w-42 md:px-3 md:py-2 md:text-xl" >
                     <span>{selectedLabel}</span>
@@ -76,7 +76,7 @@ function Filters({ updatefilter, updatePriceSlab, updateSize, updateCategory }) 
                 )}
             </div>
             <div className="relative rounded bg-gray-100 text-sm cursor-pointer border">
-                <button onClick={() => setActive(!active)} className="w-22 cursor-pointer bg-gray-100 border border-gray-300 text-xs rounded py-1 px-1 flex justify-between items-center md:w-52 md:px-3 md:py-2 md:text-xl" >
+                <button onClick={() => setActive(!active)} className="w-22 cursor-pointer bg-gray-100 border border-gray-300 text-xs rounded py-1 px-1 flex justify-between items-center md:w-60 md:px-3 md:py-2 md:text-xl" >
                     <span>{price}</span>
                     <span className="text-sm">▼</span>
                 </button>
