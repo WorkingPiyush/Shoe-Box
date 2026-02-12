@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { FaShoppingCart } from "react-icons/fa";
 import { RiMenu3Fill } from "react-icons/ri";
-import SlidingMenu from '../SlidingMenu/SlidingMenu';
+import SlidingMenu from '../SlidingMenu'; 
 import profileImg from '../../assets/Images/headphone.jpg'
 import { Link, Route, Routes } from 'react-router-dom';
 import GetInCall from './GetInCall';
@@ -15,7 +15,7 @@ function Navbar() {
   const showGetCall = () => { setIsImgClicked(prev => !prev) }
   const ShowOutCall = () => { setIsIconClicked(prev => !prev) }
   return (
-    <div className='w-full bg-white/60 p-5 flex justify-center fixed top-0 z-50 backdrop-blur-lg'>
+    <div className='w-full bg-white/60 p-5 flex justify-center fixed top-0 z-999 backdrop-blur-lg'>
       <div className='w-full flex justify-around items-center max-md:px-0 max-md:justify-between relative'>
         <h1 className='font-extrabold text-xl'>Shoe Box</h1>
         <div className="flex gap-9 font-bold max-md:hidden">

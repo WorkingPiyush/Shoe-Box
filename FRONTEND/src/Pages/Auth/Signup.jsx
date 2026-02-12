@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react'
 import { useForm } from "react-hook-form"
 import { useNavigate } from 'react-router-dom';
@@ -6,15 +7,14 @@ function Signup() {
     const { register, handleSubmit, reset, watch, formState: { errors }, } = useForm()
     const navigate = useNavigate();
     const onSubmit = async (data) => {
-        const res = await fetch('http://localhost:3000/users/signup', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
+        const res = await axios.post('http://localhost:3000/users/signup', data, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            withCredentials: true
         })
-        const response = await res.json();
         reset()
-        console.log(response.success)
-        if (response.success) {
+        if (res.data.success) {
             navigate("/login")
         }
     };

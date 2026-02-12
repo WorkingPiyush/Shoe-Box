@@ -15,7 +15,6 @@ const imgList = [
 ];
 
 
-
 function Hero() {
     useEffect(() => {
         const timer = setInterval(() => {

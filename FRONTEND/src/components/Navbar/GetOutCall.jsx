@@ -1,17 +1,14 @@
 import React, { useContext } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../../Context/UserContext';
+import axios from 'axios';
 function GetOutCall({ setIsIconClicked }) {
     const navigate = useNavigate();
     const { setUser } = useContext(UserContext);
 
     const logout = async () => {
-        const res = await fetch('http://localhost:3000/users/logout', {
-            method: "POST",
-            credentials: "include"
-        })
-        const response = await res.json();
-        if (response.success) {
+        const res = await axios.post('http://localhost:3000/users/logout', {}, { withCredentials: true })
+        if (res.data.success) {
             setUser(null)
             navigate('/', { replace: true });
             setIsIconClicked(false)

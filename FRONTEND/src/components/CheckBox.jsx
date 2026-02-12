@@ -1,8 +1,8 @@
 import React, { useContext, useRef, useState } from 'react'
-import { ItemContext } from '../../Pages/Product/ProductViewPage'
+import { itemSizeContext } from '../Context/ShoeSizeContext'
 
 function CheckBox({ size }) {
-    const { shoeSize, setShoeSize } = useContext(ItemContext)
+    const setShoeSize = useContext(itemSizeContext)
     return (
         <div className='flex gap-4 font-bold text-xl'>
             {size.map((s, idx) => {

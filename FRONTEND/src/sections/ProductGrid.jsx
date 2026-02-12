@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react'
-import ProductListArr from '../data/ProductList2.json'
-import ImgCard from '../components/ImgCard/ImgCard'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react'
+import ImgCard from '../components/ImgCard'
+import { useProducts } from '../Context/ProductContext';
+import SkeletonImgCard from '../components/SkeletonImgCard';
 function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, selectedCategory, sortedHtLOrder, sortIsNewVal }) {
+    const { data: ProductList = [], isLoading } = useProducts();
     const priceSlabsLog = [
         ["slab-1", [0, 1000]],
         ["slab-2", [1000, 2000]],
@@ -12,7 +13,8 @@ function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, 
         ["slab-6", [5000, Infinity]],
     ];
     const filterdBrandedList = useMemo(() => {
-        let secProductListArr = ProductListArr;
+        if (!ProductList) return []
+        let secProductListArr = ProductList;
         if (selectedBrand !== "all") {
             secProductListArr = secProductListArr.filter(prod => {
                 const BrandArr = Array.isArray(prod.brand) ? prod.brand : [prod.brand];
@@ -47,13 +49,12 @@ function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, 
             secProductListArr.sort((a, b) => a.isNew - b.isNew)
         }
         return secProductListArr;
-    }, [ProductListArr, selectedBrand, selectedSlab, selectedSize, selectedCategory, sortedHtLOrder, sortIsNewVal])
+    }, [ProductList, selectedBrand, selectedSlab, selectedSize, selectedCategory, sortedHtLOrder, sortIsNewVal])
     return (
-
         <div className='flex justify-center flex-wrap mt-1 w-fit bg-gray-500/15 rounded-xl'>
-            {filterdBrandedList.map(item => {
-                if (item.gender == routedGender) {
-                    return <ImgCard key={item.id} props={item} />
+            {filterdBrandedList.map(shoe => {
+                if (shoe.gender == routedGender) {
+                    return (isLoading ? <SkeletonImgCard /> : <ImgCard key={shoe._id} shoe={shoe} />)
                 }
             })}
         </div >

@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { IoStarSharp } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa6";
-import CheckBox from '../components/CheckBox/CheckBox';
-import SlidingImgPanel from '../components/SlidingImgPanel/SlidingImgPanel';
+import CheckBox from '../components/CheckBox';
+import SlidingImgPanel from '../components/SlidingImgPanel';
 function ProductViewSection({ item }) {
-    let currentDate = new Date().toLocaleDateString("de-DE");
+    let date = new Date();
+    date.setDate(date.getDate() + 7);
+    let currentDate = date.toLocaleDateString("de-DE");
     return (
         <div className='h-screen py-20 flex flex-col md:flex-row'>
             <div className=' w-full p-4 flex flex-col justify-around items-center rounded-3xl md:w-1/2'>

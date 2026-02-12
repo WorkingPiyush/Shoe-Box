@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import Filters from '../../sections/Filters'
 import { useLocation } from 'react-router-dom'
+import Filters from '../../sections/Filters'
 import Sorting from '../../sections/Sorting'
 import ProductGrid from '../../sections/ProductGrid'
 function ProductList() {

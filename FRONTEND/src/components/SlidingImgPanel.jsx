@@ -3,13 +3,6 @@ import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 
 function SlidingImgPanel({ imgList }) {
     const [imgIndex, setImgIndex] = useState(0);
-    // useEffect(() => {
-    //     const timer = setInterval(() => {
-    //         setImgIndex(prev => prev >= imgList.length - 1 ? 0 : prev + 1)
-    //     }, 10000);
-    //     return () => clearInterval(timer)
-    // }, [imgList.length])
-
     const moveLeftImg = () => {
         setImgIndex(prev => prev <= 0 ? imgList.length - 1 : prev - 1)
     }
