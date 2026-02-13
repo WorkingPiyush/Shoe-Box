@@ -2,8 +2,24 @@ import React, { useEffect, useMemo, useState } from 'react'
 import ImgCard from '../components/ImgCard'
 import { useProducts } from '../Context/ProductContext';
 import SkeletonImgCard from '../components/SkeletonImgCard';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, selectedCategory, sortedHtLOrder, sortIsNewVal }) {
-    const { data: ProductList = [], isLoading } = useProducts();
+    const gender = routedGender
+    const fetchProduct = async () => {
+        const res = await axios.get('http://localhost:3000/product/', {
+            params: {
+                gender: routedGender
+            }
+        });
+        return res.data
+    }
+    const { data, isLoading } = useQuery({
+        queryKey: ['products', gender],
+        queryFn: fetchProduct,
+        staleTime: 10 * 60 * 1000,
+        keepPreviousData: true,
+    })
     const priceSlabsLog = [
         ["slab-1", [0, 1000]],
         ["slab-2", [1000, 2000]],
@@ -12,6 +28,7 @@ function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, 
         ["slab-5", [4000, 5000]],
         ["slab-6", [5000, Infinity]],
     ];
+    let ProductList = data || [];
     const filterdBrandedList = useMemo(() => {
         if (!ProductList) return []
         let secProductListArr = ProductList;
@@ -54,7 +71,7 @@ function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, 
         <div className='flex justify-center flex-wrap mt-1 w-fit bg-gray-500/15 rounded-xl'>
             {filterdBrandedList.map(shoe => {
                 if (shoe.gender == routedGender) {
-                    return (isLoading ? <SkeletonImgCard /> : <ImgCard key={shoe._id} shoe={shoe} />)
+                    return (isLoading ? <SkeletonImgCard /> : <ImgCard key={shoe.id} shoe={shoe} />)
                 }
             })}
         </div >

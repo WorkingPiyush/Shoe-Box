@@ -4,14 +4,13 @@ import Filters from '../../sections/Filters'
 import Sorting from '../../sections/Sorting'
 import ProductGrid from '../../sections/ProductGrid'
 function ProductList() {
-    const websiteDir = useLocation()
-    const gender = websiteDir.pathname.slice(1)
-    const [selectedBrand, setSelectedBrand] = useState('all')
-    const [selectedSlab, setSelectedSlab] = useState('all')
-    const [selectedSize, setSelectedSize] = useState("all")
-    const [selectCategory, setSelectCategory] = useState('all')
-    const [sortOrder, setSortOrder] = useState('none')
-    const [isNew, setIsNew] = useState(false)
+    const gender = useLocation().pathname.slice(1);
+    const [selectedBrand, setSelectedBrand] = useState('all');
+    const [selectedSlab, setSelectedSlab] = useState('all');
+    const [selectedSize, setSelectedSize] = useState("all");
+    const [selectCategory, setSelectCategory] = useState('all');
+    const [sortOrder, setSortOrder] = useState('none');
+    const [isNew, setIsNew] = useState(false);
     return (
         <div>
             <div>
