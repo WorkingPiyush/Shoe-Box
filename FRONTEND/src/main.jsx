@@ -5,6 +5,10 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { UserProvider } from './Context/UserContext.jsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { CartContainer } from './Context/CartContext.jsx'
+import ShoeSizeProvider from './Context/ShoeSizeContext.jsx'
+import { ToastContainer } from 'react-toastify'
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,12 +21,19 @@ const queryClient = new QueryClient({
   }
 })
 
+
 createRoot(document.getElementById('root')).render(
-  <UserProvider>
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </BrowserRouter>
-  </UserProvider>
+  <ShoeSizeProvider>
+    <CartContainer>
+      <UserProvider>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <App />
+            <ToastContainer/>
+          </QueryClientProvider>
+        </BrowserRouter>
+      </UserProvider>
+    </CartContainer>
+  </ShoeSizeProvider>
+
 )
