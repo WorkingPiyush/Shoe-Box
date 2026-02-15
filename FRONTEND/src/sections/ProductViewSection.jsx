@@ -8,22 +8,13 @@ import ShoeSizeContext, { ItemSizeContext } from '../Context/ShoeSizeContext';
 import { toast } from 'react-toastify';
 function ProductViewSection({ item }) {
     const { addItem, cartItem } = useContext(CartContext);
-    const { shoeSize, setShoeSize, setCartItem } = useContext(ItemSizeContext)
+    const { shoeSize, setCartItem } = useContext(ItemSizeContext)
     const processShoe = (item) => {
-        if (!shoeSize) {
+        if (shoeSize.length === 0) {
             toast.error("Please Select Shoe Size")
             return;
         }
-        // addItem({ ...item, size: shoeSize })
-        addItem = setCartItem((prev) => {
-            const index = prev.findIndex((prod) => prod.id === item.id && prod.size === item.size)
-            if (index !== -1) {
-                const prevCart = [...prev];
-                prevCart[index].quantity += 1;
-                return prevCart;
-            }
-            return [...prev, { ...item, quantity: 1 }]
-        })
+        addItem({ ...item, size: shoeSize })
     }
     let date = new Date();
     date.setDate(date.getDate() + 7);

@@ -7,6 +7,7 @@ import Signup from './Pages/Auth/Signup'
 import Login from './Pages/Auth/Login'
 import Layout from './sections/Layout'
 import Home from './Pages/Home/Home'
+import ProductCartPage from './Pages/Product/ProductCartPage'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="kids/:id" element={<ProductViewPage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/cartpage" element={<ProductCartPage />} />
         </Route>
       </Routes>
     </div>
