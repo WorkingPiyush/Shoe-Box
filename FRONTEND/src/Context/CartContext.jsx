@@ -10,18 +10,8 @@ export function CartContainer({ children }) {
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cartItem))
     }, [cartItem])
-
-    const addItem = (product) => {
-        setCartItem((prevCart) => {
-            const existingItem = prevCart.find((item) => item.id === product.id && item.size === product.size)
-            if (existingItem) {
-                return prevCart.map((item) => item.id === product.id && item.size === product.size ? { ...item, quantity: item.quantity + 1 } : item);
-            }
-            return [...prevCart, { ...product, quantity: 1 }]
-        })
-    };
     return (
-        <CartContext.Provider value={{ addItem, setCartItem, cartItem }}>
+        <CartContext.Provider value={{ setCartItem, cartItem }}>
             {children}
         </CartContext.Provider>
     );

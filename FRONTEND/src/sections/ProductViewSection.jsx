@@ -3,18 +3,28 @@ import { IoStarSharp } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa6";
 import CheckBox from '../components/CheckBox';
 import SlidingImgPanel from '../components/SlidingImgPanel';
-import { CartContext } from '../Context/CartContext';
-import ShoeSizeContext, { ItemSizeContext } from '../Context/ShoeSizeContext';
+import { ItemSizeContext } from '../Context/ShoeSizeContext';
 import { toast } from 'react-toastify';
+import { UserContext } from '../Context/UserContext';
+import { useCart } from '../Services/GuestUserCart';
+
+
 function ProductViewSection({ item }) {
-    const { addItem, cartItem } = useContext(CartContext);
-    const { shoeSize, setCartItem } = useContext(ItemSizeContext)
-    const processShoe = (item) => {
+    const { addItem } = useCart();
+    const { shoeSize } = useContext(ItemSizeContext)
+    const { user } = useContext(UserContext);
+    const processShoe = (product) => {
         if (shoeSize.length === 0) {
             toast.error("Please Select Shoe Size")
             return;
         }
-        addItem({ ...item, size: shoeSize })
+        if (user === null) {
+            addItem(product)
+        }
+        if (user !== null) {
+            
+        }
+
     }
     let date = new Date();
     date.setDate(date.getDate() + 7);

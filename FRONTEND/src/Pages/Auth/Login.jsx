@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useForm } from "react-hook-form"
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { UserContext } from '../../Context/UserContext';
 
 function Login() {
     const { register, handleSubmit, reset, watch, formState: { errors }, } = useForm()
     const navigate = useNavigate()
+    const { getUser } = useContext(UserContext);
     const onSubmit = async (data) => {
         const res = await axios.post('http://localhost:3000/users/login', data,
             {
@@ -15,6 +17,8 @@ function Login() {
                 withCredentials: true
             })
         if (res.data.success) {
+            localStorage.removeItem('cart')
+            await getUser();
             navigate('/', { replace: true })
         }
 

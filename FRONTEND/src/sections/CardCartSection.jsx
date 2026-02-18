@@ -7,7 +7,8 @@ function CardCartSection({ cartItem, setCartItem, addItem }) {
         setCartItem(updatedCart)
     }
     const decreaseQty = (item) => {
-        addItem((prev)=> prev.id)
+        const updatedCart = cartItem.filter((prod) => prod.id == item.id)
+        
     }
     const increaseQty = () => {
         console.log("qty Increased")

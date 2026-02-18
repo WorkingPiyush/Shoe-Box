@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState, createContext, useEffect } from "react";
 
 export const UserContext = createContext(null);
@@ -5,20 +6,19 @@ export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-
+    const getUser = async () => {
+        try {
+            const res = await axios.get('http://localhost:3000/api/user', { withCredentials: true });
+            setUser(res.data)
+        } catch (error) {
+            setUser(null);
+        }
+    }
     useEffect(() => {
-        fetch('http://localhost:3000/api/user', {
-            method: "GET",
-            credentials: "include",
-        }).then(async (res) => {
-            if (!res.ok) throw new Error("Not Authenticated")
-            const data = await res.json();
-            setUser(data);
-        }).catch(() => setUser(null));
+        getUser();
     }, [])
-
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, setUser, getUser }}>
             {children}
         </UserContext.Provider>
     )
