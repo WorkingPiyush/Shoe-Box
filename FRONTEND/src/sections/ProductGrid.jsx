@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import ImgCard from '../components/ImgCard'
-import { useProducts } from '../Context/ProductContext';
-import SkeletonImgCard from '../components/SkeletonImgCard';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, selectedCategory, sortedHtLOrder, sortIsNewVal }) {
@@ -71,7 +69,7 @@ function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, 
         <div className='flex justify-center flex-wrap mt-1 w-fit bg-gray-500/15 rounded-xl'>
             {filterdBrandedList.map(shoe => {
                 if (shoe.gender == routedGender) {
-                    return (isLoading ? <SkeletonImgCard /> : <ImgCard key={shoe.id} shoe={shoe} />)
+                    return (isLoading ? "Loading.." : <ImgCard key={shoe.id} shoe={shoe} />)
                 }
             })}
         </div >

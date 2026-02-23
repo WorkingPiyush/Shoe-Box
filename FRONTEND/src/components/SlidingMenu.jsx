@@ -1,36 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { ImCross } from "react-icons/im";
-import { Link } from 'react-router-dom';
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-function SlidingMenu({ open, setOpen }) {
-    const menuBar = useRef(null)
+function SlidingMenu({ open, SetOpen }) {
+    const location = useNavigate();
     useEffect(() => {
-        const handleclickOutside = (event) => {
-            if (menuBar.current && !menuBar.current.contains(event.target)) {
-                setOpen(false)
-            }
-        }
-        if (open) {
-            document.addEventListener('mousedown', handleclickOutside)
-        } else {
-            document.addEventListener('mousedown', handleclickOutside)
-        }
-        return () => {
-            document.removeEventListener('mousedown', handleclickOutside)
-        }
-    }, [open])
-
-
-
+        SetOpen(false)
+    }, [location])
     return (
-        <div className={`fixed -right-6 top-1 h-screen w-80 bg-white/80 backdrop-blur-lg text-black p-15 text-center font-bold text-xl  transform transition-transform duration-300 ease-in-out ${open ? "translate-x-0" : "translate-x-full"} md:hidden`}>
-            <ImCross onClick={() => { setOpen(false) }} className='absolute right-11 top-7 cursor-pointer' />
-            <div className='border m-1'><Link to="/">HOME</Link></div>
-            <div className='border m-1'><Link to="/male">MEN</Link></div>
-            <div className='border m-1'><Link to="/female">WOMEN</Link></div>
-            <div className='border m-1'><Link to="/kids">KIDS</Link></div>
+        <div className={`absolute top-16 w-44 z-50 md:hidden bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl ring-1 ring-black/5 transform transition-all duration-200 ease-out  origin-top-right ${open ? "opacity-100 scale-100 translate-y-0 pointer-events-auto" : "opacity-0 scale-95 -translate-y-3 pointer-events-none"}`}>
+            <div className="flex flex-col text-center py-2">
+                <Link to="/" className="px-4 py-2 text-sm font-semibold text-gray-800 hover:bg-black hover:text-white transition-colors duration-200 rounded-lg mx-2">Home</Link>
+                <Link to="/male" className="px-4 py-2 text-sm font-semibold text-gray-800 hover:bg-black hover:text-white transition-colors duration-200 rounded-lg mx-2">Men</Link>
+                <Link to="/female" className="px-4 py-2 text-sm font-semibold text-gray-800 hover:bg-black hover:text-white transition-colors duration-200 rounded-lg mx-2">Women</Link>
+                <Link to="/kids" className="px-4 py-2 text-sm font-semibold text-gray-800 hover:bg-black hover:text-white transition-colors duration-200 rounded-lg mx-2">Kids</Link>
+            </div>
         </div>
-    )
+    );
 }
 
-export default SlidingMenu
+export default SlidingMenu;

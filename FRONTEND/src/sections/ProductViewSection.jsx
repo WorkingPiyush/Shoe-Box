@@ -5,26 +5,31 @@ import CheckBox from '../components/CheckBox';
 import SlidingImgPanel from '../components/SlidingImgPanel';
 import { ItemSizeContext } from '../Context/ShoeSizeContext';
 import { toast } from 'react-toastify';
-import { UserContext } from '../Context/UserContext';
-import { useCart } from '../Services/GuestUserCart';
-
+import { UserContext } from '../Context/UserContext.jsx';
+import { CartContext } from '../Context/CartContext.jsx';
+import axios from 'axios';
+import { localCartToBackend } from '../Services/cartServices.js';
 
 function ProductViewSection({ item }) {
-    const { addItem } = useCart();
+    const { cartItem, setCartItem } = useContext(CartContext)
     const { shoeSize } = useContext(ItemSizeContext)
-    const { user } = useContext(UserContext);
-    const processShoe = (product) => {
+    const { user } = useContext(UserContext)
+    const handleAddToCart = (product) => {
         if (shoeSize.length === 0) {
             toast.error("Please Select Shoe Size")
             return;
         }
-        if (user === null) {
-            addItem(product)
+        let existing = cartItem.find((item) => item.prodId === product.id && item.shoeSize === shoeSize)
+        let updatedCart;
+        if (existing) {
+            updatedCart = cartItem.map(item => item.prodId === product.id ? { ...item, quantity: item.quantity + 1 } : item)
+        } else {
+            updatedCart = [
+                ...cartItem,
+                { productId: product.id, quantity: 1, shoeSize: shoeSize }
+            ]
         }
-        if (user !== null) {
-            
-        }
-
+        user ? localCartToBackend({ productId: product.id, quantity: 1, shoeSize: shoeSize }) : setCartItem(updatedCart);
     }
     let date = new Date();
     date.setDate(date.getDate() + 7);
@@ -46,7 +51,7 @@ function ProductViewSection({ item }) {
                 <p className='mt-5'>Free shipping availale for new users</p>
                 <b>Estimate date of delivery: {currentDate}</b>
                 <div className='flex gap-2 mt-10'>
-                    <button onClick={() => processShoe(item)} className="px-10 py-2 border border-black text-black bg-white cursor-pointer rounded hover:bg-black hover:text-white transition">
+                    <button onClick={() => handleAddToCart(item)} className="px-10 py-2 border border-black text-black bg-white cursor-pointer rounded hover:bg-black hover:text-white transition">
                         ADD TO CART
                     </button>
                     <div className='h-12 w-14 bg-black rounded flex justify-center items-center cursor-pointer'>

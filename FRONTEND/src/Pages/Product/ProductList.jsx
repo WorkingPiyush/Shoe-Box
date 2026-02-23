@@ -14,7 +14,8 @@ function ProductList() {
     return (
         <div>
             <div>
-                <div className='text-4xl text-center font-bold p-2 flex justify-center mt-20'><h1 className='uppercase'>{`${gender}'s Section`}</h1></div>
+                <div className='text-4xl text-center font-bold p-2 flex justify-center'>
+                    <h1 className='uppercase mt-28'>{`${gender}'s Section`}</h1></div>
                 <Filters updatefilter={setSelectedBrand} updatePriceSlab={setSelectedSlab} updateSize={setSelectedSize} updateCategory={setSelectCategory} />
                 <Sorting sortHtLOrder={setSortOrder} sortHtLOrderVal={sortOrder} sortIsNewVal={isNew} sortIsNew={setIsNew} />
                 <div className='flex justify-center'>

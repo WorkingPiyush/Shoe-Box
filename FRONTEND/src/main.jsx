@@ -24,16 +24,16 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById('root')).render(
   <ShoeSizeProvider>
-    <CartContainer>
-      <UserProvider>
+    <UserProvider>
+      <CartContainer>
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>
             <App />
-            <ToastContainer/>
+            <ToastContainer />
           </QueryClientProvider>
         </BrowserRouter>
-      </UserProvider>
-    </CartContainer>
+      </CartContainer>
+    </UserProvider>
   </ShoeSizeProvider>
 
 )

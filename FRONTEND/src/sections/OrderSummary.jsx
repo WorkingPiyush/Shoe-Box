@@ -27,7 +27,7 @@ function OrderSummary({ cartItem, setCartItem }) {
     }
   }
   return (
-    <div className='w-2/4'>
+    <div className=''>
       {cartItem.length === 0 ? "" : (<div className='w-90 bg-gray-100 p-2'>
         <div className='bg-gray-200 mb-0.5 rounded'> <h1 className='p-4 font-bold'>Order Summary</h1></div>
         <div className='bg-gray-300 p-8'>
