@@ -19,17 +19,25 @@ function ProductViewSection({ item }) {
             toast.error("Please Select Shoe Size")
             return;
         }
-        let existing = cartItem.find((item) => item.prodId === product.id && item.shoeSize === shoeSize)
+        let existing = cartItem.find((item) => item.productId === product.id && item.shoeSize === shoeSize)
         let updatedCart;
         if (existing) {
-            updatedCart = cartItem.map(item => item.prodId === product.id ? { ...item, quantity: item.quantity + 1 } : item)
+            updatedCart = cartItem.map(item => item.productId === product.id ? { ...item, quantity: item.quantity + 1 } : item)
         } else {
             updatedCart = [
                 ...cartItem,
                 { productId: product.id, quantity: 1, shoeSize: shoeSize }
             ]
         }
-        user ? localCartToBackend({ productId: product.id, quantity: 1, shoeSize: shoeSize }) : setCartItem(updatedCart);
+        if (user) {
+            setCartItem(updatedCart);
+            toast.success("Shoe Added");
+            localCartToBackend({ productId: product.id, quantity: 1, shoeSize: shoeSize });
+        } else {
+            setCartItem(updatedCart);
+            toast.success("Shoe Added");
+            localStorage.setItem('cart', JSON.stringify(updatedCart));
+        }
     }
     let date = new Date();
     date.setDate(date.getDate() + 7);

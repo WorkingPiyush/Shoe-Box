@@ -1,8 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import ProductListArr from '../../data/ProductList2.json'
 import ProductViewSection from '../../sections/ProductViewSection'
-import { useProducts } from '../../Context/ProductContext';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
