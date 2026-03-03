@@ -1,53 +1,140 @@
-import React, { useContext } from 'react'
-import { useForm } from "react-hook-form"
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { UserContext } from '../../Context/UserContext';
+import React, { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "../../Context/UserContext";
+import Loading from "../../components/Loading";
+import OAuth from "../../components/OAuth";
 
 function Login() {
-    const { register, handleSubmit, reset, watch, formState: { errors }, } = useForm()
-    const navigate = useNavigate()
-    const { getUser } = useContext(UserContext);
-    const onSubmit = async (data) => {
-        const res = await axios.post('http://localhost:3000/users/login', data,
-            {
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                withCredentials: true
-            })
-        if (res.data.success) {
-            localStorage.removeItem('cart')
-            await getUser();
-            navigate('/', { replace: true })
-        }
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-    };
-    return (
-        <div className='h-screen bg-gray-100 p-25'>
-            <div className='flex h-full w-full mt-10 p-5'>
-                <div className='w-1/2'>
-                    <img className='h-102 rotate-10 px-4 py-2 cursor-pointer bg-blue-200 rounded-2xl p-5 shadow-2xl object-contain hidden md:block transition-colors duration-300 ease-in-out hover:scale-110' src="src/assets/Images/Type-of-Shoes/training-shoe.png" alt="productImg" />
-                </div>
-                <div className='w-full mt-12 p-8 md:w-1/2'>
-                    <form className='flex flex-col gap-1 justify-center items-center' onSubmit={handleSubmit(onSubmit)}>
-                        <h1 className='font-bold text-3xl w-80'>Let's Continue</h1>
-                        <input className='bg-gray-400 text-shadow-black h-10 w-90 p-2 rounded outline-none text-xl' placeholder='Email' {...register("email", {
-                            required: "Email is required", pattern: {
-                                value: /^\S+@\S+$/i,
-                                message: "Invalid email",
-                            }
-                        })} />
-                        {errors.Email && <p className='text-red-500'>{errors.Email.message}</p>}
-                        {errors.gender && <p className='text-red-500'>{errors.gender.message}</p>}
-                        <input className='bg-gray-400 text-shadow-black h-10 w-90 p-2 rounded outline-none text-xl' placeholder='Password' {...register("password", { required: "Password is required", minLength: { value: 6, message: "Minimum 6 Charactors are required" } })} />
-                        {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
-                        <button className='bg-black text-white cursor-pointer h-10 w-90' type='submit'>Submit</button>
-                    </form>
-                </div>
-            </div>
+  const navigate = useNavigate();
+  const { getUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+
+      const res = await axios.post(
+        "http://localhost:3000/users/login",
+        data,
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success) {
+        localStorage.removeItem("cart");
+        await getUser();
+        reset();
+        navigate("/", { replace: true });
+      }
+    } catch (err) {
+      alert("Invalid credentials");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white flex items-center justify-center px-6">
+      <div className="w-full max-w-5xl grid md:grid-cols-2 bg-white text-black rounded-2xl shadow-2xl overflow-hidden border border-black">
+
+        {/* Left Image */}
+        <div className="hidden md:flex items-center justify-center bg-white p-10">
+          <img
+            className="object-contain w-80 hover:scale-105 transition duration-500"
+            src="src/assets/Images/Type-of-Shoes/training-shoe.png"
+            alt="product"
+          />
         </div>
-    )
+
+        {/* Login Form */}
+        <div className="p-10">
+          <h1 className="text-3xl text-center font-semibold mb-6">
+            Welcome Back
+          </h1>
+
+          <form
+            className="flex flex-col gap-5"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            {/* Email */}
+            <div>
+              <input
+                type="email"
+                placeholder="Email"
+                className="w-full bg-white text-black border border-gray-300 focus:border-black rounded-lg p-3 outline-none transition"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: "Invalid email",
+                  },
+                })}
+              />
+              {errors.email && (
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+
+            {/* Password */}
+            <div>
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full bg-white text-black border border-gray-300 focus:border-black rounded-lg p-3 outline-none transition"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Minimum 6 characters required",
+                  },
+                })}
+              />
+              {errors.password && (
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-black text-white font-semibold py-3 rounded-lg hover:bg-gray-800 transition duration-300 disabled:opacity-50"
+            >
+              {loading ? <Loading /> : "Login"}
+            </button>
+            <div className="flex justify-center items-center flex-col">
+              ---- OR ----
+              <OAuth />
+            </div>
+            <p className="text-sm text-gray-400 text-center mt-3">
+              Don’t have an account?{" "}
+              <Link
+                to="/signup"
+                className="text-black hover:underline"
+              >
+                Sign Up
+              </Link>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default Login
+export default Login;

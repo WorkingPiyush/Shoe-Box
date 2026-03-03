@@ -26,6 +26,7 @@ export function CartContainer({ children }) {
         }
     }
     const loadCartDetails = async (cart) => {
+        if (cartItem.length == 0) return;
         try {
             const res = await axios.post('http://localhost:3000/cart/your-cart', { Usercart: cart }, {
                 headers: {
@@ -45,7 +46,7 @@ export function CartContainer({ children }) {
     useEffect(() => {
         loadData()
     }, [user])
-    
+
     useEffect(() => {
         loadCartDetails(cartItem)
     }, [cartItem])

@@ -8,9 +8,10 @@ import Login from './Pages/Auth/Login'
 import Layout from './sections/Layout'
 import Home from './Pages/Home/Home'
 import ProductCartPage from './Pages/Product/ProductCartPage'
+import UserProfile from './Pages/User/UserProfile'
+import PublicRouteG from './components/PublicRoute'
 
 function App() {
-
   return (
     <div className="min-h-screen w-full bg-white">
       <Routes>
@@ -22,9 +23,10 @@ function App() {
           <Route path="female/:id" element={<ProductViewPage />} />
           <Route path="/kids" element={<ProductList />} />
           <Route path="kids/:id" element={<ProductViewPage />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<PublicRouteG><Signup /></PublicRouteG>} />
+          <Route path="/login" element={<PublicRouteG><Login /></PublicRouteG>} />
           <Route path="/cartpage" element={<ProductCartPage />} />
+          <Route path="/yourProfile" element={<UserProfile />} />
         </Route>
       </Routes>
     </div>

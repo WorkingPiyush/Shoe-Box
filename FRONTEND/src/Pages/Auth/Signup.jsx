@@ -1,56 +1,177 @@
-import axios from 'axios';
-import React from 'react'
-import { useForm } from "react-hook-form"
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, Link } from "react-router-dom";
+import Loading from "../../components/Loading";
+import OAuth from "../../components/OAuth";
+import { UserContext } from "../../Context/UserContext";
 
 function Signup() {
-    const { register, handleSubmit, reset, watch, formState: { errors }, } = useForm()
-    const navigate = useNavigate();
-    const onSubmit = async (data) => {
-        const res = await axios.post('http://localhost:3000/users/signup', data, {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            withCredentials: true
-        })
-        reset()
-        if (res.data.success) {
-            navigate("/login")
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const navigate = useNavigate();
+  const { getUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
+  const password = watch("password");
+
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+
+      const res = await axios.post(
+        "http://localhost:3000/users/signup",
+        data,
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
         }
-    };
-    return (
-        <div className='h-screen bg-gray-100 p-25'>
-            <div className='flex h-full w-full mt-10 p-5'>
-                <div className='w-1/2'>
-                    <img className='h-102 rotate-10 px-4 py-2 cursor-pointer bg-blue-100 rounded-2xl p-5 shadow-2xl object-contain hidden md:block transition-colors duration-300 ease-in-out hover:scale-110' src="src/assets/Images/Type-of-Shoes/training-shoe.png" alt="productImg" />
-                </div>
-                <div className='w-full mt-5 p-8 md:w-1/2'>
-                    <form className='flex flex-col gap-1 justify-center items-center' onSubmit={handleSubmit(onSubmit)}>
-                        <h1 className='font-bold text-3xl w-80'>Create Your Account</h1>
-                        <input className='bg-gray-400 text-shadow-black h-10 w-90 p-2 rounded outline-none text-xl' placeholder='Name' {...register("name", { required: "Name is required" })} />
-                        {errors.name && <p className='text-red-500'>{errors.name.message}</p>}
-                        <input className='bg-gray-400 text-shadow-black h-10 w-90 p-2 rounded outline-none text-xl' placeholder='email' {...register("email", {
-                            required: "Email is required", pattern: {
-                                value: /^\S+@\S+$/i,
-                                message: "Invalid email",
-                            }
-                        })} />
-                        {errors.email && <p className='text-red-500'>{errors.email.message}</p>}
-                        <select className='bg-gray-400 text-shadow-black h-10 w-90 p-2 rounded outline-none text-xl' {...register("gender", { required: "Select Gender" })}>
-                            <option value="">Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                        {errors.gender && <p className='text-red-500'>{errors.gender.message}</p>}
-                        <input className='bg-gray-400 text-shadow-black h-10 w-90 p-2 rounded outline-none text-xl' placeholder='Password' {...register("password", { required: "Password is required", minLength: { value: 8, message: "Minimum 6 Charactors are required" }, maxLength: { value: 100, message: "Maximum Passoword length crossed" } })} />
-                        {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
-                        <button className='bg-black text-white cursor-pointer h-10 w-90' type='submit'>Submit</button>
-                    </form>
-                </div>
-            </div>
+      );
+
+      if (res.data.success) {
+        await getUser();
+        reset();
+        navigate("/", { replace: true });
+      }
+    } catch (err) {
+      console.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white flex items-center justify-center p-6">
+      <div className="mt-20 w-full max-w-5xl grid md:grid-cols-2 bg-white text-black rounded-2xl shadow-2xl overflow-hidden border border-black">
+
+        {/* Left Image */}
+        <div className="hidden md:flex items-center justify-center bg-white p-10">
+          <img
+            className="object-contain w-80 hover:scale-105 transition duration-500"
+            src="src/assets/Images/Type-of-Shoes/training-shoe.png"
+            alt="product"
+          />
         </div>
-    )
+
+        {/* Form Section */}
+        <div className="p-10">
+          <h1 className="text-3xl text-center font-semibold mb-3">
+            Create Account
+          </h1>
+
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            {/* Full Name */}
+            <div>
+              <input
+                type="text"
+                placeholder="Full Name"
+                className="w-full bg-white text-black border border-gray-300 focus:border-black rounded-lg p-3 outline-none transition"
+                {...register("fullName", {
+                  required: "Full Name is required",
+                })}
+              />
+              {errors.fullName && (
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.fullName.message}
+                </p>
+              )}
+            </div>
+
+            {/* Email */}
+            <div>
+              <input
+                type="email"
+                placeholder="Email"
+                className="w-full bg-white text-black border border-gray-300 focus:border-black rounded-lg p-3 outline-none transition"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: "Invalid email",
+                  },
+                })}
+              />
+              {errors.email && (
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+
+            {/* Password */}
+            <div>
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full bg-white text-black border border-gray-300 focus:border-black rounded-lg p-3 outline-none transition"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Minimum 6 characters required",
+                  },
+                })}
+              />
+              {errors.password && (
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                className="w-full bg-white text-black border border-gray-300 focus:border-black rounded-lg p-3 outline-none transition"
+                {...register("confirmPassword", {
+                  required: "Confirm your password",
+                  validate: (value) =>
+                    value === password || "Passwords do not match",
+                })}
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-400 text-sm mt-1">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-black text-white font-semibold py-3 rounded-lg cursor-pointer hover:bg-gray-900 transition duration-300 disabled:opacity-50"
+            >
+              {loading ? <Loading /> : "Sign Up"}
+            </button>
+            <div className="flex justify-center items-center flex-col">
+              ---- OR ----
+              <OAuth />
+            </div>
+            <p className="text-sm text-gray-400 text-center mt-3">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="text-black hover:underline"
+              >
+                Login
+              </Link>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-export default Signup
+export default Signup;

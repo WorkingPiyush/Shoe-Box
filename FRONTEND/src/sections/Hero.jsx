@@ -12,11 +12,6 @@ const imgList = [
     { id: 3, src: img3 },
     { id: 4, src: img4 },
     { id: 5, src: img5 },
-    { id: 6, src: img1 },
-    { id: 7, src: img2 },
-    { id: 8, src: img3 },
-    { id: 9, src: img4 },
-    { id: 10, src: img5 },
 ];
 
 
@@ -36,7 +31,7 @@ function Hero() {
         setImgIndex(prev => prev >= imgList.length - 1 ? 0 : prev + 1)
     }
     return (
-        <div className='relative h-[40vh] overflow-hidden mx-auto p-10 sm:h-[55vh] md:h-[80vh] my-20'>
+        <div className='relative h-[40vh] w-[90%] rounded-xl overflow-hidden mx-auto sm:h-[55vh] md:h-[75vh] my-25'>
             <div className='flex transition-transform duration-500 ease-in-out h-full' style={{ transform: `translateX(-${imgIndex * 100}%)` }}>
                 {imgList.map((item, i) => (
                     <img key={i} src={item.src} alt={`slide-${i}`} draggable="false" className="w-full shrink-0 object-cover h-full select-none rounded-xl shadow-xl/30" />

@@ -1,13 +1,12 @@
-import React, { createContext, useState } from "react";
-import CheckBox from "../components/CheckBox";
+import { createContext, useState } from "react";
 export const ItemSizeContext = createContext();
 
-export function ShoeSizeProvider({children}) {
+export function ShoeSizeProvider({ children }) {
     const [shoeSize, setShoeSize] = useState([])
     return (
-            <ItemSizeContext.Provider value={{shoeSize,setShoeSize}}>
-                {children}
-            </ItemSizeContext.Provider>
+        <ItemSizeContext.Provider value={{ shoeSize, setShoeSize }}>
+            {children}
+        </ItemSizeContext.Provider>
     )
 }
 

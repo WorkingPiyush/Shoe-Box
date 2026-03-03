@@ -15,7 +15,8 @@ function GetOutCall({ isiconClicked, setIsIconClicked }) {
         }
     }
     return (
-        <div className={`absolute top-11 left-4 cursor-pointer flex flex-col justify-around items-center border bg-gray-100 rounded p-2 h-18 w-35 z-9999 transition-all duration-300 ease-in-out ${isiconClicked ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}>
+        <div className={`absolute top-11 left-4 cursor-pointer flex flex-col justify-around items-center border bg-gray-100 rounded p-2 h-fit w-35 z-9999 transition-all duration-300 ease-in-out ${isiconClicked ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}>
+            <div onClick={() => navigate('/yourProfile')} className='bg-black w-full text-center text-white p-2 rounded border hover:text-black hover:bg-white'>PROFILE</div>
             <div onClick={logout} className='bg-black w-full text-center text-white p-2 rounded border hover:text-black hover:bg-white'>LOGOUT</div>
         </div>
     )

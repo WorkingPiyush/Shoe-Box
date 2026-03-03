@@ -19,6 +19,13 @@ function Navbar() {
   const navigate = useNavigate();
   const showGetCall = () => { setIsImgClicked(!isimgClicked) }
   const ShowOutCall = () => { setIsIconClicked(!isiconClicked) }
+  
+  const location = useNavigate();
+  useEffect(() => {
+    setIsImgClicked(false); 
+    setIsIconClicked(false);
+  }, [location])
+
   useEffect(() => {
     const handelScrolling = () => {
       SetScrolled(window.scrollY > 50);
@@ -29,9 +36,9 @@ function Navbar() {
   }, [])
   return (
     <nav className='bg-white flex justify-center w-full relative' >
-      <div className={`mt-5 p-4 rounded-2xl fixed top-0 z-100 backdrop-blur-sm transition-all duration-100 ease-in-out ${scrolled ? "w-90 md:w-[65%]" : "w-95 md:w-[70%]"}`}>
+      <div className={`mt-5 p-4 rounded-2xl fixed top-0 z-100 backdrop-blur-sm transition-all duration-300 ease-in-out ${scrolled ? "w-90 md:w-[65%]" : "w-95 md:w-[70%]"}`}>
         <div className=' w-full flex justify-between items-center'>
-          <h1 className='font-extrabold text-xl'>Shoe Box</h1>
+          <h1 className='font-extrabold text-xl'><Link to="/">Shoe Box</Link></h1>
           <div className="flex gap-9 font-bold max-md:hidden">
             <div><Link to="/">HOME</Link></div>
             <div><Link to="/male">MEN</Link></div>
@@ -45,9 +52,9 @@ function Navbar() {
             </div>
 
             <div className='h-10 w-12 rounded  cursor-pointer'>
-              {user ? <div onClick={ShowOutCall} className='flex bg-amber-950 rounded items-center justify-center'><h1 className='text-white text-3xl font-bold'>{user.name.slice(0, 1)}</h1></div> : <img onClick={showGetCall} className='object-contain rounded-full cursor-pointer' src={profileImg} alt="useimage" />}
+              {user ? <div onClick={ShowOutCall} className='flex bg-amber-950 rounded items-center justify-center'><h1 className='text-white text-3xl font-bold'>{user.fullName.slice(0, 1)}</h1></div> : <img onClick={showGetCall} className='object-contain rounded-full cursor-pointer' src={profileImg} alt="useimage" />}
             </div>
-            {isimgClicked && <GetInCall isimgClicked={isimgClicked} setIsImgClicked={setIsImgClicked} />}
+            {isimgClicked && <GetInCall isimgClicked={isimgClicked} />}
             {isiconClicked && <GetOutCall isiconClicked={isiconClicked} setIsIconClicked={setIsIconClicked} />}
             <MenuBar onClick={() => { SetOpen(true) }} open={open} SetOpen={SetOpen} />
             <SlidingMenu open={open} SetOpen={SetOpen} />

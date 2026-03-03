@@ -29,3 +29,4 @@ ProductList2.json
 src/assets/
 /data
 public/product-list
+.env

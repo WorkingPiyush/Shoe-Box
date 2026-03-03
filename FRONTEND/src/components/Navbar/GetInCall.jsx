@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-function GetInCall({ isimgClicked, setIsImgClicked }) {
+function GetInCall({ isimgClicked }) {
+
     return (
         <div className={`absolute top-9 left-2 md:-left-2 transition-all duration-300 ease-in-out ${isimgClicked ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"}`}>
             <div className='flex flex-col '>
