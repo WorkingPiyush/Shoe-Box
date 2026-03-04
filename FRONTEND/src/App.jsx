@@ -10,6 +10,12 @@ import Home from './Pages/Home/Home'
 import ProductCartPage from './Pages/Product/ProductCartPage'
 import UserProfile from './Pages/User/UserProfile'
 import PublicRouteG from './components/PublicRoute'
+import WishListPage from './Pages/User/WishListPage'
+import AddressPage from './Pages/User/AddressPage'
+import ProfilePage from './Pages/User/ProfilePage'
+import HelpAndSupport from './Pages/User/HelpAndSupport'
+import OrderDetailsPage from './Pages/User/Orders/OrderDetailsPage.jsx'
+import OrdersListPage from './Pages/User/Orders/OrderList.jsx'
 
 function App() {
   return (
@@ -27,6 +33,12 @@ function App() {
           <Route path="/login" element={<PublicRouteG><Login /></PublicRouteG>} />
           <Route path="/cartpage" element={<ProductCartPage />} />
           <Route path="/yourProfile" element={<UserProfile />} />
+          <Route path="/orders" element={<OrdersListPage/>} />
+          <Route path="/wishList" element={<WishListPage />} />
+          <Route path="/addresses" element={<AddressPage />} />
+          <Route path="/Updateprofile" element={<ProfilePage />} />
+          <Route path="/Help" element={<HelpAndSupport />} />
+          <Route path="/order/:orderId" element={<OrderDetailsPage/>} />
         </Route>
       </Routes>
     </div>

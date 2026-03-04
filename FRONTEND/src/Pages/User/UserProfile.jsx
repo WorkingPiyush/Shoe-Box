@@ -1,64 +1,60 @@
 import React, { useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
 import Loading from "../../components/Loading";
+import { Link } from "react-router-dom";
+import { FaShoppingBag, FaHeart, FaMapMarkerAlt, FaUser, FaQuestionCircle } from "react-icons/fa";
+
+const profileOptions = [
+  { label: "Orders", icon: <FaShoppingBag />, path: "/orders" },
+  { label: "Wish List", icon: <FaHeart />, path: "/wishList" },
+  { label: "Saved Addresses", icon: <FaMapMarkerAlt />, path: "/addresses" },
+  { label: "Profile", icon: <FaUser />, path: "/Updateprofile" },
+  { label: "Help & Support", icon: <FaQuestionCircle />, path: "/Help" },
+];
 
 const UserProfile = () => {
-  const userA = {
-    name: "John Doe",
-    email: "johndoe@example.com",
-    phone: "+91 9876543210",
-    address: "221B Baker Street, London",
-    orders: 12,
-    joined: "March 2024",
-  };
   const { user } = useContext(UserContext);
-  console.log(user)
+
   if (!user) return <Loading />;
+
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-6">
-
-        {/* Header */}
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-red-950 text-white flex items-center justify-center text-2xl font-bold">
-            {user.name.charAt(0)}
-          </div>
-
-          <div>
-            <h2 className="text-xl font-semibold text-gray-800">
-              {user.name}
-            </h2>
-            <p className="text-sm text-gray-500">
-              {user.email}
-            </p>
-          </div>
+    <div className="h-screen mt-25 bg-gray-100 p-4 flex flex-col items-center">
+      {/* Header */}
+      <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-6 mb-6 flex flex-col items-center">
+        <div className="w-20 h-20 rounded-full bg-red-950 text-white flex items-center justify-center text-3xl font-bold mb-3">
+          {user.fullName?.charAt(0)}
         </div>
-
-        {/* Divider */}
-        <div className="my-6 border-t"></div>
-
-        {/* Info Section */}
-        <div className="space-y-3 text-sm">
-          <InfoItem label="Phone" value="+91-8595594378" />
-          <InfoItem label="Address" value="Rohini, Delhi" />
-          <InfoItem label="Total Orders" value={user.orders} />
-          <InfoItem label="Member Since" value={user.joined} />
+        <h2 className="text-2xl font-semibold text-gray-800">{user?.fullName}</h2>
+        <div className="flex items-center gap-2 mt-1">
+          <span className="text-sm text-gray-500">{user?.email}</span>
+          {user?.isEmailVerified ? (
+            <span className="text-green-600 text-xs font-medium px-2 py-0.5 rounded-full bg-green-100">
+              ✔ Verified
+            </span>
+          ) : (
+            <Link
+              to="/verifyDetails"
+              className="text-xs px-2 py-0.5 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
+            >
+              Not Verified
+            </Link>
+          )}
         </div>
+      </div>
 
-        {/* Button */}
-        <button className="mt-6 w-full bg-red-950 cursor-pointer hover:bg-red-900 transition text-white py-2 rounded-lg font-medium">
-          Edit Profile
-        </button>
+      {/* Options Grid */}
+      <div className="w-full max-w-md grid grid-cols-2 sm:grid-cols-3 gap-4">
+        {profileOptions.map((opt) => (
+          <Link key={opt.label} to={opt.path}>
+            <div className="bg-white flex flex-col items-center justify-center gap-2 p-4 rounded-2xl shadow hover:shadow-lg transition cursor-pointer">
+              <div className="text-2xl text-green-500">{opt.icon}</div>
+              <span className="text-sm font-medium text-gray-800 text-center">{opt.label}</span>
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   );
 };
-
-const InfoItem = ({ label, value }) => (
-  <div className="flex justify-between">
-    <span className="text-gray-500">{label}</span>
-    <span className="font-medium text-gray-800">{value}</span>
-  </div>
-);
 
 export default UserProfile;

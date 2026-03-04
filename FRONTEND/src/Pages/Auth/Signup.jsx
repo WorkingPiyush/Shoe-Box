@@ -23,7 +23,6 @@ function Signup() {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-
       const res = await axios.post(
         "http://localhost:3000/users/signup",
         data,
@@ -47,6 +46,7 @@ function Signup() {
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-6">
+      {loading ? <Loading /> : ""}
       <div className="mt-20 w-full max-w-5xl grid md:grid-cols-2 bg-white text-black rounded-2xl shadow-2xl overflow-hidden border border-black">
 
         {/* Left Image */}
@@ -152,7 +152,7 @@ function Signup() {
               disabled={loading}
               className="bg-black text-white font-semibold py-3 rounded-lg cursor-pointer hover:bg-gray-900 transition duration-300 disabled:opacity-50"
             >
-              {loading ? <Loading /> : "Sign Up"}
+              {loading ? "Signing...": "Sign Up"}
             </button>
             <div className="flex justify-center items-center flex-col">
               ---- OR ----

@@ -21,7 +21,6 @@ function Login() {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-
       const res = await axios.post(
         "http://localhost:3000/users/login",
         data,
@@ -30,7 +29,6 @@ function Login() {
           withCredentials: true,
         }
       );
-
       if (res.data.success) {
         localStorage.removeItem("cart");
         await getUser();
@@ -46,6 +44,7 @@ function Login() {
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-6">
+      {loading ? <Loading /> : ""}
       <div className="w-full max-w-5xl grid md:grid-cols-2 bg-white text-black rounded-2xl shadow-2xl overflow-hidden border border-black">
 
         {/* Left Image */}
@@ -63,10 +62,7 @@ function Login() {
             Welcome Back
           </h1>
 
-          <form
-            className="flex flex-col gap-5"
-            onSubmit={handleSubmit(onSubmit)}
-          >
+          <form className="flex flex-col gap-5 relative" onSubmit={handleSubmit(onSubmit)}>
             {/* Email */}
             <div>
               <input
@@ -115,8 +111,9 @@ function Login() {
               disabled={loading}
               className="bg-black text-white font-semibold py-3 rounded-lg hover:bg-gray-800 transition duration-300 disabled:opacity-50"
             >
-              {loading ? <Loading /> : "Login"}
+              {loading ? "Login..." : "Login"}
             </button>
+
             <div className="flex justify-center items-center flex-col">
               ---- OR ----
               <OAuth />
@@ -131,6 +128,7 @@ function Login() {
               </Link>
             </p>
           </form>
+          {/* <Loading /> */}
         </div>
       </div>
     </div>
