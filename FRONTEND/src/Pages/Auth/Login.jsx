@@ -5,6 +5,7 @@ import axios from "axios";
 import { UserContext } from "../../Context/UserContext";
 import Loading from "../../components/Loading";
 import OAuth from "../../components/OAuth";
+import { toast } from "react-toastify";
 
 function Login() {
   const {
@@ -36,7 +37,8 @@ function Login() {
         navigate("/", { replace: true });
       }
     } catch (err) {
-      alert("Invalid credentials");
+      toast.error("Invalid credentials")
+      console.log(err)
     } finally {
       setLoading(false);
     }

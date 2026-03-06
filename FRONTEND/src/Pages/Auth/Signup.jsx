@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Loading from "../../components/Loading";
 import OAuth from "../../components/OAuth";
 import { UserContext } from "../../Context/UserContext";
+import { toast } from "react-toastify";
 
 function Signup() {
   const {
@@ -38,7 +39,8 @@ function Signup() {
         navigate("/", { replace: true });
       }
     } catch (err) {
-      console.error("Something went wrong");
+      toast.error("Something went wrong")
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -152,7 +154,7 @@ function Signup() {
               disabled={loading}
               className="bg-black text-white font-semibold py-3 rounded-lg cursor-pointer hover:bg-gray-900 transition duration-300 disabled:opacity-50"
             >
-              {loading ? "Signing...": "Sign Up"}
+              {loading ? "Signing..." : "Sign Up"}
             </button>
             <div className="flex justify-center items-center flex-col">
               ---- OR ----
