@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { CartContainer } from './Context/CartContext.jsx'
 import ShoeSizeProvider from './Context/ShoeSizeContext.jsx'
 import { ToastContainer } from 'react-toastify'
+import { WishListContainer } from './Context/WishListContext.jsx'
 
 
 const queryClient = new QueryClient({
@@ -25,14 +26,16 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')).render(
   <ShoeSizeProvider>
     <UserProvider>
-      <CartContainer>
-        <BrowserRouter>
-          <QueryClientProvider client={queryClient}>
-            <App />
-            <ToastContainer />
-          </QueryClientProvider>
-        </BrowserRouter>
-      </CartContainer>
+      <WishListContainer>
+        <CartContainer>
+          <BrowserRouter>
+            <QueryClientProvider client={queryClient}>
+              <App />
+              <ToastContainer />
+            </QueryClientProvider>
+          </BrowserRouter>
+        </CartContainer>
+      </WishListContainer>
     </UserProvider>
   </ShoeSizeProvider>
 

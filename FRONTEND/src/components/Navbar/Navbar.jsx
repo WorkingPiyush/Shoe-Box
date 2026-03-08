@@ -19,7 +19,6 @@ function Navbar() {
   const navigate = useNavigate();
   const showGetCall = () => { setIsImgClicked(!isimgClicked) }
   const ShowOutCall = () => { setIsIconClicked(!isiconClicked) }
-  
   const location = useNavigate();
   useEffect(() => {
     setIsImgClicked(false); 

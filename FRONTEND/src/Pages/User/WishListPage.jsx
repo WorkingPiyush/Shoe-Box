@@ -1,57 +1,61 @@
-import React, { useState } from 'react'
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { WishListContext } from '../../Context/WishListContext';
+import { WishListToBackend } from '../../Services/WishListServices';
 
-const initialWishlist = [
-    {
-        id: 1,
-        name: "Samsung Galaxy F14 5G (B.A.E. Purple, 128 GB)",
-        price: 17490,
-        image: "https://via.placeholder.com/80",
-        status: "Available",
-    },
-    {
-        id: 2,
-        name: "TEG ZERO 5.2 Bluetooth",
-        price: null,
-        image: "https://via.placeholder.com/80",
-        status: "Currently unavailable",
-    },
-    {
-        id: 3,
-        name: "Redmi Note 5 Pro (Lake Blue, 64 GB)",
-        price: 14999,
-        image: "https://via.placeholder.com/80",
-        status: "Coming Soon",
-    },
-];
 const WishListPage = () => {
-    const [wishlist, setWishlist] = useState(initialWishlist);
+    const [wishproduct, setWishproduct] = useState([]);
+    const { setWishList, wishList, loadUserWishlist } = useContext(WishListContext)
     const navigate = useNavigate();
-
-    const removeItem = (id) => {
-        setWishlist((prev) => prev.filter((item) => item.id !== id));
+    useEffect(() => {
+        const loadWishList = async () => {
+            await axios.post('http://localhost:3000/wishlist/page',
+                wishList,
+                { withCredentials: true }).then(res => setWishproduct(res.data))
+        }
+        loadWishList()
+    }, [wishList])
+    const removeItem = async (productId) => {
+        const exists = wishList.some(item => item.productId === productId);
+        let updatedList;
+        if (exists) {
+            updatedList = wishList.filter((item) => item.productId !== productId)
+        } else {
+            updatedList = [
+                ...wishList,
+                { productId: product.id }
+            ]
+        }
+        setWishList(updatedList)
+        try {
+            WishListToBackend({ productId });
+        } catch (error) {
+            toast.error("Backend Error")
+            setWishList([])
+        }
     };
 
     return (
         <div className="min-h-screen mt-20 bg-white p-4">
             <button onClick={() => navigate(-1)} className="mb-4 cursor-pointer text-black">← Back to Profile</button>
-            <h1 className="text-2xl font-bold mb-4">My Wishlist ({wishlist.length})</h1>
+            <h1 className="text-2xl font-bold mb-4">My Wishlist ({wishproduct.length})</h1>
             <div className="space-y-4">
-                {wishlist.map((item) => (
+                {wishproduct.map((item) => (
                     <div
-                        key={item.id}
+                        key={item.productId}
                         className="bg-white p-4 rounded-2xl shadow flex items-center justify-between hover:shadow-md transition"
                     >
                         {/* Product Info */}
                         <div className="flex items-center gap-4">
                             <img
-                                src={item.image}
+                                src={item.image[0]}
                                 alt={item.name}
-                                className="w-20 h-20 object-cover rounded-lg"
+                                className="w-20 h-20 object-contain rounded-lg"
                             />
                             <div>
                                 <p className="font-medium">{item.name}</p>
-                                {item.status !== "Available" && (
+                                {item.availablity !== "Available" && (
                                     <p
                                         className={`text-sm ${item.status === "Currently unavailable"
                                             ? "text-red-600"
@@ -69,7 +73,7 @@ const WishListPage = () => {
 
                         {/* Remove Button */}
                         <button
-                            onClick={() => removeItem(item.id)}
+                            onClick={() => removeItem(item.productId)}
                             className="text-gray-400 hover:text-red-600 transition"
                         >
                             🗑

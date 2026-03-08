@@ -1,5 +1,5 @@
 import EmptyCartMessage from "../components/EmptyCartMessage"
-import { localCartToBackend } from "../Services/cartServices"
+import { CartToBackend } from "../Services/cartServices"
 import { UserContext } from "../Context/UserContext"
 import { useContext } from "react"
 import { toast } from "react-toastify"
@@ -9,12 +9,11 @@ function CardCartSection({ cartProduct, cartItem, setCartItem }) {
         return input.toLocaleString('en-IN')
     }
     const removeItem = async (item) => {
-        console.log(item)
         const updatedCart = cartItem.filter((prod) => !(prod.productId === item.productId && prod.shoeSize === item.size))
         setCartItem(updatedCart);
         if (user) {
             try {
-                await localCartToBackend({ productId: item.productId, quantity: 0, shoeSize: item.size })
+                await CartToBackend({ productId: item.productId, quantity: 0, shoeSize: item.size })
             } catch (error) {
                 console.log(error)
                 toast.error('Server Issues,Cart not updated')
@@ -35,7 +34,7 @@ function CardCartSection({ cartProduct, cartItem, setCartItem }) {
         const newQty = updatedCart.find(p => p.productId === item.productId & p.shoeSize === item.size)?.quantity || 0;
         if (user) {
             try {
-                await localCartToBackend({ productId: item.productId, quantity: newQty, shoeSize: item.size })
+                await CartToBackend({ productId: item.productId, quantity: newQty, shoeSize: item.size })
             } catch (error) {
                 console.log(error)
                 toast.error('Server Issues,Cart not updated')
@@ -55,9 +54,10 @@ function CardCartSection({ cartProduct, cartItem, setCartItem }) {
         })
         setCartItem(updatedCart);
         const newQty = updatedCart.find(p => p.productId === item.productId & p.shoeSize === item.size)?.quantity || 0;
+        console.log(newQty)
         if (user) {
             try {
-                await localCartToBackend({ productId: item.productId, quantity: newQty, shoeSize: item.size })
+                await CartToBackend({ productId: item.productId, quantity: newQty, shoeSize: item.size })
             } catch (error) {
                 console.log(error)
                 toast.error('Server Issues,Cart not updated')

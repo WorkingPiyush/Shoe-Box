@@ -1,16 +1,16 @@
 import axios from "axios"
 
 let timeout;
-export const CartToBackend = async ({ productId, quantity, shoeSize }) => {
-    console.log(productId, quantity, shoeSize)
+export const WishListToBackend = async ({ productId }) => {
+    console.log(productId)
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(async () => {
         try {
-            await axios.put(
-                'http://localhost:3000/cart/update',
-                { productId, quantity, shoeSize },
+            await axios.post(
+                'http://localhost:3000/wishlist/toggle',
+                { productId },
                 { withCredentials: true }
-            );
+            ).then(res => console.log(res.data))
         } catch (error) {
             console.error("Server err,", error)
         }

@@ -32,6 +32,7 @@ function Login() {
       );
       if (res.data.success) {
         localStorage.removeItem("cart");
+        localStorage.removeItem("wishlist");
         await getUser();
         reset();
         navigate("/", { replace: true });

@@ -18,9 +18,9 @@ const UserProfile = () => {
   if (!user) return <Loading />;
 
   return (
-    <div className="h-screen mt-25 bg-gray-100 p-4 flex flex-col items-center">
+    <div className="h-screen  bg-gray-100 p-4 flex flex-col items-center">
       {/* Header */}
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-lg p-6 mb-6 flex flex-col items-center">
+      <div className="bg-white w-full mt-25 max-w-md rounded-2xl shadow-lg p-6 mb-6 flex flex-col items-center">
         <div className="w-20 h-20 rounded-full bg-red-950 text-white flex items-center justify-center text-3xl font-bold mb-3">
           {user.fullName?.charAt(0)}
         </div>
@@ -33,7 +33,7 @@ const UserProfile = () => {
             </span>
           ) : (
             <Link
-              to="/verifyDetails"
+              to="/Updateprofile"
               className="text-xs px-2 py-0.5 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
             >
               Not Verified

@@ -5,7 +5,7 @@ import axios from 'axios';
 function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, selectedCategory, sortedHtLOrder, sortIsNewVal }) {
     const gender = routedGender
     const fetchProduct = async () => {
-        const res = await axios.get('http://localhost:3000/product/', {
+        const res = await axios.get('http://localhost:3000/product/section', {
             params: {
                 gender: routedGender
             }

@@ -2,12 +2,11 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import { UserContext } from './UserContext';
 
-export const CartContext = createContext();
+export const CartContext = createContext(null);
 
 export function CartContainer({ children }) {
     const { user, getUser } = useContext(UserContext);
     const [cartItem, setCartItem] = useState([]);
-    const [cartProduct, setCartProduct] = useState([])
     const loadUserCart = async () => {
         if (!user) {
             const localCart = localStorage.getItem('cart');
@@ -25,33 +24,15 @@ export function CartContainer({ children }) {
             return []
         }
     }
-    const loadCartDetails = async (cart) => {
-        if (cartItem.length == 0) return;
-        try {
-            const res = await axios.post('http://localhost:3000/cart/your-cart', { Usercart: cart }, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-            setCartProduct(res.data);
-        } catch (error) {
-            console.error("Failed to fetch user cart:", error);
-            setCartProduct([]);
-        }
-    }
-    const loadData = async () => {
-        const cart = await loadUserCart()
-        loadCartDetails(cart)
-    }
     useEffect(() => {
-        loadData()
+        getUser()
+    }, [])
+    useEffect(() => {
+        loadUserCart()
     }, [user])
 
-    useEffect(() => {
-        loadCartDetails(cartItem)
-    }, [cartItem])
     return (
-        <CartContext.Provider value={{ setCartItem, cartItem, cartProduct, loadUserCart, setCartProduct }}>
+        <CartContext.Provider value={{ setCartItem, cartItem }}>
             {children}
         </CartContext.Provider>
     );

@@ -8,10 +8,13 @@ import { toast } from 'react-toastify';
 import { UserContext } from '../Context/UserContext.jsx';
 import { CartContext } from '../Context/CartContext.jsx';
 import axios from 'axios';
-import { localCartToBackend } from '../Services/cartServices.js';
+import { CartToBackend } from '../Services/cartServices.js';
+import { WishListContext } from '../Context/WishListContext.jsx';
+import { WishListToBackend } from '../Services/WishListServices.js';
 
 function ProductViewSection({ item }) {
     const { cartItem, setCartItem } = useContext(CartContext)
+    const { setWishList, wishList } = useContext(WishListContext)
     const { shoeSize } = useContext(ItemSizeContext)
     const { user } = useContext(UserContext)
     const handleAddToCart = (product) => {
@@ -32,11 +35,31 @@ function ProductViewSection({ item }) {
         if (user) {
             setCartItem(updatedCart);
             toast.success("Shoe Added");
-            localCartToBackend({ productId: product.id, quantity: 1, shoeSize: shoeSize });
+            CartToBackend({ productId: product.id, quantity: 1, shoeSize: shoeSize });
         } else {
             setCartItem(updatedCart);
             toast.success("Shoe Added");
             localStorage.setItem('cart', JSON.stringify(updatedCart));
+        }
+    }
+    const AddToWishList = (product) => {
+        const exists = wishList.some(item => item.productId === product.id);
+        let updatedList;
+        if (exists) {
+            updatedList = wishList.filter((item) => item.productId !== product.id)
+        } else {
+            updatedList = [
+                ...wishList,
+                { productId: product.id }
+            ]
+        }
+        setWishList(updatedList)
+        localStorage.setItem("wishlist", JSON.stringify(updatedList));
+        try {
+            WishListToBackend({ productId: product.id });
+        } catch (error) {
+            toast.error("Backend Error")
+            setWishList([])
         }
     }
     let date = new Date();
@@ -63,7 +86,7 @@ function ProductViewSection({ item }) {
                         ADD TO CART
                     </button>
                     <div className='h-12 w-14 bg-black rounded flex justify-center items-center cursor-pointer'>
-                        <FaHeart className='h-10 w-10 text-white' />
+                        {wishList.some(prod => prod.productId === item.id) ? <FaHeart onClick={() => AddToWishList(item)} className='h-10 w-10 text-pink-500' /> : <FaHeart onClick={() => AddToWishList(item)} className='h-10 w-10 text-white' />}
                     </div>
                 </div>
             </div>
