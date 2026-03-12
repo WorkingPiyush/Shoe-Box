@@ -24,7 +24,7 @@ const WishListPage = () => {
         } else {
             updatedList = [
                 ...wishList,
-                { productId: product.id }
+                { productId: productId }
             ]
         }
         setWishList(updatedList)
@@ -35,7 +35,6 @@ const WishListPage = () => {
             setWishList([])
         }
     };
-
     return (
         <div className="min-h-screen mt-20 bg-white p-4">
             <button onClick={() => navigate(-1)} className="mb-4 cursor-pointer text-black">← Back to Profile</button>
@@ -51,7 +50,8 @@ const WishListPage = () => {
                             <img
                                 src={item.image[0]}
                                 alt={item.name}
-                                className="w-20 h-20 object-contain rounded-lg"
+                                onClick={() => navigate(`/${item.gender}/${item._id || item.productId}`)}
+                                className="w-20 h-20 object-contain rounded-lg cursor-pointer"
                             />
                             <div>
                                 <p className="font-medium">{item.name}</p>
