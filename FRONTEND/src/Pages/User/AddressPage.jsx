@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { LuHousePlus } from "react-icons/lu";
 import axios from 'axios';
 import { updateAddress, createAddress, deleteAddress } from '../../Services/AddressServices';
+import Loading from '../../components/Loading';
 import { toast } from 'react-toastify';
 // const initialAddresses = [
 //   {
@@ -37,6 +38,7 @@ function AddressPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
   const [errors, setErrors] = useState({});
+  const [loadingState, setLoadingState] = useState(false);
   const navigate = useNavigate()
   const [form, setForm] = useState({ label: "", name: "", phone: "", house: "", locality: "", state: "", pincode: "", country: "" });
   // getting the user's address
@@ -102,11 +104,29 @@ function AddressPage() {
     setAddresses(prev => prev.filter(addr => addr._id !== id));
     await deleteAddress(id);
   }
-  return (
-    <div className="h-screen mt-20 bg-white p-4">
-      <button onClick={() => navigate(-1)} className="mb-4 cursor-pointer text-black">← Back to Profile</button>
-      <h1 className="text-2xl font-bold mb-4">Saved Addresses ({addresses.length})</h1>
+  const handleLocation = async () => {
+    setLoadingState(true)
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      setLoadingState(true)
+      let lat = position.coords.latitude;
+      let lng = position.coords.longitude;
+      let res = await axios.get(`http://localhost:3000/api/location?lat=${lat}&lng=${lng}`, { withCredentials: true })
+      const data = res.data;
+      setForm(prev => ({
+        ...prev,
+        country: data.country || "",
+        locality: data.locality || "",
+        pincode: data.pincode || "",
+        state: data.state || "",
+      }))
+      setLoadingState(false)
+    })
 
+  }
+  return (
+    <div className="h-screen mt-20 bg-white p-4 z-999">
+      <button onClick={() => navigate(-1)} className="mb-4 cursor-pointer text-black">← Back to Profile</button>
+      <h1 className="text-2xl font-bold mb-4">Saved Addresses ({addresses?.length || 0})</h1>
       <div className="space-y-4">
         {addresses.map((addr) => (
           <div key={addr._id} className="bg-white p-2 rounded-2xl shadow flex flex-col sm:flex-row justify-between hover:shadow-md transition">
@@ -157,6 +177,10 @@ function AddressPage() {
             <input type="text" required placeholder="City/State (i.e. Delhi)" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value }, setErrors({ ...errors, state: false }))} className={`w-full border p-2 rounded-lg ${errors.state ? "border-red-500" : "border-gray-300"} `} />
             <input type="text" required placeholder="Pincode (i.e. 110085)" value={form.pincode} onChange={(e) => setForm({ ...form, pincode: e.target.value }, setErrors({ ...errors, pincode: false }))} className={`w-full border p-2 rounded-lg ${errors.pincode ? "border-red-500" : "border-gray-300"} `} />
             <input type="text" required placeholder="Country (i.e. India)" value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value }, setErrors({ ...errors, country: false }))} className={`w-full border p-2 rounded-lg ${errors.country ? "border-red-500" : "border-gray-300"} `} />
+            <button onClick={handleLocation} className="flex items-center cursor-pointer gap-2 mx-auto px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition">
+              {loadingState ? <p className='px-4 py-2 rounded-xl text-blue-600 animate-pulse bg-linear-to-r from-blue-300 via-blue-400 to-blue-300'>Getting location...</p> : <p>📍 Use My Current Location</p>}
+            </button>
+
             <div className="flex justify-end gap-2 mt-2">
               <button onClick={closeModal} className="px-4 py-2 bg-gray-300 rounded-xl font-semibold hover:bg-gray-400 transition" >
                 Cancel
