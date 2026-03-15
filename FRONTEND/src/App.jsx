@@ -16,6 +16,8 @@ import ProfilePage from './Pages/User/ProfilePage'
 import HelpAndSupport from './Pages/User/HelpAndSupport'
 import OrderDetailsPage from './Pages/User/Orders/OrderDetailsPage.jsx'
 import OrdersListPage from './Pages/User/Orders/OrderList.jsx'
+import MailVerification from './Pages/User/MailVerification.jsx'
+import PhoneVerification from './Pages/User/PhoneVerification.jsx'
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
           <Route path="/Updateprofile" element={<ProfilePage />} />
           <Route path="/Help" element={<HelpAndSupport />} />
           <Route path="/order/:orderId" element={<OrderDetailsPage/>} />
+          <Route path="verifymail" element={<MailVerification/>} />
+          <Route path="verifyphone" element={<PhoneVerification/>} />
         </Route>
       </Routes>
     </div>

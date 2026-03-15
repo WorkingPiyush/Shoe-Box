@@ -13,7 +13,7 @@ export const updateAddress = async ({ id, data }) => {
 }
 export const createAddress = async (data) => {
     try {
-        const res = await axios.post('http://localhost:3000/api/addressUpdate', data, {
+        const res = await axios.post('http://localhost:3000/api/address', data, {
             withCredentials: true,
             headers: { 'Content-Type': 'application/json' }
         })
@@ -25,7 +25,7 @@ export const createAddress = async (data) => {
 }
 export const deleteAddress = async (id) => {
     try {
-        const res = await axios.post(`http://localhost:3000/api/address/${id}`, {}, {
+        const res = await axios.delete(`http://localhost:3000/api/address/${id}`, {
             withCredentials: true,
         })
         console.log(res.data)

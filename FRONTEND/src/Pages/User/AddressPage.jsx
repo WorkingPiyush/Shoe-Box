@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AddValidSchema } from '../../Schema/AddValidSchema';
 import { useNavigate } from 'react-router-dom';
 import { LuHousePlus } from "react-icons/lu";
 import axios from 'axios';
 import { updateAddress, createAddress, deleteAddress } from '../../Services/AddressServices';
-import Loading from '../../components/Loading';
 import { toast } from 'react-toastify';
+import { ThreeDot } from 'react-loading-indicators';
+
 // const initialAddresses = [
 //   {
 //     id: 1,
@@ -34,59 +38,60 @@ import { toast } from 'react-toastify';
 // ];
 
 function AddressPage() {
-  const [addresses, setAddresses] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingAddress, setEditingAddress] = useState(null);
-  const [errors, setErrors] = useState({});
-  const [loadingState, setLoadingState] = useState(false);
+  const [addresses, SetAddresses] = useState([]);
+  const [modalOpen, SetModalOpen] = useState(false);
+  const [editingAddress, SetEditingAddress] = useState(null);;
+  const [loadingLocation, SetLoadingLocation] = useState(false);
   const navigate = useNavigate()
-  const [form, setForm] = useState({ label: "", name: "", phone: "", house: "", locality: "", state: "", pincode: "", country: "" });
+  const { register, handleSubmit, reset, setValue, watch, formState: { errors }, } = useForm({
+    resolver: zodResolver(AddValidSchema), defaultValues: { label: "", name: "", phone: "", house: "", locality: "", state: "", pincode: "", country: "" }
+  });
+  const locality = watch("locality");
+  const state = watch("state");
+  const country = watch("country");
+  const selectedLabel = watch("label");
+  const labelTiles = ["Home", "Office", "Other"]
   // getting the user's address
   useEffect(() => {
     const loadAddress = async () => {
       const res = await axios.get('http://localhost:3000/api/address', { withCredentials: true });
-      setAddresses(res.data);
+      SetAddresses(res.data);
     }
     loadAddress()
   }, [])
 
   const openModal = (addr = null) => {
     if (addr) {
-      setEditingAddress(addr._id);
-      setForm(addr);
+      SetEditingAddress(addr._id);
+      reset(addr);
     } else {
-      setEditingAddress(null);
-      setForm({ label: "", name: "", phone: "", house: "", locality: "", state: "", pincode: "", country: "" });
+      SetEditingAddress(null);
+      reset({ label: "", name: "", phone: "", house: "", locality: "", state: "", pincode: "", country: "" });
     }
-    setModalOpen(true);
+    SetModalOpen(true);
   };
-  const closeModal = () => setModalOpen(false);
 
-  const handleSave = async () => {
-    const errors = {};
-    Object.entries(form).forEach(([key, value]) => {
-      if (!String(value ?? "").trim()) {
-        errors[key] = true;
-      }
-    });
+  const closeModal = () => SetModalOpen(false);
 
-    setErrors(errors);
-    if (Object.keys(errors).length > 0) return;
+  const onSubmit = async (data) => {
+    console.log(data)
     try {
       let savedAddress;
 
       if (editingAddress) {
+        // for the already existing address the user can update the address here..
         try {
-          savedAddress = await updateAddress({ id: editingAddress, data: form });
-          setAddresses(prev => prev.map(addr => addr._id === editingAddress ? savedAddress : addr))
+          savedAddress = await updateAddress({ id: editingAddress, data: data });
+          SetAddresses(prev => prev.map(addr => addr._id === editingAddress ? savedAddress : addr))
         } catch (error) {
           console.error(error);
           toast.error(error);
         }
       } else {
         try {
-          savedAddress = await createAddress(form);
-          setAddresses(prev => [...prev, savedAddress]);
+          // for the new address the user can add the address here..
+          savedAddress = await createAddress(data);
+          SetAddresses(prev => [...prev, savedAddress]);
         } catch (error) {
           console.error(error);
           toast.error(error);
@@ -95,36 +100,50 @@ function AddressPage() {
       closeModal();
     } catch (err) {
       console.error("Address save failed", err);
-      setAddresses(addresses);
+      SetAddresses(addresses);
     }
 
   };
   const removeAddress = async (id) => {
     console.log(id)
-    setAddresses(prev => prev.filter(addr => addr._id !== id));
+    SetAddresses(prev => prev.filter(addr => addr._id !== id));
     await deleteAddress(id);
   }
   const handleLocation = async () => {
-    setLoadingState(true)
+    if (locality && state) {
+      toast.info("Address already filled, Address will be updated");
+    };
+    SetLoadingLocation(true)
     navigator.geolocation.getCurrentPosition(async (position) => {
-      setLoadingState(true)
+      SetLoadingLocation(true)
       let lat = position.coords.latitude;
       let lng = position.coords.longitude;
+      console.log(lat, lng)
       let res = await axios.get(`http://localhost:3000/api/location?lat=${lat}&lng=${lng}`, { withCredentials: true })
       const data = res.data;
-      setForm(prev => ({
-        ...prev,
-        country: data.country || "",
-        locality: data.locality || "",
-        pincode: data.pincode || "",
-        state: data.state || "",
-      }))
-      setLoadingState(false)
+      setValue("country", data.country || "")
+      setValue("locality", data.locality || "",)
+      setValue("pincode", data.pincode || "",)
+      setValue("state", data.state || "",)
+      SetLoadingLocation(false)
     })
-
+  }
+  const handlePincode = async (e) => {
+    if (locality.length > 0 && state.length > 0 || country.length > 0) return;
+    const pin = e.target.value;
+    if (pin.length === 6) {
+      const res = await axios.get(`https://api.postalpincode.in/pincode/${pin}`);
+      const data = res.data;
+      if (data[0].Status === "Success") {
+        const post = data[0].PostOffice[0];
+        setValue("state", post.State);
+        setValue("locality", post.District);
+        setValue("country", post.Country);
+      }
+    }
   }
   return (
-    <div className="h-screen mt-20 bg-white p-4 z-999">
+    <div className="min-h-screen mt-20 bg-white p-4">
       <button onClick={() => navigate(-1)} className="mb-4 cursor-pointer text-black">← Back to Profile</button>
       <h1 className="text-2xl font-bold mb-4">Saved Addresses ({addresses?.length || 0})</h1>
       <div className="space-y-4">
@@ -163,36 +182,57 @@ function AddressPage() {
       >
         <LuHousePlus className='text-2xl font-extrabold' /> Add New Address
       </button>
-
       {/* Modal */}
       {modalOpen && (
-        <div className="fixed bg-black/70 inset-0 bg-opacity-40 flex justify-center items-center z-50">
-          <div className="bg-white border mt-10 p-4 rounded-2xl w-[90%] sm:w-1/4 space-y-3">
-            <h2 className="text-xl font-semibold">{editingAddress ? "Edit Address" : "Add New Address"}</h2>
-            <input type="text" required placeholder="Tag (Home, 2nd Love)" value={form.label} onChange={(e) => setForm({ ...form, label: e.target.value }, setErrors({ ...errors, label: false }))} className={`w-full border p-2 rounded-lg ${errors.label ? "border-red-500" : "border-gray-300"} `} />
-            <input type="text" required placeholder="Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value }, setErrors({ ...errors, name: false }))} className={`w-full border p-2 rounded-lg ${errors.name ? "border-red-500" : "border-gray-300"} `} />
-            <input type="text" required placeholder="Phone" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value }, setErrors({ ...errors, phone: false }))} className={`w-full border p-2 rounded-lg ${errors.phone ? "border-red-500" : "border-gray-300"} `} />
-            <input type="text" required placeholder="Flat/House/Building Name" value={form.house} onChange={(e) => setForm({ ...form, house: e.target.value }, setErrors({ ...errors, house: false }))} className={`w-full border p-2 rounded-lg ${errors.house ? "border-red-500" : "border-gray-300"} `} />
-            <input type="text" required placeholder="Loclity (i.e. Rohini)" value={form.locality} onChange={(e) => setForm({ ...form, locality: e.target.value }, setErrors({ ...errors, locality: false }))} className={`w-full border p-2 rounded-lg ${errors.locality ? "border-red-500" : "border-gray-300"} `} />
-            <input type="text" required placeholder="City/State (i.e. Delhi)" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value }, setErrors({ ...errors, state: false }))} className={`w-full border p-2 rounded-lg ${errors.state ? "border-red-500" : "border-gray-300"} `} />
-            <input type="text" required placeholder="Pincode (i.e. 110085)" value={form.pincode} onChange={(e) => setForm({ ...form, pincode: e.target.value }, setErrors({ ...errors, pincode: false }))} className={`w-full border p-2 rounded-lg ${errors.pincode ? "border-red-500" : "border-gray-300"} `} />
-            <input type="text" required placeholder="Country (i.e. India)" value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value }, setErrors({ ...errors, country: false }))} className={`w-full border p-2 rounded-lg ${errors.country ? "border-red-500" : "border-gray-300"} `} />
-            <button onClick={handleLocation} className="flex items-center cursor-pointer gap-2 mx-auto px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition">
-              {loadingState ? <p className='px-4 py-2 rounded-xl text-blue-600 animate-pulse bg-linear-to-r from-blue-300 via-blue-400 to-blue-300'>Getting location...</p> : <p>📍 Use My Current Location</p>}
-            </button>
+        <div className="fixed bg-black/70 inset-0 bg-opacity-40 flex justify-center items-center z-999">
+          <div className="bg-white shadow-xl p-6 rounded-2xl w-[95%] sm:w-105 space-y-4">
+            <h2 className="Text-xl font-semibold text-gray-800">{editingAddress ? "Edit Address" : "Add New Address"}</h2>
+            <form onSubmit={handleSubmit(onSubmit)} className='space-y-2'>
+              <label className='flex items-center gap-2'><input type="checkbox" {...register('isDefault')} />Make this my default address</label>
+              <div className="flex gap-2">
+                {labelTiles.map((label) => {
+                  const isSelected = selectedLabel === label;
+                  return (<button key={label} type='button' onClick={() => setValue("label", label)} className={`px-3 py-1 rounded-full border transition cursor-pointer ${isSelected ? "bg-green-500 text-white border-green-500 scale-105" : "bg-gray-200 text-gray-700 border-gray-300 hover:bg-gray-300"}`}>{label}</button>)
+                })}
+              </div>
+              {errors.label && (<p className="text-xs text-red-500">{errors.label.message}</p>)}
 
-            <div className="flex justify-end gap-2 mt-2">
-              <button onClick={closeModal} className="px-4 py-2 bg-gray-300 rounded-xl font-semibold hover:bg-gray-400 transition" >
-                Cancel
+              <input placeholder="Name" {...register("name")} className={`w-full border p-2 rounded-lg ${errors.name ? "border-red-500" : "border-gray-300"} `} />
+              {errors.name && (<p className="text-xs text-red-500">{errors.name.message}</p>)}
+
+              <input type="tel" maxLength={10} inputMode="numeric" {...register("phone")} placeholder="Phone" className={`w-full border p-2 rounded-lg ${errors.phone ? "border-red-500" : "border-gray-300"} `} />
+              {errors.phone && (<p className="text-xs text-red-500">{errors.phone.message}</p>)}
+
+              <input placeholder="Flat/House/Building Name" maxLength={120} {...register("house")} className={`w-full border p-2 rounded-lg ${errors.house ? "border-red-500" : "border-gray-300"} `} />
+              <p className="text-xs text-gray-400">{120 - (watch('house')?.length || 0)} characters left</p>
+
+              <input placeholder="Loclity (i.e. Rohini)" {...register("locality")} className={`w-full border p-2 rounded-lg ${errors.locality ? "border-red-500" : "border-gray-300"} `} />
+              {errors.locality && (<p className="text-xs text-red-500">{errors.locality.message}</p>)}
+
+              <input placeholder="City/State (i.e. Delhi)" {...register("state")} className={`w-full border p-2 rounded-lg ${errors.state ? "border-red-500" : "border-gray-300"} `} />
+              {errors.state && (<p className="text-xs text-red-500">{errors.state.message}</p>)}
+
+              <input placeholder="Pincode (i.e. 110085)" maxLength={6} {...register("pincode")} onChange={(e) => { register("pincode").onChange(e), handlePincode(e) }} className={`w-full border p-2 rounded-lg ${errors.pincode ? "border-red-500" : "border-gray-300"} `} />
+
+              <input placeholder="Country (i.e. India)" defaultValue="India" {...register("country")} className={`w-full border p-2 rounded-lg ${errors.country ? "border-red-500" : "border-gray-300"} `} />
+              <button onClick={handleLocation} className="flex items-center cursor-pointer gap-2 mx-auto px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition">
+                {loadingLocation ? <ThreeDot color={["#205788", "#2a72b1", "#3d8cd1", "#66a4db"]} /> : <p>📍 Use My Current Location</p>}
               </button>
-              <button onClick={handleSave} className="px-4 py-2 bg-green-500 text-white rounded-xl font-semibold hover:bg-green-600 transition" >
-                Save
-              </button>
-            </div>
+
+              <div className="flex justify-end gap-2 mt-2">
+                <button onClick={closeModal} className="px-4 py-2 bg-gray-300 rounded-xl font-semibold hover:bg-gray-400 transition" >
+                  Cancel
+                </button>
+                <button type='submit' className="px-4 py-2 bg-green-500 text-white rounded-xl font-semibold hover:bg-green-600 transition" >
+                  Save
+                </button>
+              </div>
+            </form>
           </div>
-        </div>
-      )}
-    </div>
+        </div >
+      )
+      }
+    </div >
   );
 };
 
