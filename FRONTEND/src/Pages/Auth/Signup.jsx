@@ -81,7 +81,7 @@ function Signup() {
                 })}
               />
               {errors.fullName && (
-                <p className="text-red-400 text-sm mt-1">
+                <p className="text-red-400 text-xs mt-0.5">
                   {errors.fullName.message}
                 </p>
               )}
@@ -102,7 +102,7 @@ function Signup() {
                 })}
               />
               {errors.email && (
-                <p className="text-red-400 text-sm mt-1">
+                <p className="text-red-400 text-xs mt-0.5">
                   {errors.email.message}
                 </p>
               )}
@@ -123,7 +123,7 @@ function Signup() {
                 })}
               />
               {errors.password && (
-                <p className="text-red-400 text-sm mt-1">
+                <p className="text-red-400 text-xs mt-0.5">
                   {errors.password.message}
                 </p>
               )}
@@ -142,7 +142,7 @@ function Signup() {
                 })}
               />
               {errors.confirmPassword && (
-                <p className="text-red-400 text-sm mt-1">
+                <p className="text-red-400 text-xs mt-0.5">
                   {errors.confirmPassword.message}
                 </p>
               )}
@@ -160,7 +160,7 @@ function Signup() {
               ---- OR ----
               <OAuth />
             </div>
-            <p className="text-sm text-gray-400 text-center mt-3">
+            <p className="text-xs text-gray-400 text-center mt-3">
               Already have an account?{" "}
               <Link
                 to="/login"

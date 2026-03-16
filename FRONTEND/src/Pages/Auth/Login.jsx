@@ -81,7 +81,7 @@ function Login() {
                 })}
               />
               {errors.email && (
-                <p className="text-red-400 text-sm mt-1">
+                <p className="text-red-400 text-xs mt-0.5">
                   {errors.email.message}
                 </p>
               )}
@@ -102,7 +102,7 @@ function Login() {
                 })}
               />
               {errors.password && (
-                <p className="text-red-400 text-sm mt-1">
+                <p className="text-red-400 text-xs mt-0.5">
                   {errors.password.message}
                 </p>
               )}

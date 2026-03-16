@@ -9,34 +9,6 @@ import { updateAddress, createAddress, deleteAddress } from '../../Services/Addr
 import { toast } from 'react-toastify';
 import { ThreeDot } from 'react-loading-indicators';
 
-// const initialAddresses = [
-//   {
-//     id: 1,
-//     label: "Home",
-//     name: "Piyush Kumar",
-//     phone: "8595594378",
-//     house: "B-29, Rohini",
-//     locality: "Rohini Delhi",
-//     city: "Delhi",
-//     state: "Delhi",
-//     pincode: "110085",
-//     country: "India"
-
-//   },
-//   {
-//     id: 2,
-//     label: "Work",
-//     name: "Piyush Kumar",
-//     phone: "8595594378",
-//     house: "B-29, Rohini",
-//     locality: "Rohini Delhi",
-//     city: "Delhi",
-//     state: "Delhi",
-//     pincode: "110085",
-//     country: "India"
-//   },
-// ];
-
 function AddressPage() {
   const [addresses, SetAddresses] = useState([]);
   const [modalOpen, SetModalOpen] = useState(false);
@@ -44,10 +16,10 @@ function AddressPage() {
   const [loadingLocation, SetLoadingLocation] = useState(false);
   const navigate = useNavigate()
   const { register, handleSubmit, reset, setValue, watch, formState: { errors }, } = useForm({
-    resolver: zodResolver(AddValidSchema), defaultValues: { label: "", name: "", phone: "", house: "", locality: "", state: "", pincode: "", country: "" }
+    resolver: zodResolver(AddValidSchema), defaultValues: { label: "", name: "", phone: "", house: "", locality: "", city: "", pincode: "", country: "" }
   });
   const locality = watch("locality");
-  const state = watch("state");
+  const city = watch("city");
   const country = watch("country");
   const selectedLabel = watch("label");
   const labelTiles = ["Home", "Office", "Other"]
@@ -66,7 +38,7 @@ function AddressPage() {
       reset(addr);
     } else {
       SetEditingAddress(null);
-      reset({ label: "", name: "", phone: "", house: "", locality: "", state: "", pincode: "", country: "" });
+      reset({ label: "", name: "", phone: "", house: "", locality: "", city: "", pincode: "", country: "" });
     }
     SetModalOpen(true);
   };
@@ -110,35 +82,64 @@ function AddressPage() {
     await deleteAddress(id);
   }
   const handleLocation = async () => {
-    if (locality && state) {
+    if (locality && city) {
       toast.info("Address already filled, Address will be updated");
     };
     SetLoadingLocation(true)
     navigator.geolocation.getCurrentPosition(async (position) => {
-      SetLoadingLocation(true)
-      let lat = position.coords.latitude;
-      let lng = position.coords.longitude;
-      console.log(lat, lng)
-      let res = await axios.get(`http://localhost:3000/api/location?lat=${lat}&lng=${lng}`, { withCredentials: true })
-      const data = res.data;
-      setValue("country", data.country || "")
-      setValue("locality", data.locality || "",)
-      setValue("pincode", data.pincode || "",)
-      setValue("state", data.state || "",)
-      SetLoadingLocation(false)
-    })
+      try {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const accuracy = position.coords.accuracy;
+        // console.log(lat, lng, accuracy);
+        // checking the user's location accuracy
+        if (accuracy > 1000) {
+          toast.warning("Location accuracy is low. Please check address once.");
+        }
+
+        const res = await axios.get(`http://localhost:3000/api/location?lat=${lat}&lng=${lng}`, { withCredentials: true })
+        const data = res.data;
+        // console.log(data)
+        setValue("country", data.country || "")
+        setValue("locality", `${data.locality || ""} ${data.sector || ""}`)
+        setValue("pincode", data.pincode || "",)
+        setValue("city", data.city || "",)
+      } catch (error) {
+        toast.error("Failed to fetch location");
+      } finally {
+        SetLoadingLocation(false);
+      }
+    },
+      (error) => {
+        SetLoadingLocation(false);
+        if (error.code === error.PERMISSION_DENIED) {
+          toast.error("Location permission denied. Please enter address manually.");
+        } if (error.code === error.POSITION_UNAVAILABLE) {
+          toast.error("Location Not available.Try after some time");
+        }
+        else {
+          console.log(error)
+          toast.error("Unable to fetch location.");
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 8000,
+        maximumAge: 60000
+      }
+    )
   }
   const handlePincode = async (e) => {
-    if (locality.length > 0 && state.length > 0 || country.length > 0) return;
+    if (locality.length > 0 && city.length > 0 || country.length > 0) return;
     const pin = e.target.value;
     if (pin.length === 6) {
       const res = await axios.get(`https://api.postalpincode.in/pincode/${pin}`);
       const data = res.data;
       if (data[0].Status === "Success") {
-        const post = data[0].PostOffice[0];
-        setValue("state", post.State);
-        setValue("locality", post.District);
-        setValue("country", post.Country);
+        const post = data[0]?.PostOffice[0];
+        setValue("city", post.city || "");
+        setValue("locality", post.District || "");
+        setValue("country", post.Country || "");
       }
     }
   }
@@ -155,7 +156,7 @@ function AddressPage() {
               <div className='flex gap-1'>
                 <p className="text-sm text-gray-500 mt-1">{addr.house}</p>
                 <p className="text-sm text-gray-500 mt-1">{addr.locality}</p>
-                <p className="text-sm text-gray-500 mt-1">{addr.state}</p>
+                <p className="text-sm text-gray-500 mt-1">{addr.city}</p>
                 <p className="text-sm text-gray-500 mt-1">{addr.pincode}</p>
                 <p className="text-sm text-gray-500 mt-1">{addr.country}</p>
               </div>
@@ -209,8 +210,8 @@ function AddressPage() {
               <input placeholder="Loclity (i.e. Rohini)" {...register("locality")} className={`w-full border p-2 rounded-lg ${errors.locality ? "border-red-500" : "border-gray-300"} `} />
               {errors.locality && (<p className="text-xs text-red-500">{errors.locality.message}</p>)}
 
-              <input placeholder="City/State (i.e. Delhi)" {...register("state")} className={`w-full border p-2 rounded-lg ${errors.state ? "border-red-500" : "border-gray-300"} `} />
-              {errors.state && (<p className="text-xs text-red-500">{errors.state.message}</p>)}
+              <input placeholder="City/city (i.e. Delhi)" {...register("city")} className={`w-full border p-2 rounded-lg ${errors.city ? "border-red-500" : "border-gray-300"} `} />
+              {errors.city && (<p className="text-xs text-red-500">{errors.city.message}</p>)}
 
               <input placeholder="Pincode (i.e. 110085)" maxLength={6} {...register("pincode")} onChange={(e) => { register("pincode").onChange(e), handlePincode(e) }} className={`w-full border p-2 rounded-lg ${errors.pincode ? "border-red-500" : "border-gray-300"} `} />
 
