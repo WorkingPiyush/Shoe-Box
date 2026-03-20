@@ -45,7 +45,7 @@ function Navbar() {
             <div><Link to="/kids">KIDS</Link></div>
           </div>
           <div className='w-30 flex justify-around items-center relative'>
-            <div onClick={() => navigate('/cartpage')} className='relative h-8 w-10 rounded flex items-center justify-center cursor-pointer active:bg-gray-400/10'>
+            <div onClick={() => navigate('/cart')} className='relative h-8 w-10 rounded flex items-center justify-center cursor-pointer active:bg-gray-400/10'>
               <FaShoppingCart className='cursor-pointer text-2xl' />
               {cartItem.length === 0 ? <span></span> : <span className='absolute -top-2 left-5 text-center bg-black text-white rounded-full h-6 w-6'>{cartItem.length}</span>}
             </div>

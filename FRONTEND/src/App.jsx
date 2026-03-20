@@ -16,8 +16,7 @@ import ProfilePage from './Pages/User/ProfilePage'
 import HelpAndSupport from './Pages/User/HelpAndSupport'
 import OrderDetailsPage from './Pages/User/Orders/OrderDetailsPage.jsx'
 import OrdersListPage from './Pages/User/Orders/OrderList.jsx'
-import MailVerification from './Pages/User/MailVerification.jsx'
-import PhoneVerification from './Pages/User/PhoneVerification.jsx'
+import UserVerification from './Pages/User/UserVerification.jsx'
 
 function App() {
   return (
@@ -33,16 +32,15 @@ function App() {
           <Route path="kids/:id" element={<ProductViewPage />} />
           <Route path="/signup" element={<PublicRouteG><Signup /></PublicRouteG>} />
           <Route path="/login" element={<PublicRouteG><Login /></PublicRouteG>} />
-          <Route path="/cartpage" element={<ProductCartPage />} />
-          <Route path="/yourProfile" element={<UserProfile />} />
-          <Route path="/orders" element={<OrdersListPage/>} />
-          <Route path="/wishList" element={<WishListPage />} />
-          <Route path="/addresses" element={<AddressPage />} />
-          <Route path="/Updateprofile" element={<ProfilePage />} />
-          <Route path="/Help" element={<HelpAndSupport />} />
-          <Route path="/order/:orderId" element={<OrderDetailsPage/>} />
-          <Route path="verifymail" element={<MailVerification/>} />
-          <Route path="verifyphone" element={<PhoneVerification/>} />
+          <Route path="/cart" element={<ProductCartPage />} />
+          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/orders" element={<OrdersListPage />} />
+          <Route path="/wishlist" element={<WishListPage />} />
+          <Route path="/address" element={<AddressPage />} />
+          <Route path="/userprofile" element={<ProfilePage />} />
+          <Route path="/help" element={<HelpAndSupport />} />
+          <Route path="/order/:orderId" element={<OrderDetailsPage />} />
+          <Route path="/verify/:type" element={<UserVerification />} />
         </Route>
       </Routes>
     </div>

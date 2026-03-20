@@ -5,7 +5,6 @@ import { FaPenToSquare } from "react-icons/fa6";
 import { VscSaveAs } from "react-icons/vsc";
 import axios from "axios";
 import { toast } from "react-toastify";
-
 const ProfilePage = () => {
   const { user, getUser } = useContext(UserContext);
   const [editMail, setEditMail] = useState(false)
@@ -23,7 +22,7 @@ const ProfilePage = () => {
       setForm(userInfo)
     };
   }, [user])
-  
+
   const originalPhone = (user?.phone || "").trim();
   const currentPhone = (form.phone || "").trim();
   const originalEmail = (user?.email || "").trim();
@@ -42,11 +41,13 @@ const ProfilePage = () => {
     if (Object.entries(updatedFileds).length < 0) return;
     try {
       const res = await axios.put('http://localhost:3000/api/profile', updatedFileds, { withCredentials: true });
-      console.log(res.data)
-      getUser();
-      toast.success("Profile Updated Successfully")
+      console.log(res)
+      if (res.data.success) {
+        getUser();
+        toast.success("Profile Updated Successfully")
+      }
     } catch (error) {
-      console.error("Profile update failed:", error.response?.data || error.message);
+      toast.error("Profile update failed")
     }
   }
   const timeRemaiing = 24 * 60 * 60 * 1000 - (Date.now() - new Date(user?.lastProfileUpdate));
@@ -82,7 +83,7 @@ const ProfilePage = () => {
               </span>
             ) : (
               <Link
-                to="/verifymail"
+                to="/verify/mail"
                 className="text-xs px-2 py-0.5 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
               >
                 Not Verified
@@ -101,7 +102,7 @@ const ProfilePage = () => {
               </span>
             ) : (
               <Link
-                to="/verifyphone"
+                to="/verify/phone"
                 className="text-xs px-2 py-0.5 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
               >
                 Not Verified
@@ -116,7 +117,7 @@ const ProfilePage = () => {
       <div className="flex justify-center mt-15 font-semibold">
         {timeRemaiing > 0 && <div>You updated your profile recently. Try again in {formatedTime(timeRemaiing)}.</div>}
       </div>
-    </div>
+    </div >
   );
 };
 

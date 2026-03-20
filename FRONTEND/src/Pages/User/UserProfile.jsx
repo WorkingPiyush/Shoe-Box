@@ -6,10 +6,10 @@ import { FaShoppingBag, FaHeart, FaMapMarkerAlt, FaUser, FaQuestionCircle } from
 
 const profileOptions = [
   { label: "Orders", icon: <FaShoppingBag />, path: "/orders" },
-  { label: "Wish List", icon: <FaHeart />, path: "/wishList" },
-  { label: "Saved Addresses", icon: <FaMapMarkerAlt />, path: "/addresses" },
-  { label: "Profile", icon: <FaUser />, path: "/Updateprofile" },
-  { label: "Help & Support", icon: <FaQuestionCircle />, path: "/Help" },
+  { label: "Wish List", icon: <FaHeart />, path: "/wishlist" },
+  { label: "Saved Addresses", icon: <FaMapMarkerAlt />, path: "/address" },
+  { label: "Profile", icon: <FaUser />, path: "/userprofile" },
+  { label: "Help & Support", icon: <FaQuestionCircle />, path: "/help" },
 ];
 
 const UserProfile = () => {
