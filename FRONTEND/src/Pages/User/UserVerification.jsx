@@ -1,10 +1,10 @@
 import React, { useState, useRef, useContext } from "react";
 import OtpPage from "../../components/OtpPage";
 import { useParams } from "react-router-dom";
-import { UserContext } from "../../Context/UserContext";
+import { useUser } from "../../hooks/useUser";
 
 const UserVerification = () => {
-    const { user, getUser } = useContext(UserContext);
+      const { data: user } = useUser();
     const userMail = user?.email;
     const userPhone = user?.phone;
     const { type } = useParams();

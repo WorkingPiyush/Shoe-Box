@@ -17,7 +17,6 @@ import HelpAndSupport from './Pages/User/HelpAndSupport'
 import OrderDetailsPage from './Pages/User/Orders/OrderDetailsPage.jsx'
 import OrdersListPage from './Pages/User/Orders/OrderList.jsx'
 import UserVerification from './Pages/User/UserVerification.jsx'
-
 function App() {
   return (
     <div className="min-h-screen w-full bg-white">

@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../../Context/UserContext";
 import { FaPenToSquare } from "react-icons/fa6";
+import { useUser } from "../../hooks/useUser";
 import { VscSaveAs } from "react-icons/vsc";
 import axios from "axios";
 import { toast } from "react-toastify";
 const ProfilePage = () => {
-  const { user, getUser } = useContext(UserContext);
+  const { data: user } = useUser();
   const [editMail, setEditMail] = useState(false)
   const [editphone, setEditPhone] = useState(false)
   const [form, setForm] = useState({ phone: "", email: "" });
@@ -22,7 +22,6 @@ const ProfilePage = () => {
       setForm(userInfo)
     };
   }, [user])
-
   const originalPhone = (user?.phone || "").trim();
   const currentPhone = (form.phone || "").trim();
   const originalEmail = (user?.email || "").trim();
@@ -43,11 +42,11 @@ const ProfilePage = () => {
       const res = await axios.put('http://localhost:3000/api/profile', updatedFileds, { withCredentials: true });
       console.log(res)
       if (res.data.success) {
-        getUser();
         toast.success("Profile Updated Successfully")
       }
     } catch (error) {
       toast.error("Profile update failed")
+      console.error(error?.data?.message)
     }
   }
   const timeRemaiing = 24 * 60 * 60 * 1000 - (Date.now() - new Date(user?.lastProfileUpdate));
@@ -57,6 +56,9 @@ const ProfilePage = () => {
     const mins = totalMins % 60;
     if (hours === 0) return `${mins}m`;
     return `${hours}h ${mins}m`;
+  }
+  const formatedNum = (phone) => {
+    return phone.slice(3);
   }
   return (
     <div className="h-screen mt-20 bg-white p-4">
@@ -93,7 +95,7 @@ const ProfilePage = () => {
           <div>
             <p className="text-sm text-gray-500">Phone</p>
             <div className="flex items-center justify-between">
-              {editphone ? <input type="text" value={form.phone || ""} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="text-lg border p-1 rounded-lg" /> : <p className="font-semibold text-lg">{form?.phone || "Phone Not Available"}</p>}
+              {editphone ? <input type="text" value={formatedNum(form.phone) || ""} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="text-lg border p-1 rounded-lg" /> : <p className="font-semibold text-lg">{formatedNum(form?.phone) || "Phone Not Available"}</p>}
               {editphone ? <VscSaveAs onClick={() => setEditPhone(false)} className="cursor-pointer text-xl" /> : <FaPenToSquare onClick={() => { (timeRemaiing > 0) ? null : setEditPhone(true) }} className={`${(timeRemaiing > 0) ? "cursor-not-allowed" : "cursor-pointer"}`} />}
             </div>
             {form.phone && (form?.isPhoneVerified ? (

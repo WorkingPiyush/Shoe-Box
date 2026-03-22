@@ -6,11 +6,12 @@ export const CartToBackend = async ({ productId, quantity, shoeSize }) => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(async () => {
         try {
-            await axios.put(
-                'http://localhost:3000/cart/update',
+            const res = await axios.put(
+                `${import.meta.env.VITE_API_URL}/cart/update`,
                 { productId, quantity, shoeSize },
                 { withCredentials: true }
             );
+            return res.data.cart.items;
         } catch (error) {
             console.error("Server err,", error)
         }

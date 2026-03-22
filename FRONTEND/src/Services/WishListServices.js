@@ -2,7 +2,6 @@ import axios from "axios"
 
 let timeout;
 export const WishListToBackend = async ({ productId }) => {
-    console.log(productId)
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(async () => {
         try {

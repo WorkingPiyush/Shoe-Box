@@ -3,19 +3,23 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { WishListContext } from '../../Context/WishListContext';
 import { WishListToBackend } from '../../Services/WishListServices';
+import { useQuery } from '@tanstack/react-query';
 
 const WishListPage = () => {
-    const [wishproduct, setWishproduct] = useState([]);
-    const { setWishList, wishList, loadUserWishlist } = useContext(WishListContext)
+    ;
+    const { wishList } = useContext(WishListContext)
     const navigate = useNavigate();
-    useEffect(() => {
-        const loadWishList = async () => {
-            await axios.post('http://localhost:3000/wishlist/page',
-                wishList,
-                { withCredentials: true }).then(res => setWishproduct(res.data))
-        }
-        loadWishList()
-    }, [wishList])
+    const { data: wishproduct = [], isLoading } = useQuery({
+        queryKey: ['wishlist-page', wishList],
+        queryFn: async () => {
+            const res = await axios.post('http://localhost:3000/wishlist/page', wishList, { withCredentials: true })
+            return res.data;
+        },
+        enabled: wishList.length > 0,
+        staleTime: 10 * 60 * 1000,
+        keepPreviousData: true,
+    })
+
     const removeItem = async (productId) => {
         const exists = wishList.some(item => item.productId === productId);
         let updatedList;

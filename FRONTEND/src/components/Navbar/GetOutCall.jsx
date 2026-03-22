@@ -1,15 +1,17 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { UserContext } from '../../Context/UserContext';
+import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 function GetOutCall({ isiconClicked, setIsIconClicked }) {
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
-    const { setUser } = useContext(UserContext);
 
     const logout = async () => {
-        const res = await axios.post('http://localhost:3000/users/logout', {}, { withCredentials: true })
+
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/users/logout`, {}, { withCredentials: true })
         if (res.data.success) {
-            setUser(null)
+            queryClient.setQueryData(['user'], null);
+            queryClient.invalidateQueries(['user']);
             navigate('/', { replace: true });
             setIsIconClicked(false)
         }

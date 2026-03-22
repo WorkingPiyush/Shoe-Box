@@ -2,13 +2,13 @@ import React, { useContext } from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../Context/UserContext';
+import { useUser } from '../hooks/useUser';
 import { toast } from 'react-toastify';
 
 function OrderSummary({ cartProduct, setCartItem }) {
   const navigate = useNavigate();
   const [totalAmount, setTotalAmount] = useState(0);
-  const { user } = useContext(UserContext)
+  const { data: user } = useUser();
   useEffect(() => {
     const itemVlaue = cartProduct.reduce((acc, item) => {
       return acc + item.price * item.quantity

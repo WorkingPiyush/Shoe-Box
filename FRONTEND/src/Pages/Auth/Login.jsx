@@ -2,10 +2,11 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { UserContext } from "../../Context/UserContext";
 import Loading from "../../components/Loading";
+import { useQueryClient } from '@tanstack/react-query';
 import OAuth from "../../components/OAuth";
 import { toast } from "react-toastify";
+import { fetchUser } from "../../api/userApi";
 
 function Login() {
   const {
@@ -14,9 +15,8 @@ function Login() {
     reset,
     formState: { errors },
   } = useForm();
-
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { getUser } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
@@ -31,9 +31,13 @@ function Login() {
         }
       );
       if (res.data.success) {
+        const user = await queryClient.fetchQuery({
+          queryKey: ['user'],
+          queryFn: fetchUser,
+        });
+        queryClient.setQueryData(['user'], user);
         localStorage.removeItem("cart");
         localStorage.removeItem("wishlist");
-        await getUser();
         reset();
         navigate("/", { replace: true });
       }

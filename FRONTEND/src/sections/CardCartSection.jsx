@@ -1,23 +1,20 @@
 import EmptyCartMessage from "../components/EmptyCartMessage"
 import { CartToBackend } from "../Services/cartServices"
-import { UserContext } from "../Context/UserContext"
-import { useContext } from "react"
+import { useUser } from "../hooks/useUser"
 import { toast } from "react-toastify"
 function CardCartSection({ cartProduct, cartItem, setCartItem }) {
-    const { user } = useContext(UserContext)
+    const { data: user } = useUser();
     function MrptoCurrency(input) {
         return input.toLocaleString('en-IN')
     }
     const removeItem = async (item) => {
-        const updatedCart = cartItem.filter((prod) => !(prod.productId === item.productId && prod.shoeSize === item.size))
-        setCartItem(updatedCart);
+        setCartItem(prev => prev.filter((prod) => !(prod.productId === item.productId && prod.shoeSize === item.size)));
         if (user) {
             try {
                 await CartToBackend({ productId: item.productId, quantity: 0, shoeSize: item.size })
             } catch (error) {
                 console.log(error)
                 toast.error('Server Issues,Cart not updated')
-                setCartItem(cartItem)
             }
         } else {
             localStorage.setItem('cart', JSON.stringify(updatedCart));
@@ -29,7 +26,7 @@ function CardCartSection({ cartProduct, cartItem, setCartItem }) {
                 return { ...prod, quantity: Math.max(prod.quantity - 1, 0) }
             }
             return prod
-        }).filter(prod => prod.quantity > 0);
+        }).filter(prod => prod.quantity >= 0);
         setCartItem(updatedCart);
         const newQty = updatedCart.find(p => p.productId === item.productId & p.shoeSize === item.size)?.quantity || 0;
         if (user) {

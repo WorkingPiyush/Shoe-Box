@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import Loading from "../../components/Loading";
 import OAuth from "../../components/OAuth";
-import { UserContext } from "../../Context/UserContext";
 import { toast } from "react-toastify";
 
 function Signup() {
@@ -17,7 +16,6 @@ function Signup() {
   } = useForm();
 
   const navigate = useNavigate();
-  const { getUser } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const password = watch("password");
 
@@ -34,7 +32,6 @@ function Signup() {
       );
 
       if (res.data.success) {
-        await getUser();
         reset();
         navigate("/", { replace: true });
       }

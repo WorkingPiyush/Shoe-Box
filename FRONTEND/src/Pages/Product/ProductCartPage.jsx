@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import CardCartSection from '../../sections/CardCartSection'
 import OrderSummary from '../../sections/OrderSummary'
 import { CartContext } from '../../Context/CartContext'
-import { UserContext } from '../../Context/UserContext';
 import axios from 'axios';
 
 function ProductCartPage() {

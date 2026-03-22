@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
-import { UserContext } from "../../Context/UserContext";
+import React, { useContext, useEffect } from "react";
 import Loading from "../../components/Loading";
+import { useUser } from "../../hooks/useUser";
 import { Link } from "react-router-dom";
 import { FaShoppingBag, FaHeart, FaMapMarkerAlt, FaUser, FaQuestionCircle } from "react-icons/fa";
+import { fetchUser } from "../../api/userApi";
 
 const profileOptions = [
   { label: "Orders", icon: <FaShoppingBag />, path: "/orders" },
@@ -13,10 +14,8 @@ const profileOptions = [
 ];
 
 const UserProfile = () => {
-  const { user } = useContext(UserContext);
-
+  const { data: user } = useUser();
   if (!user) return <Loading />;
-
   return (
     <div className="h-screen  bg-gray-100 p-4 flex flex-col items-center">
       {/* Header */}

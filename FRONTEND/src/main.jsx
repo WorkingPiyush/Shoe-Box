@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
-import { UserProvider } from './Context/UserContext.jsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { CartContainer } from './Context/CartContext.jsx'
 import ShoeSizeProvider from './Context/ShoeSizeContext.jsx'
@@ -16,27 +15,25 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 5 * 60 * 1000,
       cacheTime: 30 * 60 * 1000,
+      retry: false,
       refetchOnWindowFocus: false,
       refetchOnMount: false
     }
   }
 })
 
-
 createRoot(document.getElementById('root')).render(
-  <ShoeSizeProvider>
-    <UserProvider>
-      <WishListContainer>
-        <CartContainer>
-          <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={queryClient}>
+    <ShoeSizeProvider>
+        <WishListContainer>
+          <CartContainer>
+            <BrowserRouter>
               <App />
               <ToastContainer />
-            </QueryClientProvider>
-          </BrowserRouter>
-        </CartContainer>
-      </WishListContainer>
-    </UserProvider>
-  </ShoeSizeProvider>
+            </BrowserRouter>
+          </CartContainer>
+        </WishListContainer>
+    </ShoeSizeProvider>
+  </QueryClientProvider>
 
 )

@@ -1,39 +1,42 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import axios from 'axios';
-import { UserContext } from './UserContext';
+import { useUser } from '../hooks/useUser';
 
 export const WishListContext = createContext(undefined);
 
 export function WishListContainer({ children }) {
-    const { user, getUser } = useContext(UserContext);
+    const { data: user } = useUser();
     const [wishList, setWishList] = useState([]);
 
-    const loadUserWishlist = async () => {
-        if (!user) {
-            const storedWishList = localStorage.getItem('wishlist');
-            const guestWishList = JSON.parse(storedWishList) || [];
-            setWishList(guestWishList);
-            return guestWishList;
-        }
-        try {
-            const res = await axios.get('http://localhost:3000/wishlist/',
-                { withCredentials: true })
-            setWishList(res.data);
-            return res.data;
-        } catch (error) {
-            console.error("Failed to fetch user wishlist:", error);
-            setWishList([]);
-            return []
-        }
-    }
+    const loadUserWishlist = useCallback(
+        async () => {
+            if (!user) {
+                const guestWishList = JSON.parse(localStorage.getItem('wishlist')) || [];
+                setWishList(guestWishList);
+                return
+            }
+            try {
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/wishlist/`,
+                    { withCredentials: true })
+                setWishList(res.data || []);
+            } catch (error) {
+                console.error("Failed to fetch user wishlist:", error);
+                setWishList([]);
+            }
+        },
+        [user],
+    )
+
     useEffect(() => {
-        getUser()
-    }, [])
-    useEffect(() => {
-        loadUserWishlist()
-    }, [user])
+        loadUserWishlist();
+    }, [loadUserWishlist])
+    const value = useMemo(() => ({
+        wishList,
+        setWishList,
+        loadUserWishlist
+    }), [wishList, loadUserWishlist]);
     return (
-        <WishListContext.Provider value={{ setWishList, wishList, loadUserWishlist }}>
+        <WishListContext.Provider value={value}>
             {children}
         </WishListContext.Provider>
     )

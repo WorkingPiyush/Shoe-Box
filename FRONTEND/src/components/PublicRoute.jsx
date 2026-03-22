@@ -1,11 +1,11 @@
 import { Navigate } from 'react-router-dom'
 import { useContext } from 'react';
-import { UserContext } from '../Context/UserContext';
+import { useUser } from '../hooks/useUser';
 
 
 const PublicRouteG = ({ children }) => {
-  const { user } = useContext(UserContext);
-  
+  const { data: user } = useUser();
+
   const isAuthenticated = user;
   if (isAuthenticated) {
     return <Navigate to='/' replace />;

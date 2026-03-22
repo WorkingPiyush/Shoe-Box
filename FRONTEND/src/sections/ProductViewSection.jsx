@@ -5,9 +5,8 @@ import CheckBox from '../components/CheckBox';
 import SlidingImgPanel from '../components/SlidingImgPanel';
 import { ItemSizeContext } from '../Context/ShoeSizeContext';
 import { toast } from 'react-toastify';
-import { UserContext } from '../Context/UserContext.jsx';
+import { useUser } from '../hooks/useUser';
 import { CartContext } from '../Context/CartContext.jsx';
-import axios from 'axios';
 import { CartToBackend } from '../Services/cartServices.js';
 import { WishListContext } from '../Context/WishListContext.jsx';
 import { WishListToBackend } from '../Services/WishListServices.js';
@@ -16,7 +15,7 @@ function ProductViewSection({ item }) {
     const { cartItem, setCartItem } = useContext(CartContext)
     const { setWishList, wishList } = useContext(WishListContext)
     const { shoeSize } = useContext(ItemSizeContext)
-    const { user } = useContext(UserContext)
+    const { data: user } = useUser();
     const handleAddToCart = (product) => {
         if (shoeSize.length === 0) {
             toast.error("Please Select Shoe Size")
@@ -43,7 +42,10 @@ function ProductViewSection({ item }) {
         }
     }
     const AddToWishList = (product) => {
-        const exists = wishList.some(item => item.productId === product.id);
+        console.log(wishList)
+        console.log(product)
+        // const exists = wishList.some(item => item.productId === product.id);
+        const exists = wishList.find((item) => item.productId === product.id)
         let updatedList;
         if (exists) {
             updatedList = wishList.filter((item) => item.productId !== product.id)

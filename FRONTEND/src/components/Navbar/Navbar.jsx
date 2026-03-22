@@ -5,7 +5,7 @@ import SlidingMenu from '../SlidingMenu';
 import profileImg from '../../assets/Images/headphone.jpg'
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import GetInCall from './GetInCall';
-import { UserContext } from '../../Context/UserContext';
+import { useUser } from '../../hooks/useUser';
 import GetOutCall from './GetOutCall';
 import { CartContext } from '../../Context/CartContext';
 import MenuBar from '../MenuBar';
@@ -15,13 +15,13 @@ function Navbar() {
   const [isimgClicked, setIsImgClicked] = useState(false);
   const [isiconClicked, setIsIconClicked] = useState(false);
   const { cartItem } = useContext(CartContext)
-  const { user } = useContext(UserContext);
+  const { data: user } = useUser();
   const navigate = useNavigate();
   const showGetCall = () => { setIsImgClicked(!isimgClicked) }
   const ShowOutCall = () => { setIsIconClicked(!isiconClicked) }
   const location = useNavigate();
   useEffect(() => {
-    setIsImgClicked(false); 
+    setIsImgClicked(false);
     setIsIconClicked(false);
   }, [location])
 
@@ -29,7 +29,6 @@ function Navbar() {
     const handelScrolling = () => {
       SetScrolled(window.scrollY > 50);
     };
-    console.log(isimgClicked)
     window.addEventListener('scroll', handelScrolling)
     return () => { window.removeEventListener('scroll', handelScrolling) };
   }, [])
