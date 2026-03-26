@@ -16,6 +16,7 @@ function ProductCartPage() {
           "Content-Type": "application/json"
         }
       });
+      console.log(res.data)
       setCartProduct(res.data);
     } catch (error) {
       console.error("Failed to fetch user cart:", error);

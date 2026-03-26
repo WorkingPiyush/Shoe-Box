@@ -5,7 +5,7 @@ import axios from 'axios';
 
 function HomeImgSection() {
     const fetchHomeProducts = async () => {
-        const res = await axios.get('http://localhost:3000/product/home', {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/product/home`, {
             params: {
                 limit: 15
             }

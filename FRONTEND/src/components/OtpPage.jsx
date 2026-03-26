@@ -1,9 +1,8 @@
-import { QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { fetchUser } from '../api/userApi';
 
 
 function OtpPage({ type, contact }) {
@@ -13,6 +12,7 @@ function OtpPage({ type, contact }) {
     const [timeLeft, setTimeLeft] = useState(30);
     const inputRef = useRef([]);
     const queryClient = useQueryClient();
+    const [verifyOtp, setVerifyOtp] = useState(false)
     useEffect(() => {
         if (!type || !contact) {
             navigate('/userprofile')
@@ -74,6 +74,7 @@ function OtpPage({ type, contact }) {
             otp: otpValue
         }
         try {
+            setVerifyOtp(true)
             const res = await axios.post('http://localhost:3000/auth/otp/verify', data, { withCredentials: true })
             if (res.data.success) {
                 console.log(res.data)
@@ -85,6 +86,8 @@ function OtpPage({ type, contact }) {
             console.log(error)
             const msg = error.response?.data?.message
             seterror(msg || "Invalid OTP. Try again.")
+        } finally {
+            setVerifyOtp(false)
         }
     }
     const handleChange = (value, index) => {
@@ -148,7 +151,7 @@ function OtpPage({ type, contact }) {
                 </div>
                 {error && <span className="text-red-500 text-sm">{error}</span>}
                 <button disabled={otp.length < 6} onClick={() => submitOtp(getOtp(otp))} className="bg-green-500 cursor-pointer w-50 text-white px-8 py-2 rounded-xl hover:bg-green-600 disabled:text-gray-400 disabled:no-underline transition">
-                    submit
+                    {verifyOtp ? "Verifying Otp" : "submit"}
                 </button>
                 {timeLeft ? `Resend in ${timeLeft}s` : <button className=" text-sm text-blue-600 hover:underline" onClick={sendOtp}>Resend Otp</button>}
             </div>

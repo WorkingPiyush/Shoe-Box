@@ -1,23 +1,17 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import ImgCard from '../components/ImgCard'
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, selectedCategory, sortedHtLOrder, sortIsNewVal }) {
-    const gender = routedGender
-    const fetchProduct = async () => {
-        const res = await axios.get('http://localhost:3000/product/section', {
-            params: {
-                gender: routedGender
-            }
-        });
-        return res.data
+import PageChangeBtn from '../components/Buttons/PageChangeBtn';
+function ProductGrid({ gender, selectedBrand, selectedSlab, selectedSize, selectedCategory, sortedHtLOrder, sortIsNewVal, data, currentPage, isLoading, setCurrentPage }) {
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
     }
-    const { data, isLoading } = useQuery({
-        queryKey: ['products', gender],
-        queryFn: fetchProduct,
-        staleTime: 10 * 60 * 1000,
-        keepPreviousData: true,
-    })
+    const handleNextPage = () => {
+        if (currentPage < data?.totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
     const priceSlabsLog = [
         ["slab-1", [0, 1000]],
         ["slab-2", [1000, 2000]],
@@ -26,21 +20,25 @@ function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, 
         ["slab-5", [4000, 5000]],
         ["slab-6", [5000, Infinity]],
     ];
-    let ProductList = data || [];
+    let ProductList = data?.product || [];
     const filterdBrandedList = useMemo(() => {
-        if (!ProductList) return []
-        let secProductListArr = ProductList;
+
+        let secProductListArr = [...ProductList];
+
         if (selectedBrand !== "all") {
             secProductListArr = secProductListArr.filter(prod => {
                 const BrandArr = Array.isArray(prod.brand) ? prod.brand : [prod.brand];
-                return BrandArr.some(b => b.toLowerCase() === selectedBrand.toLowerCase());
+                return BrandArr.some(b => b?.toLowerCase() === selectedBrand.toLowerCase());
             })
         }
         if (selectedSlab !== "all") {
-            const [min, max] = priceSlabsLog.find(([key]) => key === selectedSlab)[1];
-            secProductListArr = secProductListArr.filter(prod => {
-                return prod.price >= min && prod.price <= max
-            })
+            const slab = priceSlabsLog.find(([key]) => key === selectedSlab);
+            if (!slab) return [];
+
+            const [min, max] = slab[1];
+            secProductListArr = secProductListArr.filter((prod) =>
+                prod.price >= min && prod.price <= max
+            )
         }
         if (selectedSize !== "all") {
             secProductListArr = secProductListArr.filter(prod => {
@@ -51,7 +49,7 @@ function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, 
         if (selectedCategory !== "all") {
             secProductListArr = secProductListArr.filter(prod => {
                 const CategoryArr = Array.isArray(prod.category) ? prod.category : [prod.category];
-                return CategoryArr.some(b => b.toLowerCase() === selectedCategory.toLowerCase());
+                return CategoryArr.some(b => b?.toLowerCase() === selectedCategory.toLowerCase());
             })
         }
         if (sortedHtLOrder === "low-high") {
@@ -66,13 +64,16 @@ function ProductGrid({ routedGender, selectedBrand, selectedSlab, selectedSize, 
         return secProductListArr;
     }, [ProductList, selectedBrand, selectedSlab, selectedSize, selectedCategory, sortedHtLOrder, sortIsNewVal])
     return (
-        <div className='flex justify-center flex-wrap mt-1 w-fit bg-gray-500/15 rounded-xl'>
-            {filterdBrandedList.map(shoe => {
-                if (shoe.gender == routedGender) {
-                    return (isLoading ? "Loading.." : <ImgCard key={shoe.id} shoe={shoe} />)
-                }
-            })}
-        </div >
+        <div>
+            <div className='flex justify-center flex-wrap mt-1 w-fit bg-gray-500/15 rounded-xl'>
+                {filterdBrandedList.map(shoe => {
+                    if (shoe.gender === gender) {
+                        return (isLoading ? "Loading.." : <ImgCard key={shoe.id} shoe={shoe} />)
+                    }
+                })}
+            </div >
+            <PageChangeBtn handlePrevPage={handlePrevPage} handleNextPage={handleNextPage} currentPage={currentPage} data={data} />
+        </div>
     )
 }
 

@@ -10,7 +10,7 @@ function ImgCard({ shoe }) {
                 <div className='w-30 h-50 inline'>
                     <img className='p-1 h-[38%] w-50 md:h-[50%] md:w-full md:p-3' style={{
                         objectFit: 'contain',
-                    }} src={shoe?.image?.[0]} alt="shoeImg" />
+                    }} src={`http://localhost:3000/static/${shoe?.thumbnail}`} alt="shoeImg" />
                     <p className='font-bold text-gray-400 text-center text-xs uppercase md:text-xl'>{shoe.brand}</p>
                     <h1 className='text-center font-bold text-sm text-wrap md:text-xl'>{shoe.name.length > 30 ? shoe.name.slice(0, 22) + "...." : shoe.name}</h1>
                 </div>

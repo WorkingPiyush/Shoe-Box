@@ -70,7 +70,7 @@ function ProductViewSection({ item }) {
     return (
         <div className='h-screen py-20 flex flex-col md:flex-row'>
             <div className=' w-full p-4 flex flex-col justify-around items-center rounded-3xl md:w-1/2'>
-                <SlidingImgPanel imgList={item.image} />
+                <SlidingImgPanel imgList={item.images} />
             </div>
             <div className=' text-black w-full p-8 md:w-1/2 md:p-15 md:text'>
                 <h5 className='text-2xl p-4 font-bold md:w-full md:p-0 md:text-3xl'>{item.name}</h5>
