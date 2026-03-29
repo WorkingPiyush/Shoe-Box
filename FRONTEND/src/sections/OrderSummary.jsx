@@ -4,17 +4,19 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../hooks/useUser';
 import { toast } from 'react-toastify';
+import { CartContext } from '../Context/CartContext';
 
-function OrderSummary({ cartProduct, setCartItem }) {
+function OrderSummary() {
+  const { cart} = useContext(CartContext)
   const navigate = useNavigate();
   const [totalAmount, setTotalAmount] = useState(0);
   const { data: user } = useUser();
   useEffect(() => {
-    const itemVlaue = cartProduct.reduce((acc, item) => {
+    const itemVlaue = cart.reduce((acc, item) => {
       return acc + item.price * item.quantity
     }, 0)
     setTotalAmount(itemVlaue)
-  }, [cartProduct])
+  }, [cart])
 
   function MrptoCurrency(input) {
     return input.toLocaleString('en-IN')
@@ -28,7 +30,7 @@ function OrderSummary({ cartProduct, setCartItem }) {
   }
   return (
     <div className=''>
-      {cartProduct.length === 0 ? "" : (<div className='w-65 h-65 m-auto bg-gray-100 p-2 md:w-90'>
+      {cart?.length === 0 ? "" : (<div className='w-65 h-65 m-auto bg-gray-100 p-2 md:w-90'>
         <div className='bg-gray-200 mb-0.5 rounded'> <h1 className='p-2 font-bold md:p-4'>Order Summary</h1></div>
         <div className='bg-gray-300 p-3 md:p-8'>
           <div className='flex justify-between'><span>Subtotal</span><span>{MrptoCurrency(totalAmount)}</span></div>

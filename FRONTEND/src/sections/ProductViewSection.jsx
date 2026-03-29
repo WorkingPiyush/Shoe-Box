@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { IoStarSharp } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa6";
 import CheckBox from '../components/CheckBox';
@@ -6,44 +6,58 @@ import SlidingImgPanel from '../components/SlidingImgPanel';
 import { ItemSizeContext } from '../Context/ShoeSizeContext';
 import { toast } from 'react-toastify';
 import { useUser } from '../hooks/useUser';
-import { CartContext } from '../Context/CartContext.jsx';
 import { CartToBackend } from '../Services/cartServices.js';
 import { WishListContext } from '../Context/WishListContext.jsx';
 import { WishListToBackend } from '../Services/WishListServices.js';
+import AddtoCartBtn from '../components/Buttons/AddtoCartBtn.jsx';
+import { CartContext } from '../Context/CartContext.jsx';
 
 function ProductViewSection({ item }) {
-    const { cartItem, setCartItem } = useContext(CartContext)
     const { setWishList, wishList } = useContext(WishListContext)
     const { shoeSize } = useContext(ItemSizeContext)
+    const { setCart, cart, loadCart } = useContext(CartContext)
     const { data: user } = useUser();
-    const handleAddToCart = (product) => {
+    useEffect(() => {
+        loadCart(user)
+    }, [cart, user])
+
+    const handleAddToCart = async (product) => {
         if (shoeSize.length === 0) {
             toast.error("Please Select Shoe Size")
             return;
         }
-        let existing = cartItem.find((item) => item.productId === product.id && item.shoeSize === shoeSize)
-        let updatedCart;
-        if (existing) {
-            updatedCart = cartItem.map(item => item.productId === product.id ? { ...item, quantity: item.quantity + 1 } : item)
-        } else {
-            updatedCart = [
-                ...cartItem,
-                { productId: product.id, quantity: 1, shoeSize: shoeSize }
-            ]
-        }
-        if (user) {
-            setCartItem(updatedCart);
-            toast.success("Shoe Added");
-            CartToBackend({ productId: product.id, quantity: 1, shoeSize: shoeSize });
-        } else {
-            setCartItem(updatedCart);
-            toast.success("Shoe Added");
-            localStorage.setItem('cart', JSON.stringify(updatedCart));
+        try {
+            if (user) {
+                await CartToBackend({ productId: product.id, quantity: 1, shoeSize: shoeSize });
+                toast.success("Shoe Added");
+                // setCart(prev => {
+                //     const existing = prev.find((i) => i.productId === product.id && i.size === shoeSize);
+                //     if (existing) {
+                //         return prev.map(i =>
+                //             i.productId === existing.productId ? { ...i, quantity: i.quantity + 1 } : i
+                //         );
+                //     }
+                //     return [...prev, { productId: product.id, quantity: 1, shoeSize: shoeSize }];
+                // })
+            } else {
+                let guestCart = JSON.parse(localStorage.getItem('cart')) || [];
+                const existing = guestCart.find(i => i.productId === product.id && i.shoeSize === shoeSize)
+                if (existing) {
+                    existing.quantity += 1;
+                } else {
+                    guestCart.push({ productId: product.id, quantity: 1, shoeSize });
+                }
+                localStorage.setItem('cart', JSON.stringify(guestCart));
+                setCart(guestCart)
+                toast.success("Shoe Added");
+            }
+        } catch (error) {
+            console.error("Add to cart failed", error);
         }
     }
     const AddToWishList = (product) => {
-        console.log(wishList)
-        console.log(product)
+        // console.log(wishList)
+        // console.log(product)
         // const exists = wishList.some(item => item.productId === product.id);
         const exists = wishList.find((item) => item.productId === product.id)
         let updatedList;
@@ -84,9 +98,7 @@ function ProductViewSection({ item }) {
                 <p className='mt-5'>Free shipping availale for new users</p>
                 <b>Estimate date of delivery: {currentDate}</b>
                 <div className='flex gap-2 mt-10'>
-                    <button onClick={() => handleAddToCart(item)} className="px-10 py-2 border border-black text-black bg-white cursor-pointer rounded hover:bg-black hover:text-white transition">
-                        ADD TO CART
-                    </button>
+                    <AddtoCartBtn handleAddToCart={handleAddToCart} item={item} />
                     <div className='h-12 w-14 bg-black rounded flex justify-center items-center cursor-pointer'>
                         {wishList.some(prod => prod.productId === item.id) ? <FaHeart onClick={() => AddToWishList(item)} className='h-10 w-10 text-pink-500' /> : <FaHeart onClick={() => AddToWishList(item)} className='h-10 w-10 text-white' />}
                     </div>

@@ -2,7 +2,6 @@ import axios from "axios"
 
 let timeout;
 export const CartToBackend = async ({ productId, quantity, shoeSize }) => {
-    console.log(productId, quantity, shoeSize)
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(async () => {
         try {
@@ -11,7 +10,7 @@ export const CartToBackend = async ({ productId, quantity, shoeSize }) => {
                 { productId, quantity, shoeSize },
                 { withCredentials: true }
             );
-            return res.data.cart.items;
+            return res.data.cart;
         } catch (error) {
             console.error("Server err,", error)
         }

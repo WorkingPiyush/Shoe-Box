@@ -7,15 +7,15 @@ import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import GetInCall from './GetInCall';
 import { useUser } from '../../hooks/useUser';
 import GetOutCall from './GetOutCall';
-import { CartContext } from '../../Context/CartContext';
 import MenuBar from '../MenuBar';
+import { CartContext } from '../../Context/CartContext';
 function Navbar() {
   const [scrolled, SetScrolled] = useState(false);
   const [open, SetOpen] = useState(false)
   const [isimgClicked, setIsImgClicked] = useState(false);
   const [isiconClicked, setIsIconClicked] = useState(false);
-  const { cartItem } = useContext(CartContext)
   const { data: user } = useUser();
+  const { cart } = useContext(CartContext)
   const navigate = useNavigate();
   const showGetCall = () => { setIsImgClicked(!isimgClicked) }
   const ShowOutCall = () => { setIsIconClicked(!isiconClicked) }
@@ -32,6 +32,9 @@ function Navbar() {
     window.addEventListener('scroll', handelScrolling)
     return () => { window.removeEventListener('scroll', handelScrolling) };
   }, [])
+  if (!cart) {
+    return <div>Loading..</div>
+  }
   return (
     <nav className='bg-white flex justify-center w-full relative' >
       <div className={`mt-5 p-4 rounded-2xl fixed top-0 z-100 backdrop-blur-sm transition-all duration-300 ease-in-out ${scrolled ? "w-90 md:w-[65%]" : "w-95 md:w-[70%]"}`}>
@@ -46,7 +49,7 @@ function Navbar() {
           <div className='w-30 flex justify-around items-center relative'>
             <div onClick={() => navigate('/cart')} className='relative h-8 w-10 rounded flex items-center justify-center cursor-pointer active:bg-gray-400/10'>
               <FaShoppingCart className='cursor-pointer text-2xl' />
-              {cartItem.length === 0 ? <span></span> : <span className='absolute -top-2 left-5 text-center bg-black text-white rounded-full h-6 w-6'>{cartItem.length}</span>}
+              {cart?.length === 0 ? <span></span> : <span className='absolute -top-2 left-5 text-center bg-black text-white rounded-full h-6 w-6'>{cart?.length}</span>}
             </div>
 
             <div className='h-10 w-12 rounded  cursor-pointer'>
