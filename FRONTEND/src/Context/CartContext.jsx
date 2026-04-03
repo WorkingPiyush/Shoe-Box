@@ -1,50 +1,43 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import axios from 'axios';
 import { useUser } from '../hooks/useUser';
+import { useQuery } from '@tanstack/react-query';
 export const CartContext = createContext(null);
 
 export function CartContainer({ children }) {
     const { data: user } = useUser();
-    const [cart, setCart] = useState([]);
 
-    const loadCart = useCallback(async (currentUser) => {
-        try {
-            if (currentUser) {
-                const res = await axios.get(`${import.meta.env.VITE_API_URL}/cart/`, { withCredentials: true });
-                setCart(res.data)
-                return res.data;
-            } else {
-                const guestCart = JSON.parse(localStorage.getItem('cart')) || [];
-                if (!guestCart.length) {
-                    return []
-                }
-                const res = await axios.post(`${import.meta.env.VITE_API_URL}/cart/preview`, {
-                    items: guestCart
-                });
-                setCart(res.data)
-                return res.data;
-            }
+    const loadCart = useCallback(async () => {
+        if (user) {
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/cart/`, { withCredentials: true });
+            return res.data;
+        } else {
+            const guestCart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (!guestCart.length) return [];
+
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/cart/preview`, {
+                items: guestCart
+            });
+            return res.data;
         }
-        catch (error) {
-            console.error("Failed to fetch user cart:", error);
-            return []
-        }
-    },
-        [],
-    )
-    useEffect(() => {
-        let active = true;
-        loadCart(user).then(data => {
-            if (active) setCart(data);
-        });
-        return () => { active = false }
-    }, [user])
+
+    }, [user],)
+
+
+    const { data = [], isLoading, refetch } = useQuery({
+        queryKey: ['cart', user?.id],
+        queryFn: loadCart,
+        enabled: user !== undefined,
+        staleTime: 5 * 60 * 1000,
+        keepPreviousData: true,
+    })
+
 
     const value = useMemo(() => ({
-        cart,
-        setCart,
-        loadCart,
-    }), [cart, loadCart]);
+        cart: data,
+        isLoading,
+        refetch
+    }), [data, isLoading]);
     return (
         <CartContext.Provider value={value}>
             {children}

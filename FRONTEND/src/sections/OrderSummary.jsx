@@ -25,7 +25,7 @@ function OrderSummary() {
     if (user === null) {
       toast.error("Please Sign in to Proceed")
     } else {
-      navigate('/')
+      navigate('/summary')
     }
   }
   return (

@@ -5,31 +5,33 @@ import { toast } from "react-toastify"
 import CartQtyBtn from "../components/Buttons/CartQtyBtn"
 import { CartContext } from "../Context/CartContext"
 import { useContext } from "react"
+import { useQueryClient } from "@tanstack/react-query"
+
 function CardCartSection() {
+    const queryClient = useQueryClient();
     const { data: user } = useUser();
-    const { cart, setCart } = useContext(CartContext)
+    const { cart, refetch } = useContext(CartContext)
     function MrptoCurrency(input) {
-        return input.toLocaleString('en-IN')
+        return input?.toLocaleString('en-IN')
     }
     const removeItem = async (item) => {
-        const prevCart = cart;
         if (user) {
             try {
-                const updatedCart = cart.filter((prod) => !(prod.productId === item.productId && prod.shoeSize === item.shoeSize))
                 await CartToBackend({ productId: item.productId, quantity: 0, shoeSize: item.shoeSize })
-                setCart(updatedCart);
+                queryClient.setQueryData(['cart', user?.id], (old = []) => {
+                    return old.filter(
+                        i => !(i.productId === item.productId && i.shoeSize === item.shoeSize)
+                    );
+                });
+                refetch()
             } catch (error) {
                 console.log(error)
                 toast.error('Server Issues,Cart not updated')
-                setCart(prevCart);
             }
         } else {
             const updatedCart = cart.filter((prod) => !(prod.productId === item.productId && prod.shoeSize === item.shoeSize))
-            setCart(updatedCart);
             localStorage.setItem('cart', JSON.stringify(updatedCart));
         }
-
-
     }
     if (!cart) {
         return (
@@ -57,9 +59,9 @@ function CardCartSection() {
                             <tbody key={`${item.productId}-${item.shoeSize}`} className="divide-y divide-gray-200 rounded-xl">
                                 <tr className="hover:bg-blue-50 transition-colors relative">
                                     <td className="px-4 py-2 md:px-6 md:py-3"><img src={item?.thumbnail} alt="ProductImg" className='h-15 w-25 rounded object-contain' /></td>
-                                    <td className="px-1 py-2 text-left  hidden md:px-6 md:py-3 sm:block">{item.details}</td>
+                                    <td className="px-1 py-2 text-left  hidden md:px-6 md:py-3 sm:block">{item.name}</td>
                                     <td className="px-1 py-2 text-center md:px-6 md:py-3"><CartQtyBtn productId={item.productId} /></td>
-                                    <td className="px-1 py-2 text-center md:px-6 md:py-3">{item.size}</td>
+                                    <td className="px-1 py-2 text-center md:px-6 md:py-3">{item.shoeSize}</td>
                                     <td className="px-1 py-2 text-center md:px-6 md:py-3">{MrptoCurrency(item?.price)}</td>
                                     <td className="px-4 py-2 text-center md:px-6 md:py-3">{MrptoCurrency(item?.total)}</td>
                                     <td onClick={() => removeItem(item)}><span className='absolute top-8 right-1 bg-gray-300 h-7 w-7 text-center rounded-full cursor-pointer'>x</span></td>

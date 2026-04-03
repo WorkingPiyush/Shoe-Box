@@ -6,7 +6,7 @@ export const WishListToBackend = async ({ productId }) => {
     timeout = setTimeout(async () => {
         try {
             await axios.post(
-                'http://localhost:3000/wishlist/toggle',
+                `${import.meta.env.VITE_API_URL}/wishlist/toggle`,
                 { productId },
                 { withCredentials: true }
             ).then(res => console.log(res.data))

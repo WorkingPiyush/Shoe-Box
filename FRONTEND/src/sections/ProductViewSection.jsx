@@ -10,16 +10,15 @@ import { CartToBackend } from '../Services/cartServices.js';
 import { WishListContext } from '../Context/WishListContext.jsx';
 import { WishListToBackend } from '../Services/WishListServices.js';
 import AddtoCartBtn from '../components/Buttons/AddtoCartBtn.jsx';
+import { useQueryClient } from '@tanstack/react-query';
 import { CartContext } from '../Context/CartContext.jsx';
 
 function ProductViewSection({ item }) {
     const { setWishList, wishList } = useContext(WishListContext)
-    const { shoeSize } = useContext(ItemSizeContext)
-    const { setCart, cart, loadCart } = useContext(CartContext)
+    const queryClient = useQueryClient();
+    const { shoeSize } = useContext(ItemSizeContext);
+    const { refetch } = useContext(CartContext);
     const { data: user } = useUser();
-    useEffect(() => {
-        loadCart(user)
-    }, [cart, user])
 
     const handleAddToCart = async (product) => {
         if (shoeSize.length === 0) {
@@ -28,17 +27,14 @@ function ProductViewSection({ item }) {
         }
         try {
             if (user) {
-                await CartToBackend({ productId: product.id, quantity: 1, shoeSize: shoeSize });
+                queryClient.setQueryData(['cart', user?.id], old => {
+                    const existing = old.find(i => i.productId === product.id && i.shoeSize === shoeSize);
+                    if (existing) return old.map(i => i.productId === product.id && i.shoeSize === shoeSize ? { ...i, quantity: i.quantity + 1 } : i);
+                    return [...old, { productId: product.id, shoeSize, quantity: 1 }];
+                });
                 toast.success("Shoe Added");
-                // setCart(prev => {
-                //     const existing = prev.find((i) => i.productId === product.id && i.size === shoeSize);
-                //     if (existing) {
-                //         return prev.map(i =>
-                //             i.productId === existing.productId ? { ...i, quantity: i.quantity + 1 } : i
-                //         );
-                //     }
-                //     return [...prev, { productId: product.id, quantity: 1, shoeSize: shoeSize }];
-                // })
+                await CartToBackend({ productId: product.id, quantity: 1, shoeSize: shoeSize });
+                refetch()
             } else {
                 let guestCart = JSON.parse(localStorage.getItem('cart')) || [];
                 const existing = guestCart.find(i => i.productId === product.id && i.shoeSize === shoeSize)
@@ -48,17 +44,14 @@ function ProductViewSection({ item }) {
                     guestCart.push({ productId: product.id, quantity: 1, shoeSize });
                 }
                 localStorage.setItem('cart', JSON.stringify(guestCart));
-                setCart(guestCart)
                 toast.success("Shoe Added");
             }
+
         } catch (error) {
             console.error("Add to cart failed", error);
         }
     }
     const AddToWishList = (product) => {
-        // console.log(wishList)
-        // console.log(product)
-        // const exists = wishList.some(item => item.productId === product.id);
         const exists = wishList.find((item) => item.productId === product.id)
         let updatedList;
         if (exists) {

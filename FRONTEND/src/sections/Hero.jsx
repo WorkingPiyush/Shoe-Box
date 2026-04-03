@@ -5,7 +5,7 @@ import img2 from '/src/assets/Images/hero-images/hero-image-2.webp'
 import img3 from '/src/assets/Images/hero-images/hero-image-3.webp'
 import img4 from '/src/assets/Images/hero-images/hero-image-4.jpg'
 import img5 from '/src/assets/Images/hero-images/hero-image-5.jpg'
-
+import SkeletonLoading from '../components/SkeletonLoading';
 const imgList = [
     { id: 1, src: img1 },
     { id: 2, src: img2 },
@@ -22,7 +22,6 @@ function Hero() {
         }, 10000);
         return () => clearInterval(timer)
     }, [imgList.length])
-
     const [imgIndex, setImgIndex] = useState(0);
     const moveLeftImg = () => {
         setImgIndex(prev => prev <= 0 ? imgList.length - 1 : prev - 1)

@@ -39,7 +39,7 @@ const ProfilePage = () => {
     }
     if (Object.entries(updatedFileds).length < 0) return;
     try {
-      const res = await axios.put('http://localhost:3000/api/profile', updatedFileds, { withCredentials: true });
+      const res = await axios.put(`${import.meta.env.VITE_API_URL}/api/profile`, updatedFileds, { withCredentials: true });
       console.log(res)
       if (res.data.success) {
         toast.success("Profile Updated Successfully")

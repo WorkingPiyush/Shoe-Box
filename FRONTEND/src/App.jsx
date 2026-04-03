@@ -17,6 +17,7 @@ import HelpAndSupport from './Pages/User/HelpAndSupport'
 import OrderDetailsPage from './Pages/User/Orders/OrderDetailsPage.jsx'
 import OrdersListPage from './Pages/User/Orders/OrderList.jsx'
 import UserVerification from './Pages/User/UserVerification.jsx'
+import OrderCheckout from './Pages/Order/OrderCheckout.jsx'
 function App() {
   return (
     <div className="min-h-screen w-full bg-white">
@@ -40,6 +41,7 @@ function App() {
           <Route path="/help" element={<HelpAndSupport />} />
           <Route path="/order/:orderId" element={<OrderDetailsPage />} />
           <Route path="/verify/:type" element={<UserVerification />} />
+          <Route path="/summary" element={<OrderCheckout />} />
         </Route>
       </Routes>
     </div>

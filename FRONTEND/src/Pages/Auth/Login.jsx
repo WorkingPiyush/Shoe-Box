@@ -23,7 +23,7 @@ function Login() {
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:3000/users/login",
+        `${import.meta.env.VITE_API_URL}/login`,
         data,
         {
           headers: { "Content-Type": "application/json" },

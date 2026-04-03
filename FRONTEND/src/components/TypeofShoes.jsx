@@ -16,12 +16,14 @@ const shoeImg = [
 
 function TypeofShoes() {
     return (
-        <div className=' h-fit w-full my-8 px-10 gap-10 grid grid-cols-1 place-items-center justify-around sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 '>
+        <div className='w-full my-8 flex items-center gap-2 overflow-x-scroll scroll-smooth md:overflow-auto md:justify-center'>
             {shoeImg.map((item) => {
-                return <div key={item.id}>
-                    <img className='h-25 w-fit border-2 border-black rounded-full overflow-hidden p-2 fill-black drop-shadow-lg drop-shadow-black cursor-pointer' src={item.src} alt="shoeimages" />
-                    <h3 className='text-center font-bold my-4'>{item.title}</h3>
-                </div>
+                return (
+                    <div key={item.id} className='shrink-0 justify-center lg:shrink'>
+                        <img className='h-30 border-2 border-black rounded-full p-2 fill-black drop-shadow-lg drop-shadow-black cursor-pointer' src={item.src} alt="shoeimages" />
+                        <h3 className='text-center font-bold my-4'>{item.title}</h3>
+                    </div>
+                )
             })}
         </div>
     )

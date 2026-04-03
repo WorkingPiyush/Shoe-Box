@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 function OAuth() {
     return (
         <div className="flex gap-2 mt-2">
-            <Link to="http://localhost:3000/auth/google" className="border cursor-pointer border-gray-300 py-3 h-10 w-10 flex justify-center rounded-lg hover:bg-gray-100 transition" ><FaGoogle /></Link>
-            <Link to="http://localhost:3000/auth/github" className="border cursor-pointer border-gray-300 py-3 h-10 w-10 flex justify-center rounded-lg hover:bg-gray-100 transition" ><FaGithub /></Link>
+            <Link to={`${import.meta.env.VITE_API_URL}/auth/google`} className="border cursor-pointer border-gray-300 py-3 h-10 w-10 flex justify-center rounded-lg hover:bg-gray-100 transition" ><FaGoogle /></Link>
+            <Link to={`${import.meta.env.VITE_API_URL}/auth/github`} className="border cursor-pointer border-gray-300 py-3 h-10 w-10 flex justify-center rounded-lg hover:bg-gray-100 transition" ><FaGithub /></Link>
         </div>
     )
 }

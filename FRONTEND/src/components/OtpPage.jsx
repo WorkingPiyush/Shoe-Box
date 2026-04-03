@@ -54,7 +54,8 @@ function OtpPage({ type, contact }) {
         }
         try {
             setEndTime(Date.now() + 30000);
-            const res = await axios.post('http://localhost:3000/auth/otp/send', data, { withCredentials: true })
+            
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/otp/send`, data, { withCredentials: true })
             if (res.data.success) {
                 console.log(res.data)
                 toast.success(`Otp Sent on your ${type}`)
@@ -75,7 +76,8 @@ function OtpPage({ type, contact }) {
         }
         try {
             setVerifyOtp(true)
-            const res = await axios.post('http://localhost:3000/auth/otp/verify', data, { withCredentials: true })
+            
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/otp/verify`, data, { withCredentials: true })
             if (res.data.success) {
                 console.log(res.data)
                 queryClient.removeQueries(['user']);

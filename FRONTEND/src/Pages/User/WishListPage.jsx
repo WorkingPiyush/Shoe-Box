@@ -12,7 +12,7 @@ const WishListPage = () => {
     const { data: wishproduct = [], isLoading } = useQuery({
         queryKey: ['wishlist-page', wishList],
         queryFn: async () => {
-            const res = await axios.post('http://localhost:3000/wishlist/page', wishList, { withCredentials: true })
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/wishlist/page`, wishList, { withCredentials: true })
             return res.data;
         },
         enabled: wishList.length > 0,

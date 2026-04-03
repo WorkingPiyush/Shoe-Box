@@ -15,7 +15,7 @@ function AddressPage() {
   const [modalOpen, SetModalOpen] = useState(false);
   const [editingAddress, SetEditingAddress] = useState(null);
   const [loadingLocation, SetLoadingLocation] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { data: user } = useUser();
   const navigate = useNavigate()
   const { register, handleSubmit, reset, setValue, watch, formState: { errors }, } = useForm({
@@ -23,7 +23,6 @@ function AddressPage() {
   });
   const locality = watch("locality");
   const city = watch("city");
-  const country = watch("country");
   const selectedLabel = watch("label");
   const labelTiles = ["Home", "Office", "Other"]
   // getting the user's address
@@ -43,6 +42,7 @@ function AddressPage() {
     };
     loadAddress();
   }, [user]);
+
   const openModal = (addr = null) => {
     if (addr) {
       SetEditingAddress(addr._id);

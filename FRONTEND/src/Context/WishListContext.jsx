@@ -29,7 +29,8 @@ export function WishListContainer({ children }) {
 
     useEffect(() => {
         loadUserWishlist();
-    }, [loadUserWishlist])
+    }, [user])
+    
     const value = useMemo(() => ({
         wishList,
         setWishList,

@@ -6,6 +6,7 @@ import axios from 'axios';
 
 function ProductViewPage() {
     const { id } = useParams()
+    
     const fetchProductPage = async () => {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/product/page?id=${id}`, {
         });
