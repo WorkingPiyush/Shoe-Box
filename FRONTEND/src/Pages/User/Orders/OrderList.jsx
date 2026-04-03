@@ -1,68 +1,59 @@
 // OrdersListPage.jsx
-import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { ThreeDot } from "react-loading-indicators";
 import { useNavigate } from "react-router-dom";
-
-const orders = [
-    {
-        id: "OD123456",
-        items: 2,
-        status: "Delivered",
-        price: 947,
-        date: "Feb 02, 2026",
-        image: "https://imgs.search.brave.com/MN3nntWF2nBsqtvjmHoJEuq9StP3r2bpo854jQeS8DA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly92aXNt/ZS5jby9ibG9nL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIwLzA0/L01ha2UteW91ci1l/bWFpbHMtc3RhbmQt/b3V0LTIuanBn", // example
-    },
-    {
-        id: "OD654321",
-        items: 1,
-        status: "Pending",
-        price: 499,
-        date: "Feb 05, 2026",
-        image: "https://imgs.search.brave.com/mmapSh85ew7etZmgW1DKoH49P6RGZyO1Xkly0LB2NJA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly92aXNt/ZS5jby9ibG9nL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIwLzA0/L0hlYWRlci0yNC5q/cGc",
-    },
-    {
-        id: "OD65421",
-        items: 2,
-        status: "Delivered",
-        price: 503,
-        date: "Feb 28, 2026",
-        image: "https://imgs.search.brave.com/mmapSh85ew7etZmgW1DKoH49P6RGZyO1Xkly0LB2NJA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly92aXNt/ZS5jby9ibG9nL3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIwLzA0/L0hlYWRlci0yNC5q/cGc",
-    },
-];
+import { useOrders } from "../../../hooks/useOrders";
 
 const OrdersListPage = () => {
     const navigate = useNavigate();
-
+    const { data: orders, isLoading } = useOrders();
+    const statusColors = {
+        delivered: "text-green-600",
+        confirmed: "text-green-600",
+        cancelled: "text-red-600",
+        pending: "text-yellow-600",
+        shipped: "text-blue-600",
+    };
+    function capitalizeFirstLetter(str) {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex justify-center items-center text-6xl">
+                <ThreeDot color={["#205788", "#2a72b1", "#3d8cd1", "#66a4db"]} />
+            </div>
+        );
+    }
     return (
         <div className="min-h-screen mt-20 bg-white p-10">
             <button onClick={() => navigate(-1)} className="mb-4 cursor-pointer text-black">← Back to Profile</button>
             <h1 className="text-2xl font-bold mb-4">My Orders</h1>
             <div className="space-y-3">
                 {orders.map((order) => (
-                    <div
-                        key={order.id}
+                    <div key={order.id}
                         onClick={() => navigate(`/order/${order.id}`)}
-                        className="bg-white rounded-2xl shadow p-4 flex justify-between items-center cursor-pointer hover:shadow-md transition"
+                        className="bg-white rounded-2xl shadow p-4 flex justify-between items-center cursor-pointer hover:shadow-lg transition"
                     >
                         <div className="flex items-center gap-4">
                             <img
-                                src={order.image}
+                                src={order.thumbnail}
                                 alt="Product"
-                                className="w-12 h-12 object-cover rounded-lg"
+                                className="w-18 h-18 object-contain rounded-lg"
                             />
                             <div>
-                                <p className="font-semibold">Order {order.id}</p>
+                                <p className="font-semibold">{order.id}</p>
                                 <p className="text-sm text-gray-500">{order.items} items</p>
+                                <p className="text-xs text-black">Booked on: {order.date}</p>
                             </div>
                         </div>
                         <div className="text-right">
-                            <p className="font-semibold">₹{order.price}</p>
+                            <p className="font-semibold">₹{order.totalAmount.toLocaleString('en-IN')}</p>
                             <p
-                                className={`text-sm font-medium ${order.status === "Delivered"
-                                    ? "text-green-600"
-                                    : "text-yellow-600"
-                                    }`}
+                                className={`text-sm font-medium ${statusColors[order.status] || "text-gray-600"}`}
                             >
-                                {order.status}
+                                {capitalizeFirstLetter(order.status)}
                             </p>
                         </div>
                     </div>

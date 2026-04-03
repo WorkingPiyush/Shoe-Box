@@ -6,8 +6,7 @@ import { WishListToBackend } from '../../Services/WishListServices';
 import { useQuery } from '@tanstack/react-query';
 
 const WishListPage = () => {
-    ;
-    const { wishList } = useContext(WishListContext)
+    const { wishList } = useContext(WishListContext);
     const navigate = useNavigate();
     const { data: wishproduct = [], isLoading } = useQuery({
         queryKey: ['wishlist-page', wishList],
@@ -19,7 +18,6 @@ const WishListPage = () => {
         staleTime: 10 * 60 * 1000,
         keepPreviousData: true,
     })
-
     const removeItem = async (productId) => {
         const exists = wishList.some(item => item.productId === productId);
         let updatedList;
@@ -39,6 +37,12 @@ const WishListPage = () => {
             setWishList([])
         }
     };
+    
+    if (isLoading) {
+        return (
+            <div>Loading..</div>
+        )
+    }
     return (
         <div className="min-h-screen mt-20 bg-white p-4">
             <button onClick={() => navigate(-1)} className="mb-4 cursor-pointer text-black">← Back to Profile</button>
@@ -47,14 +51,14 @@ const WishListPage = () => {
                 {wishproduct.map((item) => (
                     <div
                         key={item.productId}
-                        className="bg-white p-4 rounded-2xl shadow flex items-center justify-between hover:shadow-md transition"
+                        onClick={() => navigate(`/${item.gender}/${item._id || item.productId}`)}
+                        className="bg-white p-4 rounded-2xl cursor-pointer shadow flex items-center justify-between hover:shadow-md transition"
                     >
                         {/* Product Info */}
                         <div className="flex items-center gap-4">
                             <img
                                 src={item.image[0]}
                                 alt={item.name}
-                                onClick={() => navigate(`/${item.gender}/${item._id || item.productId}`)}
                                 className="w-20 h-20 object-contain rounded-lg cursor-pointer"
                             />
                             <div>
