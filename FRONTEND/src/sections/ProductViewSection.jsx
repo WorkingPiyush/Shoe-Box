@@ -82,7 +82,7 @@ function ProductViewSection({ item }) {
             <div className=' text-black w-full p-8 md:w-1/2 md:p-15 md:text'>
                 <h5 className='text-2xl p-4 font-bold md:w-full md:p-0 md:text-3xl'>{item.name}</h5>
                 <div className='flex'><span className='md:text-xl'>(</span><h1 className='text-gray-400 inline font-semibold uppercase'>{item.brand}</h1><span className='md:text-xl'>)</span></div>
-                <h2 className='font-bold text-xl'>₹{item.price.toLocaleString('en-IN')}</h2>
+                <h2 className='font-bold text-xl'>₹{item.price}</h2>
                 <p className='flex gap-1 items-center text-amber-400 text-sm'><IoStarSharp /><span className='font-bold'>{item.rating}</span></p>
                 <p className='first-letter:uppercase text-sm'>{item.description}</p>
                 <p className='first-letter:uppercase text-bold mb-4'>{item.category} Shoes</p>

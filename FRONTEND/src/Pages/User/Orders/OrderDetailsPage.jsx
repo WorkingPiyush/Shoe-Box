@@ -25,7 +25,7 @@ const OrderDetailsPage = () => {
                     <h2 className="text-xl font-semibold mb-4">{orderId}</h2>
                     {ordersDetails.products.map((product, idx) => (
                         <div key={idx} className="flex items-center gap-4 border-b pb-4">
-                            <img src={product.image} alt={product.name} className="w-24 h-24 object-contain rounded-lg" />
+                            <img src={product.thumbnail} alt={product.name} className="w-24 h-24 object-contain rounded-lg" />
                             <div className="flex-1">
                                 <p className="font-medium">{product.name}</p>
                                 <p className="text-sm text-gray-500">Qty: {product.quantity}</p>

@@ -1,6 +1,3 @@
-// OrdersListPage.jsx
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { ThreeDot } from "react-loading-indicators";
 import { useNavigate } from "react-router-dom";
 import { useOrders } from "../../../hooks/useOrders";
@@ -8,6 +5,7 @@ import { useOrders } from "../../../hooks/useOrders";
 const OrdersListPage = () => {
     const navigate = useNavigate();
     const { data: orders, isLoading } = useOrders();
+    console.log(orders)
     const statusColors = {
         delivered: "text-green-600",
         confirmed: "text-green-600",
@@ -38,7 +36,7 @@ const OrdersListPage = () => {
                     >
                         <div className="flex items-center gap-4">
                             <img
-                                src={order.thumbnail}
+                                src={order.preview}
                                 alt="Product"
                                 className="w-18 h-18 object-contain rounded-lg"
                             />
