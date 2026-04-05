@@ -2,15 +2,16 @@ import React, { useState } from 'react'
 import ProductListArr from '../data/ProductList2.json'
 import { useLocation } from 'react-router-dom'
 
-function Filters({ updatefilter, updatePriceSlab, updateSize, updateCategory,data }) {
+function Filters({ updatefilter, updatePriceSlab, updateSize, updateCategory, data }) {
     const productArr = data.product;
     const websiteDir = useLocation()
     const gender = websiteDir.pathname.slice(1)
-    const filteredListArr = productArr.filter(i=> i.gender == gender);
+    const filteredListArr = productArr.filter(i => i.gender == gender);
     const [open, setOpen] = useState(false);
     const [selectedLabel, setSelectedLabel] = useState("Select Brand");
     const [selectBrand, setSelectBrand] = useState("all");
-    const capital = str => str.trim()[0].toUpperCase() + str.trim().slice(1).toLowerCase();
+    // const capital = str => str.trim()[0].toUpperCase() + str.trim().slice(1).toLowerCase();
+    const capital = str => str;
     const filterShoe = [
         ...new Set(
             filteredListArr.map(prod => prod.brand)

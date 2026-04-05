@@ -7,6 +7,7 @@ const PublicRouteG = ({ children }) => {
   const { data: user } = useUser();
 
   const isAuthenticated = user;
+  console.log(isAuthenticated)
   if (isAuthenticated) {
     return <Navigate to='/' replace />;
   }

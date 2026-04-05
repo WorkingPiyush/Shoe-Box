@@ -1,11 +1,10 @@
-import React, { useEffect, useEffectEvent, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import img1 from '/src/assets/Images/hero-images/hero-image-1.webp'
 import img2 from '/src/assets/Images/hero-images/hero-image-2.webp'
 import img3 from '/src/assets/Images/hero-images/hero-image-3.webp'
 import img4 from '/src/assets/Images/hero-images/hero-image-4.jpg'
 import img5 from '/src/assets/Images/hero-images/hero-image-5.jpg'
-import SkeletonLoading from '../components/SkeletonLoading';
 const imgList = [
     { id: 1, src: img1 },
     { id: 2, src: img2 },

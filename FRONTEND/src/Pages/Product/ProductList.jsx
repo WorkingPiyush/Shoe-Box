@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import Filters from '../../sections/Filters'
 import Sorting from '../../sections/Sorting'
 import ProductGrid from '../../sections/ProductGrid'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ThreeDot } from 'react-loading-indicators'
+// import PageNotFound from '../../components/PageNotFound'
 import axios from 'axios'
 function ProductList() {
-    const gender = useLocation().pathname.slice(1);
+    const { gender } = useParams();
+    const allowedCategories = ['male', 'female', 'kids'];
+    if (!allowedCategories.includes(gender)) return <PageNotFound />;
     const [selectedBrand, setSelectedBrand] = useState('all');
     const [selectedSlab, setSelectedSlab] = useState('all');
     const [selectedSize, setSelectedSize] = useState("all");
@@ -19,7 +22,7 @@ function ProductList() {
 
     const fetchProduct = async ({ queryKey }) => {
         const [_key, gender, page] = queryKey;
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/product/section?gender=${gender}&page=${page}&pageSize=20`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/product/products?gender=${gender}&page=${page}&limit=20`);
         return res.data;
     }
     const { data, isLoading } = useQuery({
@@ -37,7 +40,7 @@ function ProductList() {
         }
 
     }, [data, currentPage, gender, queryClient])
-    
+
     useEffect(() => {
         setCurrentPage(1)
     }, [gender])

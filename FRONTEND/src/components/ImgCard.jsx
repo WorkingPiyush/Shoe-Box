@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 function ImgCard({ shoe }) {
     const navigate = useNavigate();
     return (
-        <div onClick={() => navigate(`/${shoe.gender}/${shoe._id || shoe.id}`)} className='flex p-1'>
+        <div onClick={() => navigate(`/${shoe.gender}/${shoe.slug}`)} className='flex p-1'>
             <div className='bg-white/60 p-1 w-30 h-48 border border-dashed rounded-2xl cursor-pointer md:h-68 md:w-70 md:p-4'>
                 <div className='w-30 h-50 inline'>
-                    <img className='p-1 h-[38%] w-50 md:h-[50%] md:w-full md:p-3' style={{
+                    <img loading="lazy" className='p-1 h-[38%] w-50 md:h-[50%] md:w-full md:p-3' style={{
                         objectFit: 'contain',
                     }} src={shoe.thumbnail} alt="shoeImg" />
                     <p className='font-bold text-gray-400 text-center text-xs uppercase md:text-xl'>{shoe.brand}</p>

@@ -3,21 +3,29 @@ import ProductViewSection from '../../sections/ProductViewSection'
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { ThreeDot } from 'react-loading-indicators';
+import PageNotFound from '../../components/PageNotFound';
+import { toast } from 'react-toastify';
 
 function ProductViewPage() {
-    const { id } = useParams()
-
-    const fetchProductPage = async () => {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/product/page?id=${id}`, {
-        });
-        return res.data
+    const { gender, slug } = useParams()
+    if (!['male', 'female', 'kids'].includes(gender)) {
+        return <PageNotFound />
     }
-    const { data, isLoading } = useQuery({
-        queryKey: ['products', id],
+    const fetchProductPage = async () => {
+        try {
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/product/page?gender=${gender}&slug=${slug}`);
+            return res.data
+        } catch (err) {
+            throw new Error(err.response?.data?.message || err.message);
+        }
+    }
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['products', slug, gender],
         queryFn: fetchProductPage,
         staleTime: 10 * 60 * 1000,
         keepPreviousData: true,
-    })
+        onError: (err) => console.log(err.message),
+    });
     let ProductList = data || [];
     if (isLoading) {
         return (

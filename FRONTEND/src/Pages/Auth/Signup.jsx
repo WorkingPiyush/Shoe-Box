@@ -23,7 +23,7 @@ function Signup() {
     try {
       setLoading(true);
       const res = await axios.post(
-        ` ${import.meta.env.VITE_API_URL}/signup`,
+        `${import.meta.env.VITE_API_URL}/users/signup`,
         data,
         {
           headers: { "Content-Type": "application/json" },
