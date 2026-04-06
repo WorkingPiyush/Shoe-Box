@@ -120,7 +120,7 @@ export default function OrderCheckout() {
           address: addresses.find((i) => i._id === selectedAddress),
           paymentMethod: method,
         }, { withCredentials: true });
-
+        console.log(order, payment)
         if (!payment?.id || !payment?.amount) {
           toast.error("Invalid order");
           return
@@ -225,9 +225,10 @@ export default function OrderCheckout() {
         <div className="lg:col-span-2 bg-white rounded-2xl shadow p-4">
           <h2 className="text-xl font-semibold mb-4">Cart Summary</h2>
           {cart.map((item) => (
-            <div key={item.productId}
+            < div key={`${item.productId}-${item.quantity}`}
               className="flex justify-between items-center border-b py-3"
             >
+
               <div>
                 <p className="font-medium">{item.name}</p>
                 <p className="text-xs text-gray-400 ">{item.details}</p>
@@ -263,45 +264,47 @@ export default function OrderCheckout() {
         </div>
       </div>
       {/* Modal */}
-      {modalOpen && (
-        <div className="fixed bg-black/70 inset-0 bg-opacity-40 flex justify-center items-center z-999">
-          <div className="bg-white shadow-xl p-6 rounded-2xl w-[95%] sm:w-105 space-y-4">
-            <h2 className="text-xl font-semibold text-gray-800">Add New Address</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className='space-y-2'>
-              <input placeholder="Name" {...register("name")} className={`w-full border p-2 rounded-lg ${errors.name ? "border-red-500" : "border-gray-300"} `} />
-              {errors.name && (<p className="text-xs text-red-500">{errors.name.message}</p>)}
+      {
+        modalOpen && (
+          <div className="fixed bg-black/70 inset-0 bg-opacity-40 flex justify-center items-center z-999">
+            <div className="bg-white shadow-xl p-6 rounded-2xl w-[95%] sm:w-105 space-y-4">
+              <h2 className="text-xl font-semibold text-gray-800">Add New Address</h2>
+              <form onSubmit={handleSubmit(onSubmit)} className='space-y-2'>
+                <input placeholder="Name" {...register("name")} className={`w-full border p-2 rounded-lg ${errors.name ? "border-red-500" : "border-gray-300"} `} />
+                {errors.name && (<p className="text-xs text-red-500">{errors.name.message}</p>)}
 
-              <input type="tel" maxLength={10} inputMode="numeric" {...register("phone")} placeholder="Phone" className={`w-full border p-2 rounded-lg ${errors.phone ? "border-red-500" : "border-gray-300"} `} />
-              {errors.phone && (<p className="text-xs text-red-500">{errors.phone.message}</p>)}
+                <input type="tel" maxLength={10} inputMode="numeric" {...register("phone")} placeholder="Phone" className={`w-full border p-2 rounded-lg ${errors.phone ? "border-red-500" : "border-gray-300"} `} />
+                {errors.phone && (<p className="text-xs text-red-500">{errors.phone.message}</p>)}
 
-              <input placeholder="Flat/House/Building Name" maxLength={120} {...register("house")} className={`w-full border p-2 rounded-lg ${errors.house ? "border-red-500" : "border-gray-300"} `} />
-              <p className="text-xs text-gray-400">{120 - (watch('house')?.length || 0)} characters left</p>
+                <input placeholder="Flat/House/Building Name" maxLength={120} {...register("house")} className={`w-full border p-2 rounded-lg ${errors.house ? "border-red-500" : "border-gray-300"} `} />
+                <p className="text-xs text-gray-400">{120 - (watch('house')?.length || 0)} characters left</p>
 
-              <input placeholder="Locality (i.e. Rohini)" {...register("locality")} className={`w-full border p-2 rounded-lg ${errors.locality ? "border-red-500" : "border-gray-300"} `} />
-              {errors.locality && (<p className="text-xs text-red-500">{errors.locality.message}</p>)}
+                <input placeholder="Locality (i.e. Rohini)" {...register("locality")} className={`w-full border p-2 rounded-lg ${errors.locality ? "border-red-500" : "border-gray-300"} `} />
+                {errors.locality && (<p className="text-xs text-red-500">{errors.locality.message}</p>)}
 
-              <input placeholder="City (i.e. Delhi)" {...register("city")} className={`w-full border p-2 rounded-lg ${errors.city ? "border-red-500" : "border-gray-300"} `} />
-              {errors.city && (<p className="text-xs text-red-500">{errors.city.message}</p>)}
+                <input placeholder="City (i.e. Delhi)" {...register("city")} className={`w-full border p-2 rounded-lg ${errors.city ? "border-red-500" : "border-gray-300"} `} />
+                {errors.city && (<p className="text-xs text-red-500">{errors.city.message}</p>)}
 
-              <input placeholder="State (i.e. Delhi)" {...register("state")} className={`w-full border p-2 rounded-lg ${errors.state ? "border-red-500" : "border-gray-300"} `} />
-              {errors.state && (<p className="text-xs text-red-500">{errors.state.message}</p>)}
+                <input placeholder="State (i.e. Delhi)" {...register("state")} className={`w-full border p-2 rounded-lg ${errors.state ? "border-red-500" : "border-gray-300"} `} />
+                {errors.state && (<p className="text-xs text-red-500">{errors.state.message}</p>)}
 
-              <input placeholder="Pincode (i.e. 110085)" maxLength={6} {...register("pincode")} className={`w-full border p-2 rounded-lg ${errors.pincode ? "border-red-500" : "border-gray-300"} `} />
+                <input placeholder="Pincode (i.e. 110085)" maxLength={6} {...register("pincode")} className={`w-full border p-2 rounded-lg ${errors.pincode ? "border-red-500" : "border-gray-300"} `} />
 
-              <input placeholder="Country (i.e. India)" defaultValue="India" {...register("country")} className={`w-full border p-2 rounded-lg ${errors.country ? "border-red-500" : "border-gray-300"} `} />
+                <input placeholder="Country (i.e. India)" defaultValue="India" {...register("country")} className={`w-full border p-2 rounded-lg ${errors.country ? "border-red-500" : "border-gray-300"} `} />
 
-              <div className="flex justify-end gap-2 mt-2">
-                <button onClick={closeModal} className="px-4 py-2 bg-gray-300 rounded-xl font-semibold cursor-pointer hover:bg-gray-400 transition" >
-                  Cancel
-                </button>
-                <button type='submit' className="px-4 py-2 bg-black text-white rounded-xl font-semibold cursor-pointer hover:bg-gray-800 transition" >
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
-        </div >
-      )}
-    </div>
+                <div className="flex justify-end gap-2 mt-2">
+                  <button onClick={closeModal} className="px-4 py-2 bg-gray-300 rounded-xl font-semibold cursor-pointer hover:bg-gray-400 transition" >
+                    Cancel
+                  </button>
+                  <button type='submit' className="px-4 py-2 bg-black text-white rounded-xl font-semibold cursor-pointer hover:bg-gray-800 transition" >
+                    Save
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div >
+        )
+      }
+    </div >
   );
 }

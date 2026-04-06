@@ -32,16 +32,16 @@ function ProductViewSection({ item }) {
                     if (existing) return old.map(i => i.productId === product.id && i.shoeSize === shoeSize ? { ...i, quantity: i.quantity + 1 } : i);
                     return [...old, { productId: product.id, shoeSize, quantity: 1 }];
                 });
+                await CartToBackend({ productId: product._id, quantity: 1, shoeSize: shoeSize });
                 toast.success("Shoe Added");
-                await CartToBackend({ productId: product.id, quantity: 1, shoeSize: shoeSize });
                 refetch()
             } else {
                 let guestCart = JSON.parse(localStorage.getItem('cart')) || [];
-                const existing = guestCart.find(i => i.productId === product.id && i.shoeSize === shoeSize)
+                const existing = guestCart.find(i => i.productId === product._id && i.shoeSize === shoeSize)
                 if (existing) {
                     existing.quantity += 1;
                 } else {
-                    guestCart.push({ productId: product.id, quantity: 1, shoeSize });
+                    guestCart.push({ productId: product._id, quantity: 1, shoeSize });
                 }
                 localStorage.setItem('cart', JSON.stringify(guestCart));
                 toast.success("Shoe Added");

@@ -5,11 +5,11 @@ import { CartToBackend } from '../../Services/cartServices';
 import { CartContext } from '../../Context/CartContext';
 import { useQueryClient } from '@tanstack/react-query';
 
-function CartQtyBtn({ productId }) {
+function CartQtyBtn({ productId, shoeSize }) {
     const queryClient = useQueryClient();
     const { data: user } = useUser();
-    const { cart } = useContext(CartContext)
-    const product = cart.find((i) => i.productId === productId)
+    const { cart, refetch } = useContext(CartContext)
+    const product = cart.find((i) => i.productId === productId && i.shoeSize == shoeSize)
 
     const decreaseQty = async (product) => {
         if (user) {
@@ -31,13 +31,14 @@ function CartQtyBtn({ productId }) {
 
             }
         } else {
-            const updatedCart = cart.map(prod => {
-                if (prod.productId === product.productId && prod.shoeSize === product.shoeSize) {
-                    return { ...prod, quantity: Math.max(prod.quantity - 1, 0) }
-                }
-                return prod
-            }).filter(prod => prod.quantity >= 0);
-            localStorage.setItem('cart', JSON.stringify(updatedCart))
+            let guestCart = JSON.parse(localStorage.getItem('cart'));
+            console.log(guestCart)
+            const existing = guestCart.find(i => i.productId === product._id && i.shoeSize === shoeSize)
+            console.log(existing)
+            if (existing) {
+                existing.quantity -= 1;
+            }
+            localStorage.setItem('cart', JSON.stringify(existing));
         }
 
     }
@@ -61,13 +62,15 @@ function CartQtyBtn({ productId }) {
 
             }
         } else {
-            const updatedCart = cart.map(prod => {
-                if (prod.productId === product.productId && prod.shoeSize === product.shoeSize) {
-                    return { ...prod, quantity: prod.quantity + 1 };
-                }
-                return prod;
-            })
-            localStorage.setItem('cart', JSON.stringify(updatedCart))
+            // currently local users can't add the product in there cart soon this wiill be available
+            // let guestCart = JSON.parse(localStorage.getItem('cart'));
+            // const existing = guestCart.find(i => i.productId === product.productId && i.shoeSize === product.shoeSize)
+            // if (existing) {
+            //     existing.quantity += 1;
+            //     guestCart.push({ ...product, existing });
+            // }
+            // localStorage.setItem('cart', JSON.stringify(guestCart));
+            // refetch()
         }
 
     }

@@ -11,9 +11,6 @@ function CardCartSection() {
     const queryClient = useQueryClient();
     const { data: user } = useUser();
     const { cart, refetch } = useContext(CartContext)
-    function MrptoCurrency(input) {
-        return input?.toLocaleString('en-IN')
-    }
     const removeItem = async (item) => {
         if (user) {
             try {
@@ -29,8 +26,10 @@ function CardCartSection() {
                 toast.error('Server Issues,Cart not updated')
             }
         } else {
-            const updatedCart = cart.filter((prod) => !(prod.productId === item.productId && prod.shoeSize === item.shoeSize))
-            localStorage.setItem('cart', JSON.stringify(updatedCart));
+            let guestCart = JSON.parse(localStorage.getItem('cart'));
+            const updated = guestCart.filter((prod) => !(prod.productId === item.productId && prod.shoeSize === item.shoeSize));
+            localStorage.setItem('cart', JSON.stringify(updated));
+            refetch()
         }
     }
     if (!cart) {
@@ -60,10 +59,10 @@ function CardCartSection() {
                                 <tr className="hover:bg-blue-50 transition-colors relative">
                                     <td className="px-4 py-2 md:px-6 md:py-3"><img src={item?.thumbnail} alt="ProductImg" className='h-15 w-25 rounded object-contain' /></td>
                                     <td className="px-1 py-2 text-left  hidden md:px-6 md:py-3 sm:block">{item.name}</td>
-                                    <td className="px-1 py-2 text-center md:px-6 md:py-3"><CartQtyBtn productId={item.productId} /></td>
+                                    <td className="px-1 py-2 text-center md:px-6 md:py-3"><CartQtyBtn productId={item.productId} shoeSize={item.shoeSize} /></td>
                                     <td className="px-1 py-2 text-center md:px-6 md:py-3">{item.shoeSize}</td>
-                                    <td className="px-1 py-2 text-center md:px-6 md:py-3">{MrptoCurrency(item?.price)}</td>
-                                    <td className="px-4 py-2 text-center md:px-6 md:py-3">{MrptoCurrency(item?.total)}</td>
+                                    <td className="px-1 py-2 text-center md:px-6 md:py-3">{item?.price}</td>
+                                    <td className="px-4 py-2 text-center md:px-6 md:py-3">{item?.total}</td>
                                     <td onClick={() => removeItem(item)}><span className='absolute top-8 right-1 bg-gray-300 h-7 w-7 text-center rounded-full cursor-pointer'>x</span></td>
                                 </tr>
                             </tbody>

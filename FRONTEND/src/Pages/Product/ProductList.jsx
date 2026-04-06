@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Filters from '../../sections/Filters'
 import Sorting from '../../sections/Sorting'
 import ProductGrid from '../../sections/ProductGrid'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ThreeDot } from 'react-loading-indicators'
-// import PageNotFound from '../../components/PageNotFound'
+import PageNotFound from '../../components/PageNotFound'
 import axios from 'axios'
 function ProductList() {
     const { gender } = useParams();

@@ -6,7 +6,6 @@ export const CartContext = createContext(null);
 
 export function CartContainer({ children }) {
     const { data: user } = useUser();
-
     const loadCart = useCallback(async () => {
         if (user) {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/cart/`, { withCredentials: true });
@@ -14,20 +13,14 @@ export function CartContainer({ children }) {
         } else {
             const guestCart = JSON.parse(localStorage.getItem('cart')) || [];
             if (!guestCart.length) return [];
-
-            const res = await axios.post(`${import.meta.env.VITE_API_URL}/cart/preview`, {
-                items: guestCart
-            });
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/cart/preview`, guestCart);
             return res.data;
         }
-
-    }, [user],)
-
+    }, [user])
 
     const { data = [], isLoading, refetch } = useQuery({
         queryKey: ['cart', user?.id],
         queryFn: loadCart,
-        enabled: user !== undefined,
         staleTime: 5 * 60 * 1000,
         keepPreviousData: true,
     })
