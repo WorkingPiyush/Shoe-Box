@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { createContext, useCallback, useMemo } from 'react'
 import axios from 'axios';
 import { useUser } from '../hooks/useUser';
 import { useQuery } from '@tanstack/react-query';
@@ -10,26 +10,22 @@ export function CartContainer({ children }) {
         if (user) {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/cart/`, { withCredentials: true });
             return res.data;
-        } else {
-            const guestCart = JSON.parse(localStorage.getItem('cart')) || [];
-            if (!guestCart.length) return [];
-            const res = await axios.post(`${import.meta.env.VITE_API_URL}/cart/preview`, guestCart);
-            return res.data;
         }
+        const guestCart = JSON.parse(localStorage.getItem('cart')) || [];
+        if (!guestCart.length) return [];
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/cart/preview`, guestCart);
+        return res.data;
     }, [user])
 
     const { data = [], isLoading, refetch } = useQuery({
-        queryKey: ['cart', user?.id],
+        queryKey: ['cart', user?._id || 'guest'],
         queryFn: loadCart,
         staleTime: 5 * 60 * 1000,
-        keepPreviousData: true,
     })
-
-
     const value = useMemo(() => ({
         cart: data,
         isLoading,
-        refetch
+        refetch,
     }), [data, isLoading]);
     return (
         <CartContext.Provider value={value}>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext,  } from 'react'
 import { IoStarSharp } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa6";
 import CheckBox from '../components/CheckBox';
@@ -6,7 +6,7 @@ import SlidingImgPanel from '../components/SlidingImgPanel';
 import { ItemSizeContext } from '../Context/ShoeSizeContext';
 import { toast } from 'react-toastify';
 import { useUser } from '../hooks/useUser';
-import { CartToBackend } from '../Services/cartServices.js';
+import { CartToBackend, localCart } from '../Services/cartServices.js';
 import { WishListContext } from '../Context/WishListContext.jsx';
 import { WishListToBackend } from '../Services/WishListServices.js';
 import AddtoCartBtn from '../components/Buttons/AddtoCartBtn.jsx';
@@ -20,55 +20,64 @@ function ProductViewSection({ item }) {
     const { refetch } = useContext(CartContext);
     const { data: user } = useUser();
 
-    const handleAddToCart = async (product) => {
+    const handleAddToCart = async (product, shoeSize) => {
+        // if the user not selected the shoe size
         if (shoeSize.length === 0) {
             toast.error("Please Select Shoe Size")
             return;
         }
         try {
             if (user) {
-                queryClient.setQueryData(['cart', user?.id], old => {
-                    const existing = old.find(i => i.productId === product.id && i.shoeSize === shoeSize);
-                    if (existing) return old.map(i => i.productId === product.id && i.shoeSize === shoeSize ? { ...i, quantity: i.quantity + 1 } : i);
-                    return [...old, { productId: product.id, shoeSize, quantity: 1 }];
-                });
                 await CartToBackend({ productId: product._id, quantity: 1, shoeSize: shoeSize });
+                queryClient.setQueryData(['cart', user?._id || 'guest'], old => {
+                    const existing = old.find(i => i.productId === product._id && i.shoeSize === shoeSize);
+                    if (existing) return old.map(i => i.productId === product._id && i.shoeSize === shoeSize ? { ...i, quantity: i.quantity + 1 } : i);
+                    return [...old, { productId: product._id, shoeSize, quantity: 1 }];
+                });
                 toast.success("Shoe Added");
                 refetch()
             } else {
-                let guestCart = JSON.parse(localStorage.getItem('cart')) || [];
-                const existing = guestCart.find(i => i.productId === product._id && i.shoeSize === shoeSize)
-                if (existing) {
-                    existing.quantity += 1;
-                } else {
-                    guestCart.push({ productId: product._id, quantity: 1, shoeSize });
-                }
-                localStorage.setItem('cart', JSON.stringify(guestCart));
+                localCart({ productId: product._id, quantity: 1, shoeSize: shoeSize })
                 toast.success("Shoe Added");
+                refetch()
             }
-
         } catch (error) {
             console.error("Add to cart failed", error);
         }
     }
     const AddToWishList = (product) => {
-        const exists = wishList.find((item) => item.productId === product.id)
-        let updatedList;
-        if (exists) {
-            updatedList = wishList.filter((item) => item.productId !== product.id)
+        if (user) {
+            try {
+                const exists = wishList.find((item) => item.productId === product._id)
+                let updatedList;
+                if (exists) {
+                    updatedList = wishList.filter((item) => item.productId !== product.id)
+                } else {
+                    updatedList = [
+                        ...wishList,
+                        { productId: product._id }
+                    ]
+                }
+                setWishList(updatedList)
+                WishListToBackend({ productId: product.id });
+            } catch (error) {
+                toast.error("WishList Error")
+                console.log(error)
+            }
         } else {
-            updatedList = [
-                ...wishList,
-                { productId: product.id }
-            ]
-        }
-        setWishList(updatedList)
-        localStorage.setItem("wishlist", JSON.stringify(updatedList));
-        try {
-            WishListToBackend({ productId: product.id });
-        } catch (error) {
-            toast.error("Backend Error")
-            setWishList([])
+            // local user updating his wishlist
+            const exists = wishList.find((item) => item.productId === product._id)
+            let updatedList;
+            if (exists) {
+                updatedList = wishList.filter((item) => !(item.productId === product._id))
+            } else {
+                updatedList = [
+                    ...wishList,
+                    { productId: product._id }
+                ]
+            }
+            setWishList(updatedList)
+            localStorage.setItem("wishlist", JSON.stringify(updatedList));
         }
     }
     let date = new Date();
@@ -91,9 +100,9 @@ function ProductViewSection({ item }) {
                 <p className='mt-5'>Free shipping availale for new users</p>
                 <b>Estimate date of delivery: {currentDate}</b>
                 <div className='flex gap-2 mt-10'>
-                    <AddtoCartBtn handleAddToCart={handleAddToCart} item={item} />
+                    <AddtoCartBtn handleAddToCart={handleAddToCart} item={item} shoeSize={shoeSize} />
                     <div className='h-12 w-14 bg-black rounded flex justify-center items-center cursor-pointer'>
-                        {wishList.some(prod => prod.productId === item.id) ? <FaHeart onClick={() => AddToWishList(item)} className='h-10 w-10 text-pink-500' /> : <FaHeart onClick={() => AddToWishList(item)} className='h-10 w-10 text-white' />}
+                        {wishList.some(prod => prod.productId === item._id) ? <FaHeart onClick={() => AddToWishList(item)} className='h-10 w-10 text-pink-500' /> : <FaHeart onClick={() => AddToWishList(item)} className='h-10 w-10 text-white' />}
                     </div>
                 </div>
             </div>

@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { ThreeDot } from 'react-loading-indicators';
 import PageNotFound from '../../components/PageNotFound';
-import { toast } from 'react-toastify';
 
 function ProductViewPage() {
     const { gender, slug } = useParams()
