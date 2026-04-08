@@ -3,14 +3,13 @@ import { CartToBackend, localCart } from "../Services/cartServices"
 import { useUser } from "../hooks/useUser"
 import { toast } from "react-toastify"
 import CartQtyBtn from "../components/Buttons/CartQtyBtn"
-import { CartContext } from "../Context/CartContext"
-import { useContext } from "react"
+import { useCart } from "../Context/CartContext"
 import { useQueryClient } from "@tanstack/react-query"
 
 function CardCartSection() {
     const queryClient = useQueryClient();
     const { data: user } = useUser();
-    const { cart, refetch } = useContext(CartContext)
+    const { cart, refetch } = useCart();
     const removeItem = async (item) => {
         if (user) {
             try {

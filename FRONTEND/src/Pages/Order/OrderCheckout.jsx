@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { ThreeDot } from "react-loading-indicators";
 import { FaArrowCircleRight } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { CartContext } from "../../Context/CartContext";
+import { CartContext, useCart } from "../../Context/CartContext";
 import { useUser } from "../../hooks/useUser";
 import axios from "axios";
 import PaymentMode from "../../components/PaymentMode";
@@ -13,7 +13,7 @@ import { useQueryClient } from "@tanstack/react-query";
 export default function OrderCheckout() {
   const queryClient = useQueryClient();
   const { data: user } = useUser();
-  const { cart } = useContext(CartContext);
+  const { cart } = useCart();
   const navigate = useNavigate();
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(addresses[0]?._id);

@@ -20,8 +20,9 @@ import Home from './Pages/Home/Home.jsx'
 import ProductViewPage from './Pages/Product/ProductViewPage.jsx'
 import ProductList from './Pages/Product/ProductList.jsx'
 import PageNotFound from './components/PageNotFound.jsx'
-import PublicRouteG from './components/PublicRoute'
 import FullScreenLoader from './components/FullScreenLoader.jsx'
+import AuthenticatedUser from './components/AuthenticatedUser.jsx'
+import UnAuthenticatedUser from './components/UnAuthenticatedUser.jsx'
 function App() {
   return (
     <div className="min-h-screen w-full bg-white">
@@ -29,18 +30,25 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<PublicRouteG><Signup /></PublicRouteG>} />
-            <Route path="/login" element={<PublicRouteG><Login /></PublicRouteG>} />
+            {/* for guest users only */}
+            <Route element={<AuthenticatedUser />}>
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+            </Route>
+            {/* for loggedin users only*/}
+            <Route element={<UnAuthenticatedUser />}>
+              <Route path="/profile" element={<UserProfile />} />
+              <Route path="/orders" element={<OrdersListPage />} />
+              <Route path="/wishlist" element={<WishListPage />} />
+              <Route path="/address" element={<AddressPage />} />
+              <Route path="/userprofile" element={<ProfilePage />} />
+              <Route path="/help" element={<HelpAndSupport />} />
+              <Route path="/order/:orderId" element={<OrderDetailsPage />} />
+              <Route path="/verify/:type" element={<UserVerification />} />
+              <Route path="/summary" element={<OrderCheckout />} />
+            </Route>
+            {/* Public routes */}
             <Route path="/cart" element={<ProductCartPage />} />
-            <Route path="/profile" element={<UserProfile />} />
-            <Route path="/orders" element={<OrdersListPage />} />
-            <Route path="/wishlist" element={<WishListPage />} />
-            <Route path="/address" element={<AddressPage />} />
-            <Route path="/userprofile" element={<ProfilePage />} />
-            <Route path="/help" element={<HelpAndSupport />} />
-            <Route path="/order/:orderId" element={<OrderDetailsPage />} />
-            <Route path="/verify/:type" element={<UserVerification />} />
-            <Route path="/summary" element={<OrderCheckout />} />
             <Route path="/:gender" element={<ProductList />} />
             <Route path="/:gender/:slug" element={<ProductViewPage />} />
           </Route>

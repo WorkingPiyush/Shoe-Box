@@ -2,13 +2,13 @@ import React, { useContext } from 'react'
 import { useUser } from '../../hooks/useUser';
 import { toast } from 'react-toastify';
 import { CartToBackend, localCart } from '../../Services/cartServices';
-import { CartContext } from '../../Context/CartContext';
+import { useCart } from '../../Context/CartContext';
 import { useQueryClient } from '@tanstack/react-query';
 
 function CartQtyBtn({ productId, shoeSize }) {
     const queryClient = useQueryClient();
     const { data: user } = useUser();
-    const { cart, refetch } = useContext(CartContext)
+    const { cart, refetch } = useCart();
     const product = cart.find((i) => i.productId === productId && i.shoeSize == shoeSize)
 
     const decreaseQty = async (product) => {

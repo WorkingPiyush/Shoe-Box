@@ -1,9 +1,7 @@
-import React, { useContext, useEffect } from "react";
 import Loading from "../../components/Loading";
 import { useUser } from "../../hooks/useUser";
 import { Link } from "react-router-dom";
 import { FaShoppingBag, FaHeart, FaMapMarkerAlt, FaUser, FaQuestionCircle } from "react-icons/fa";
-import { fetchUser } from "../../api/userApi";
 
 const profileOptions = [
   { label: "Orders", icon: <FaShoppingBag />, path: "/orders" },

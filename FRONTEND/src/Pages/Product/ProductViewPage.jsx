@@ -18,14 +18,14 @@ function ProductViewPage() {
             throw new Error(err.response?.data?.message || err.message);
         }
     }
-    const { data, isLoading, error } = useQuery({
+    const { data = [], isLoading, error } = useQuery({
         queryKey: ['products', slug, gender],
         queryFn: fetchProductPage,
         staleTime: 10 * 60 * 1000,
         keepPreviousData: true,
         onError: (err) => console.log(err.message),
     });
-    let ProductList = data || [];
+    let ProductList = data ;
     if (isLoading) {
         return (
             <div className="min-h-screen flex justify-center items-center">

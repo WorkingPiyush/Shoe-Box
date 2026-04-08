@@ -1,4 +1,4 @@
-import React, { useContext,  } from 'react'
+import React, { useContext, } from 'react'
 import { IoStarSharp } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa6";
 import CheckBox from '../components/CheckBox';
@@ -11,13 +11,13 @@ import { WishListContext } from '../Context/WishListContext.jsx';
 import { WishListToBackend } from '../Services/WishListServices.js';
 import AddtoCartBtn from '../components/Buttons/AddtoCartBtn.jsx';
 import { useQueryClient } from '@tanstack/react-query';
-import { CartContext } from '../Context/CartContext.jsx';
+import { useCart } from '../Context/CartContext.jsx';
 
 function ProductViewSection({ item }) {
     const { setWishList, wishList } = useContext(WishListContext)
     const queryClient = useQueryClient();
     const { shoeSize } = useContext(ItemSizeContext);
-    const { refetch } = useContext(CartContext);
+    const { refetch } = useCart();
     const { data: user } = useUser();
 
     const handleAddToCart = async (product, shoeSize) => {
@@ -51,7 +51,7 @@ function ProductViewSection({ item }) {
                 const exists = wishList.find((item) => item.productId === product._id)
                 let updatedList;
                 if (exists) {
-                    updatedList = wishList.filter((item) => item.productId !== product.id)
+                    updatedList = wishList.filter((item) => item.productId !== product._id)
                 } else {
                     updatedList = [
                         ...wishList,
@@ -59,7 +59,7 @@ function ProductViewSection({ item }) {
                     ]
                 }
                 setWishList(updatedList)
-                WishListToBackend({ productId: product.id });
+                WishListToBackend({ productId: product._id });
             } catch (error) {
                 toast.error("WishList Error")
                 console.log(error)

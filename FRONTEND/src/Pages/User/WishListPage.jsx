@@ -6,7 +6,7 @@ import { WishListToBackend } from '../../Services/WishListServices';
 import { useQuery } from '@tanstack/react-query';
 
 const WishListPage = () => {
-    const { wishList } = useContext(WishListContext);
+    const { wishList, setWishList } = useContext(WishListContext);
     const navigate = useNavigate();
     const { data: wishproduct = [], isLoading } = useQuery({
         queryKey: ['wishlist-page', wishList],
@@ -37,7 +37,7 @@ const WishListPage = () => {
             setWishList([])
         }
     };
-    
+
     if (isLoading) {
         return (
             <div>Loading..</div>
@@ -51,7 +51,6 @@ const WishListPage = () => {
                 {wishproduct.map((item) => (
                     <div
                         key={item.productId}
-                        onClick={() => navigate(`/${item.gender}/${item._id || item.productId}`)}
                         className="bg-white p-4 rounded-2xl cursor-pointer shadow flex items-center justify-between hover:shadow-md transition"
                     >
                         {/* Product Info */}

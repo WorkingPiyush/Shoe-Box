@@ -8,14 +8,14 @@ import GetInCall from './GetInCall';
 import { useUser } from '../../hooks/useUser';
 import GetOutCall from './GetOutCall';
 import MenuBar from '../MenuBar';
-import { CartContext } from '../../Context/CartContext';
+import { useCart } from '../../Context/CartContext';
 function Navbar() {
   const [scrolled, SetScrolled] = useState(false);
   const [open, SetOpen] = useState(false)
   const [isimgClicked, setIsImgClicked] = useState(false);
   const [isiconClicked, setIsIconClicked] = useState(false);
   const { data: user } = useUser();
-  const { cart } = useContext(CartContext)
+   const { cart, isLoading } = useCart();
   const navigate = useNavigate();
   const showGetCall = () => { setIsImgClicked(!isimgClicked) }
   const ShowOutCall = () => { setIsIconClicked(!isiconClicked) }
