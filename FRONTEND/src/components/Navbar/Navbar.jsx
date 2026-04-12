@@ -42,9 +42,9 @@ function Navbar() {
           <h1 className='font-extrabold text-xl'><Link to="/">Shoe Box</Link></h1>
           <div className="flex gap-9 font-bold max-md:hidden">
             <div><Link to="/">HOME</Link></div>
-            <div><Link to="/male">MEN</Link></div>
-            <div><Link to="/female">WOMEN</Link></div>
-            <div><Link to="/kids">KIDS</Link></div>
+            <div><Link to="/products/male">MEN</Link></div>
+            <div><Link to="/products/female">WOMEN</Link></div>
+            <div><Link to="/products/kids">KIDS</Link></div>
           </div>
           <div className='w-30 flex justify-around items-center relative'>
             <div onClick={() => navigate('/cart')} className='relative h-8 w-10 rounded flex items-center justify-center cursor-pointer active:bg-gray-400/10'>

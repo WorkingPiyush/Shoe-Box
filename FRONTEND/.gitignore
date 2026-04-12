@@ -30,3 +30,4 @@ src/assets/
 /data
 public/product-list
 .env
+Admin.jsx

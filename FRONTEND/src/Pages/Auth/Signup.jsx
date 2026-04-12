@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import Loading from "../../components/Loading";
 import OAuth from "../../components/OAuth";
 import { toast } from "react-toastify";
@@ -14,7 +14,6 @@ function Signup() {
     watch,
     formState: { errors },
   } = useForm();
-
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const password = watch("password");
