@@ -1,7 +1,9 @@
-import React, { useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import ImgCard from '../components/ImgCard'
 import PageChangeBtn from '../components/Buttons/PageChangeBtn';
-function ProductGrid({ gender, selectedBrand, selectedSlab, selectedSize, selectedCategory, sortedHtLOrder, sortIsNewVal, data, currentPage, isLoading, setCurrentPage }) {
+import { CategoryContext } from '../Context/CategoryFilterContext';
+function ProductGrid({ gender, selectedBrand, selectedSlab, selectedSize, sortedHtLOrder, sortIsNewVal, data, currentPage, isLoading, setCurrentPage }) {
+    const { selectCategory, setSelectCategory } = useContext(CategoryContext);
     const handlePrevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
@@ -46,10 +48,12 @@ function ProductGrid({ gender, selectedBrand, selectedSlab, selectedSize, select
                 return SizeArr.includes(selectedSize);
             })
         }
-        if (selectedCategory !== "all") {
+
+        if (selectCategory !== "all") {
+            if (selectCategory === "All Category") return secProductListArr;
             secProductListArr = secProductListArr.filter(prod => {
                 const CategoryArr = Array.isArray(prod.category) ? prod.category : [prod.category];
-                return CategoryArr.some(b => b?.toLowerCase() === selectedCategory.toLowerCase());
+                return CategoryArr.some(b => b?.toLowerCase() === selectCategory.toLowerCase());
             })
         }
         if (sortedHtLOrder === "low-high") {
@@ -62,7 +66,8 @@ function ProductGrid({ gender, selectedBrand, selectedSlab, selectedSize, select
             secProductListArr.sort((a, b) => a.isNew - b.isNew)
         }
         return secProductListArr;
-    }, [ProductList, selectedBrand, selectedSlab, selectedSize, selectedCategory, sortedHtLOrder, sortIsNewVal])
+    }, [ProductList, selectedBrand, selectedSlab, selectedSize, selectCategory, sortedHtLOrder, sortIsNewVal])
+    
     return (
         <div>
             <div className='flex justify-center flex-wrap mt-1 w-fit bg-gray-500/15 rounded-xl'>

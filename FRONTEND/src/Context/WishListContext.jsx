@@ -26,7 +26,6 @@ export function WishListContainer({ children }) {
         },
         [user],
     )
-
     useEffect(() => {
         loadUserWishlist();
     }, [user])

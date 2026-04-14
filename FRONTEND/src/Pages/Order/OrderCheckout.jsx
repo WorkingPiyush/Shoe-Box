@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { ThreeDot } from "react-loading-indicators";
 import { FaArrowCircleRight } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { CartContext, useCart } from "../../Context/CartContext";
+import { useCart } from "../../Context/CartContext";
 import { useUser } from "../../hooks/useUser";
 import axios from "axios";
 import PaymentMode from "../../components/PaymentMode";
@@ -120,7 +120,6 @@ export default function OrderCheckout() {
           address: addresses.find((i) => i._id === selectedAddress),
           paymentMethod: method,
         }, { withCredentials: true });
-        console.log(order, payment)
         if (!payment?.id || !payment?.amount) {
           toast.error("Invalid order");
           return

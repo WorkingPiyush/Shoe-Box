@@ -1,40 +1,36 @@
-import React, { useState } from 'react'
-import ProductListArr from '../data/ProductList2.json'
-import { useLocation } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { CategoryContext } from '../Context/CategoryFilterContext.jsx';
 
-function Filters({ updatefilter, updatePriceSlab, updateSize, updateCategory, data }) {
+function Filters({ updatefilter, updatePriceSlab, updateSize, data }) {
     const productArr = data.product;
-    const websiteDir = useLocation()
-    const gender = websiteDir.pathname.slice(1)
+    const { gender } = useParams()
     const filteredListArr = productArr.filter(i => i.gender == gender);
+    const { selectCategory, setSelectCategory } = useContext(CategoryContext);
+    const [alive, setAlive] = useState(false);
     const [open, setOpen] = useState(false);
     const [selectedLabel, setSelectedLabel] = useState("Select Brand");
     const [selectBrand, setSelectBrand] = useState("all");
-    // const capital = str => str.trim()[0].toUpperCase() + str.trim().slice(1).toLowerCase();
-    const capital = str => str;
+    const [active, setActive] = useState(false);
+    const [price, setPrice] = useState("Select Price Range");
+    const [select, setSelect] = useState(false);
+    const [size, setSize] = useState("Select Size");
+
+    const capital = str => str?.trim()[0].toUpperCase() + str?.trim().slice(1).toLowerCase();
     const filterShoe = [
         ...new Set(
             filteredListArr.map(prod => prod.brand)
         )]
-
-    const [active, setActive] = useState(false);
-    const [price, setPrice] = useState("Select Price Range");
-
-
-    const [select, setSelect] = useState(false);
-    const [size, setSize] = useState("Select Size");
     const shoeSize = [...new Set(
         filteredListArr.flatMap(prod =>
             Array.isArray(prod.sizes) ? prod.sizes : [prod.sizes]
         )
-    )]
-    const [alive, setAlive] = useState(false);
-    const [category, setCategory] = useState("Select Category");
+    )];
     const shoeCategory = [...new Set(
         filteredListArr.flatMap(prod =>
             (Array.isArray(prod.category) ? prod.category : [prod.category]).map(capital)
         )
-    )]
+    )];
     const priceSlabsUI = [
         { value: "slab-1", label: "₹0 – ₹1,000" },
         { value: "slab-2", label: "₹1,000 – ₹2,000" },
@@ -140,7 +136,7 @@ function Filters({ updatefilter, updatePriceSlab, updateSize, updateCategory, da
                 </div>
                 <div className="relative rounded bg-gray-100 text-sm cursor-pointer border">
                     <button onClick={() => setAlive(!alive)} className="w-20 cursor-pointer bg-gray-100 border border-gray-300 text-xs rounded py-1 px-1 flex justify-between items-center md:w-45 md:px-3 md:py-2 md:text-xl" >
-                        <span>{category}</span>
+                        <span>{selectCategory === "all" ? "Select Category" : selectCategory}</span>
                         <span className="text-sm">▼</span>
                     </button>
 
@@ -148,8 +144,7 @@ function Filters({ updatefilter, updatePriceSlab, updateSize, updateCategory, da
                         <ul className="absolute w-20 bg-white border border-gray-300 rounded mt-1 shadow z-10 md:w-45">
                             <li
                                 onClick={() => {
-                                    updateCategory("all");
-                                    setCategory("All Sizes");
+                                    setSelectCategory("All Category");
                                     setAlive(false);
                                 }}
                                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer font-medium"
@@ -157,11 +152,8 @@ function Filters({ updatefilter, updatePriceSlab, updateSize, updateCategory, da
                                 All Category
                             </li>
                             {shoeCategory.map((c, id) => (
-                                <li key={c.id} onClick={() => {
-                                    setCategory(c); setAlive(false); updateCategory(c.toLowerCase())
-                                }}
-                                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                                >
+                                <li key={id} onClick={() => { setSelectCategory(c); setAlive(false); }}
+                                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                                     {c}
                                 </li>
                             ))}

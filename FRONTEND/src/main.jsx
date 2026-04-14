@@ -8,6 +8,7 @@ import ShoeSizeProvider from './Context/ShoeSizeContext.jsx'
 import { ToastContainer } from 'react-toastify'
 import { WishListContainer } from './Context/WishListContext.jsx'
 import { CartContainer } from './Context/CartContext.jsx'
+import CategoryFilterContextProvider from './Context/CategoryFilterContext.jsx'
 
 
 const queryClient = new QueryClient({
@@ -23,16 +24,18 @@ const queryClient = new QueryClient({
 })
 createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
-    <ShoeSizeProvider>
-      <WishListContainer>
-        <CartContainer>
-          <BrowserRouter>
-            <App />
-            <ToastContainer />
-          </BrowserRouter>
-        </CartContainer>
-      </WishListContainer>
-    </ShoeSizeProvider>
+    <CategoryFilterContextProvider>
+      <ShoeSizeProvider>
+        <WishListContainer>
+          <CartContainer>
+            <BrowserRouter>
+              <App />
+              <ToastContainer />
+            </BrowserRouter>
+          </CartContainer>
+        </WishListContainer>
+      </ShoeSizeProvider>
+    </CategoryFilterContextProvider>
   </QueryClientProvider>
 
 )

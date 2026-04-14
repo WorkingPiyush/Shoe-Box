@@ -23,14 +23,14 @@ import FullScreenLoader from './components/FullScreenLoader.jsx'
 import ForGuestOnly from './Guards/ForGuestOnly.jsx'
 import ForRegisteredOnly from './Guards/ForRegisteredOnly.jsx'
 import Admin from './components/admin.jsx'
-import Layout from './sections/Layout.jsx'
+import UserLayout from './sections/UserLayout.jsx'
 
 function App() {
   return (
     <div className="min-h-screen w-full bg-white">
       <Suspense fallback={<FullScreenLoader />}>
         <Routes>
-          <Route element={<Layout />}>
+          <Route element={<UserLayout />}>
             <Route path="/" element={<Home />} />
             {/* for guest users only */}
             <Route element={<ForGuestOnly />}>
@@ -56,7 +56,7 @@ function App() {
             <Route path="/products/:gender/:slug" element={<ProductViewPage />} />
             <Route path="/admin" element={<Admin />} />
           </Route>
-          <Route path="*" element={<PageNotFound />} />
+          {/* <Route path="*" element={<PageNotFound />} /> */}
         </Routes>
       </Suspense>
     </div >

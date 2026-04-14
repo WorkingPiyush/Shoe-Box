@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Filters from '../../sections/Filters'
 import Sorting from '../../sections/Sorting'
@@ -7,6 +7,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ThreeDot } from 'react-loading-indicators'
 import PageNotFound from '../../components/PageNotFound'
 import axios from 'axios'
+import { CategoryContext } from '../../Context/CategoryFilterContext'
+
 function ProductList() {
     const { gender } = useParams();
     const allowedCategories = ['male', 'female', 'kids'];
@@ -14,7 +16,7 @@ function ProductList() {
     const [selectedBrand, setSelectedBrand] = useState('all');
     const [selectedSlab, setSelectedSlab] = useState('all');
     const [selectedSize, setSelectedSize] = useState("all");
-    const [selectCategory, setSelectCategory] = useState('all');
+    const { selectCategory, setSelectCategory } = useContext(CategoryContext);
     const [sortOrder, setSortOrder] = useState('none');
     const [isNew, setIsNew] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -53,6 +55,7 @@ function ProductList() {
         );
 
     }
+    
     return (
         <div>
             <div>
