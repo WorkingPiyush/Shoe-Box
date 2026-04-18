@@ -22,7 +22,6 @@ import PageNotFound from './components/PageNotFound.jsx'
 import FullScreenLoader from './components/FullScreenLoader.jsx'
 import ForGuestOnly from './Guards/ForGuestOnly.jsx'
 import ForRegisteredOnly from './Guards/ForRegisteredOnly.jsx'
-import Admin from './components/admin.jsx'
 import UserLayout from './sections/UserLayout.jsx'
 
 function App() {
@@ -56,7 +55,7 @@ function App() {
             <Route path="/products/:gender/:slug" element={<ProductViewPage />} />
             <Route path="/admin" element={<Admin />} />
           </Route>
-          {/* <Route path="*" element={<PageNotFound />} /> */}
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Suspense>
     </div >
