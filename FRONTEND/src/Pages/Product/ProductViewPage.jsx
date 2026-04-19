@@ -7,7 +7,6 @@ import PageNotFound from '../../components/PageNotFound';
 
 function ProductViewPage() {
     const { gender, slug } = useParams()
-    console.log(gender)
     if (!['male', 'female', 'kids'].includes(gender)) {
         return <PageNotFound />
     }

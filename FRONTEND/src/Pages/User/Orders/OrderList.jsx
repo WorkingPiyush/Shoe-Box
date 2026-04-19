@@ -5,7 +5,6 @@ import { useOrders } from "../../../hooks/useOrders";
 const OrdersListPage = () => {
     const navigate = useNavigate();
     const { data: orders, isLoading } = useOrders();
-    console.log(orders)
     const statusColors = {
         delivered: "text-green-600",
         confirmed: "text-green-600",
@@ -28,35 +27,38 @@ const OrdersListPage = () => {
         <div className="min-h-screen mt-20 bg-white p-10">
             <button onClick={() => navigate(-1)} className="mb-4 cursor-pointer text-black">← Back to Profile</button>
             <h1 className="text-2xl font-bold mb-4">My Orders</h1>
-            <div className="space-y-3">
-                {orders.map((order) => (
-                    <div key={order.id}
-                        onClick={() => navigate(`/order/${order.id}`)}
-                        className="bg-white rounded-2xl shadow p-4 flex justify-between items-center cursor-pointer hover:shadow-lg transition"
-                    >
-                        <div className="flex items-center gap-4">
-                            <img
-                                src={order.preview}
-                                alt="Product"
-                                className="w-18 h-18 object-contain rounded-lg"
-                            />
-                            <div>
-                                <p className="font-semibold">{order.id}</p>
-                                <p className="text-sm text-gray-500">{order.items} items</p>
-                                <p className="text-xs text-black">Booked on: {order.date}</p>
+            {!orders && <h1>No Orders Made Yet !!</h1>}
+            {orders && (
+                <div className="space-y-3">
+                    {orders.map((order) => (
+                        <div key={order.id}
+                            onClick={() => navigate(`/order/${order.id}`)}
+                            className="bg-white rounded-2xl shadow p-4 flex justify-between items-center cursor-pointer hover:shadow-lg transition"
+                        >
+                            <div className="flex items-center gap-4">
+                                <img
+                                    src={order.preview}
+                                    alt="Product"
+                                    className="w-18 h-18 object-contain rounded-lg"
+                                />
+                                <div>
+                                    <p className="font-semibold">{order.id}</p>
+                                    <p className="text-sm text-gray-500">{order.items} items</p>
+                                    <p className="text-xs text-black">Booked on: {order.date}</p>
+                                </div>
+                            </div>
+                            <div className="text-right">
+                                <p className="font-semibold">₹{order.totalAmount.toLocaleString('en-IN')}</p>
+                                <p
+                                    className={`text-sm font-medium ${statusColors[order.status] || "text-gray-600"}`}
+                                >
+                                    {capitalizeFirstLetter(order.status)}
+                                </p>
                             </div>
                         </div>
-                        <div className="text-right">
-                            <p className="font-semibold">₹{order.totalAmount.toLocaleString('en-IN')}</p>
-                            <p
-                                className={`text-sm font-medium ${statusColors[order.status] || "text-gray-600"}`}
-                            >
-                                {capitalizeFirstLetter(order.status)}
-                            </p>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

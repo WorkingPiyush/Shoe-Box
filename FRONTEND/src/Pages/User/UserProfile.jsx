@@ -30,7 +30,7 @@ const UserProfile = () => {
             </span>
           ) : (
             <Link
-              to="/Updateprofile"
+              to="/verify/mail"
               className="text-xs px-2 py-0.5 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
             >
               Not Verified

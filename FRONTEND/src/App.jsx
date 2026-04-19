@@ -53,7 +53,6 @@ function App() {
             <Route path="/cart" element={<ProductCartPage />} />
             <Route path="/products/:gender" element={<ProductList />} />
             <Route path="/products/:gender/:slug" element={<ProductViewPage />} />
-            <Route path="/admin" element={<Admin />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>

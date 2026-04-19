@@ -9,7 +9,7 @@ export const WishListToBackend = async ({ productId }) => {
                 `${import.meta.env.VITE_API_URL}/wishlist/toggle`,
                 { productId },
                 { withCredentials: true }
-            ).then(res => console.log(res.data))
+            ).then(res => res.data)
         } catch (error) {
             console.error("Server err,", error)
         }

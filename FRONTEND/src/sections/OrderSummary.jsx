@@ -26,7 +26,6 @@ function OrderSummary() {
       navigate('/summary')
     }
   }
-  console.log(cart)
   return (
     <div className=''>
       {cart.length > 0 && (

@@ -58,7 +58,7 @@ const ProfilePage = () => {
     return `${hours}h ${mins}m`;
   }
   const formatedNum = (phone) => {
-    return phone.slice(3);
+    return phone?.slice(3);
   }
   return (
     <div className="h-screen mt-20 bg-white p-4">

@@ -3,6 +3,7 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useOrders } from "../../../hooks/useOrders";
 import { ThreeDot } from "react-loading-indicators";
+import { toast } from "react-toastify";
 
 const OrderDetailsPage = () => {
     const { data: order = [], isLoading } = useOrders();
@@ -71,7 +72,7 @@ const OrderDetailsPage = () => {
                         <span className="text-green-500 font-bold">{ordersDetails.payment === "cod" ? "Cash" : (ordersDetails.payment === "online" ? "Paid thorugh Online (UPI/CARD/NETBANKING)" : "Payment with other method")}</span>
                     </div>
                     <span className="text-sm text-gray-80">Booked on {ordersDetails.date}</span>
-                    <button className="w-full bg-green-500 text-white py-3 rounded-xl font-semibold mt-4">
+                    <button onClick={() => toast.info('We will soon enable this feature')} className="w-full bg-green-500 text-white py-3 rounded-xl font-semibold mt-4">
                         Download Invoice
                     </button>
                 </div>
