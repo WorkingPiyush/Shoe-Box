@@ -5,6 +5,7 @@ import { useNavigate, Link, useParams } from "react-router-dom";
 import Loading from "../../components/Loading";
 import OAuth from "../../components/OAuth";
 import { toast } from "react-toastify";
+import signupBanner from '@/assets/Images/Type-of-Shoes/training-shoe.png'
 
 function Signup() {
   const {
@@ -51,7 +52,7 @@ function Signup() {
         <div className="hidden md:flex items-center justify-center bg-white p-10">
           <img
             className="object-contain w-80 hover:scale-105 transition duration-500"
-            src="src/assets/Images/Type-of-Shoes/training-shoe.png"
+            src={signupBanner}
             alt="product"
           />
         </div>

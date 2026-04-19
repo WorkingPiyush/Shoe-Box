@@ -7,6 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import OAuth from "../../components/OAuth";
 import { toast } from "react-toastify";
 import { fetchUser } from "../../api/userApi";
+import loginBanner from '@/assets/Images/Type-of-Shoes/training-shoe.png'
 
 function Login() {
   const {
@@ -58,7 +59,7 @@ function Login() {
         <div className="hidden md:flex items-center justify-center bg-white p-10">
           <img
             className="object-contain w-80 hover:scale-105 transition duration-500"
-            src="src/assets/Images/Type-of-Shoes/training-shoe.png"
+            src={loginBanner}
             alt="product"
           />
         </div>

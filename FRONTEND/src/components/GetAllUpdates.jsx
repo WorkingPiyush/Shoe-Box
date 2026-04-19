@@ -1,10 +1,11 @@
 import React from 'react'
+import banner from '@/assets/Images/getUpdates-bg.jpg'
 
 function GetAllUpdates() {
     return (
         <div className='h-75 w-full px-2 py-10 md:px-4'>
             <div className='h-full relative'>
-                <img className='object-cover h-full w-full md:h-60' src="src/assets/Images/getUpdates-bg.jpg" alt="get_Updates" />
+                <img className='object-cover h-full w-full md:h-60' src={banner} alt="get_Updates" />
                 <div className='w-full h-full p-7 absolute top-0 flex flex-col items-center'>
                     <h2 className='font-extrabold text-3xl text-white text-center md:text-5xl text-wrap'>GET ALL OUR UPDATES</h2>
                     <div className='w-full gap-4 mt-4 justify-center flex items-center'>

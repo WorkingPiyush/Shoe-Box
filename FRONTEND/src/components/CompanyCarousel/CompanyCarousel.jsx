@@ -1,11 +1,11 @@
 import React from 'react'
 import './CompanyCarousel.css'
-import bata from '/src/assets/Images/company-logos/BATA.jpg'
-import campus from '/src/assets/Images/company-logos/CAMPUS.png';
-import mochi from '/src/assets/Images/company-logos/MOCHI.png';
-import redtape from '/src/assets/Images/company-logos/RED TAPE.png';
-import relaxo from '/src/assets/Images/company-logos/RELAXO.jpg';
-import sparx from '/src/assets/Images/company-logos/SPARX.png';
+import bata from '@/assets/Images/company-logos/BATA.jpg'
+import campus from '@/assets/Images/company-logos/CAMPUS.png';
+import mochi from '@/assets/Images/company-logos/MOCHI.png';
+import redtape from '@/assets/Images/company-logos/RED TAPE.png';
+import relaxo from '@/assets/Images/company-logos/RELAXO.jpg';
+import sparx from '@/assets/Images/company-logos/SPARX.png';
 function CompanyCrousel() {
     return (
         <div>
