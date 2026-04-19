@@ -26,7 +26,6 @@ ProductList2.json
 /ProductList.js
 /assets
 *.json
-src/assets/
 /data
 public/product-list
 .env
