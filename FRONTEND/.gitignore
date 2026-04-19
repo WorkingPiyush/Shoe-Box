@@ -25,7 +25,6 @@ dist-ssr
 ProductList2.json
 /ProductList.js
 /assets
-*.json
 /data
 public/product-list
 .env
