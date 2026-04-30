@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaPenToSquare } from "react-icons/fa6";
 import { useUser } from "../../hooks/useUser";
@@ -30,12 +30,22 @@ const ProfilePage = () => {
   const navigate = useNavigate()
 
   const handleProfile = async (form) => {
+    const phone = form.phone.trim();
+    const email = form.email.trim();
+
     let updatedFileds = {}
-    if (form.email !== user.email) {
-      updatedFileds.email = form.email;
+
+    if (email !== user.email) {
+      updatedFileds.email = email;
     }
-    if (form.phone !== user.phone) {
-      updatedFileds.phone = form.phone;
+
+    if (phone !== user.phone) {
+      updatedFileds.phone = phone;
+    }
+
+    if (!phone.startsWith('+91')) {
+      toast.error('Use +91 before your number');
+      return;
     }
     if (Object.entries(updatedFileds).length < 0) return;
     try {
@@ -56,9 +66,6 @@ const ProfilePage = () => {
     const mins = totalMins % 60;
     if (hours === 0) return `${mins}m`;
     return `${hours}h ${mins}m`;
-  }
-  const formatedNum = (phone) => {
-    return phone?.slice(3);
   }
   return (
     <div className="h-screen mt-20 bg-white p-4">
@@ -95,9 +102,10 @@ const ProfilePage = () => {
           <div>
             <p className="text-sm text-gray-500">Phone</p>
             <div className="flex items-center justify-between">
-              {editphone ? <input type="text" value={formatedNum(form.phone) || ""} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="text-lg border p-1 rounded-lg" /> : <p className="font-semibold text-lg">{formatedNum(form?.phone) || "Phone Not Available"}</p>}
+              {editphone ? <input type="tel" maxLength="13" pattern="^\d{12}$" placeholder="91XXXXXXXXXX" value={form?.phone ?? ""} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="text-lg border p-1 rounded-lg" /> : <p className="font-semibold text-lg">{form?.phone || "Phone Not Available"}</p>}
               {editphone ? <VscSaveAs onClick={() => setEditPhone(false)} className="cursor-pointer text-xl" /> : <FaPenToSquare onClick={() => { (timeRemaiing > 0) ? null : setEditPhone(true) }} className={`${(timeRemaiing > 0) ? "cursor-not-allowed" : "cursor-pointer"}`} />}
             </div>
+            {editphone && <span className="text-sm text-gray-600">Use +91 before your number.</span>}
             {form.phone && (form?.isPhoneVerified ? (
               <span className="text-green-600 text-xs font-medium px-2 py-0.5 rounded-full bg-green-100">
                 ✔ Verified
