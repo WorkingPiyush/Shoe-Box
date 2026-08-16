@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useUser } from '../hooks/useUser';
 import { useQuery } from '@tanstack/react-query';
 const CartContext = createContext(null);
-export const useCart = () => useContext(CartContext);
+
 
 export function CartContainer({ children }) {
     const { data: user } = useUser();
@@ -23,6 +23,7 @@ export function CartContainer({ children }) {
         queryFn: loadCart,
         staleTime: 5 * 60 * 1000,
     })
+    
     const value = useMemo(() => ({
         cart: data,
         isLoading,
@@ -33,4 +34,7 @@ export function CartContainer({ children }) {
             {children}
         </CartContext.Provider>
     );
+}
+export const useCart = () => {
+    return useContext(CartContext);
 }

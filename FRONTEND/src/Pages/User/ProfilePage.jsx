@@ -52,7 +52,8 @@ const ProfilePage = () => {
       const res = await axios.put(`${import.meta.env.VITE_API_URL}/api/profile`, updatedFileds, { withCredentials: true });
       console.log(res)
       if (res.data.success) {
-        toast.success("Profile Updated Successfully")
+        toast.success("Profile Updated Successfully");
+        navigate("/profile", { replace: true });
       }
     } catch (error) {
       toast.error("Profile update failed")
@@ -84,7 +85,8 @@ const ProfilePage = () => {
             <p className="text-sm text-gray-500">Email</p>
             <div className="flex items-center justify-between">
               {editMail ? <input type="text" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="text-lg border p-1 rounded-lg" /> : <p className="font-semibold text-lg">{form?.email}</p>}
-              {editMail ? <VscSaveAs onClick={() => setEditMail(false)} className="cursor-pointer text-xl" /> : <FaPenToSquare onClick={() => { (timeRemaiing > 0) ? null : setEditMail(true) }} className={`${(timeRemaiing > 0) ? "cursor-not-allowed" : "cursor-pointer"}`} />}
+              {editMail ? <VscSaveAs onClick={() => setEditMail(false)} className="cursor-pointer text-xl" /> :
+                <FaPenToSquare onClick={() => { (timeRemaiing > 0) ? null : setEditMail(true) }} className={`${(timeRemaiing > 0) ? "cursor-not-allowed text-gray-600" : "cursor-pointer"}`} />}
             </div>
             {user?.isEmailVerified ? (
               <span className="text-green-600 text-xs font-medium px-2 py-0.5 rounded-full bg-green-100">
@@ -103,7 +105,9 @@ const ProfilePage = () => {
             <p className="text-sm text-gray-500">Phone</p>
             <div className="flex items-center justify-between">
               {editphone ? <input type="tel" maxLength="13" pattern="^\d{12}$" placeholder="91XXXXXXXXXX" value={form?.phone ?? ""} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="text-lg border p-1 rounded-lg" /> : <p className="font-semibold text-lg">{form?.phone || "Phone Not Available"}</p>}
-              {editphone ? <VscSaveAs onClick={() => setEditPhone(false)} className="cursor-pointer text-xl" /> : <FaPenToSquare onClick={() => { (timeRemaiing > 0) ? null : setEditPhone(true) }} className={`${(timeRemaiing > 0) ? "cursor-not-allowed" : "cursor-pointer"}`} />}
+              {editphone ?
+                <VscSaveAs onClick={() => setEditPhone(false)} className="cursor-pointer text-xl" /> :
+                <FaPenToSquare onClick={() => { (timeRemaiing > 0) ? null : setEditPhone(true) }} className={`${(timeRemaiing > 0) ? "cursor-not-allowed text-gray-600" : "cursor-pointer"}`} />}
             </div>
             {editphone && <span className="text-sm text-gray-600">Use +91 before your number.</span>}
             {form.phone && (form?.isPhoneVerified ? (

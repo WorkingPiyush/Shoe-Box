@@ -33,6 +33,7 @@ function ProductList() {
         staleTime: 10 * 60 * 1000,
         keepPreviousData: true,
     })
+    
     useEffect(() => {
         if (data?.totalPages > currentPage) {
             queryClient.prefetchQuery({

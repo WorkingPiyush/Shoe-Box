@@ -32,6 +32,7 @@ function Navbar() {
     window.addEventListener('scroll', handelScrolling)
     return () => { window.removeEventListener('scroll', handelScrolling) };
   }, [])
+  
   if (!cart) {
     return <div>Loading..</div>
   }

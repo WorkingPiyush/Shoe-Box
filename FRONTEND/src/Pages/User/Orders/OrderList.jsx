@@ -30,7 +30,7 @@ const OrdersListPage = () => {
             {!orders && <h1>No Orders Made Yet !!</h1>}
             {orders && (
                 <div className="space-y-3">
-                    {orders.map((order) => (
+                    {orders?.map((order) => (
                         <div key={order.id}
                             onClick={() => navigate(`/order/${order.id}`)}
                             className="bg-white rounded-2xl shadow p-4 flex justify-between items-center cursor-pointer hover:shadow-lg transition"

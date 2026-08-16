@@ -12,7 +12,8 @@ function OtpPage({ type, contact }) {
     const [timeLeft, setTimeLeft] = useState(30);
     const inputRef = useRef([]);
     const queryClient = useQueryClient();
-    const [verifyOtp, setVerifyOtp] = useState(false)
+    const [verifyOtp, setVerifyOtp] = useState(false);
+    
     useEffect(() => {
         if (!type || !contact) {
             navigate('/userprofile')
@@ -54,7 +55,7 @@ function OtpPage({ type, contact }) {
         }
         try {
             setEndTime(Date.now() + 30000);
-            
+
             const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/otp/send`, data, { withCredentials: true })
             if (res.data.success) {
                 console.log(res.data)
@@ -62,7 +63,8 @@ function OtpPage({ type, contact }) {
             }
         } catch (error) {
             const msg = error.response?.data?.message
-            toast.info(msg || "Something went wrong")
+            toast.error(msg || "Something went wrong")
+            navigate("/userprofile", { replace: true });
         }
     }
     const submitOtp = async (otpValue) => {
@@ -76,7 +78,6 @@ function OtpPage({ type, contact }) {
         }
         try {
             setVerifyOtp(true)
-            
             const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/otp/verify`, data, { withCredentials: true })
             if (res.data.success) {
                 console.log(res.data)
