@@ -26,6 +26,7 @@ function TypeofShoes() {
         setSelectCategory(filter);
         navigate('/products/male');
     }
+    
     return (
         <div className='w-full my-8 flex items-center gap-10 overflow-x-scroll scroll-smooth md:overflow-auto md:justify-center'>
             {shoeImg.map((item) => {

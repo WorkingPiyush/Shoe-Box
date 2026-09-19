@@ -3,17 +3,20 @@ import ImgCard from '../components/ImgCard'
 import PageChangeBtn from '../components/Buttons/PageChangeBtn';
 import { CategoryContext } from '../Context/CategoryFilterContext';
 function ProductGrid({ gender, selectedBrand, selectedSlab, selectedSize, sortedHtLOrder, sortIsNewVal, data, currentPage, isLoading, setCurrentPage }) {
+    // console.log("data",data)
     const { selectCategory, setSelectCategory } = useContext(CategoryContext);
     const handlePrevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
         }
-    }
+    };
+
     const handleNextPage = () => {
         if (currentPage < data?.totalPages) {
             setCurrentPage(currentPage + 1);
         }
     };
+
     const priceSlabsLog = [
         ["slab-1", [0, 1000]],
         ["slab-2", [1000, 2000]],
@@ -22,10 +25,11 @@ function ProductGrid({ gender, selectedBrand, selectedSlab, selectedSize, sorted
         ["slab-5", [4000, 5000]],
         ["slab-6", [5000, Infinity]],
     ];
-    let ProductList = data?.product || [];
+    
+    let ProductList = data || [];
     const filterdBrandedList = useMemo(() => {
 
-        let secProductListArr = [...ProductList];
+        let secProductListArr = [...ProductList.product];
 
         if (selectedBrand !== "all") {
             secProductListArr = secProductListArr.filter(prod => {
@@ -67,7 +71,7 @@ function ProductGrid({ gender, selectedBrand, selectedSlab, selectedSize, sorted
         }
         return secProductListArr;
     }, [ProductList, selectedBrand, selectedSlab, selectedSize, selectCategory, sortedHtLOrder, sortIsNewVal])
-    
+
     return (
         <div>
             <div className='flex justify-center flex-wrap mt-1 w-fit bg-gray-500/15 rounded-xl'>

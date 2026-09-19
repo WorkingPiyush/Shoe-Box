@@ -54,7 +54,7 @@ function App() {
             <Route path="/products/:gender" element={<ProductList />} />
             <Route path="/products/:gender/:slug" element={<ProductViewPage />} />
           </Route>
-          <Route path="*" element={<PageNotFound />} />
+          {/* <Route path="*" element={<PageNotFound />} /> */}
         </Routes>
       </Suspense>
     </div >

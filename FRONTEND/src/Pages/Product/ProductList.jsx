@@ -8,6 +8,9 @@ import { ThreeDot } from 'react-loading-indicators'
 import PageNotFound from '../../components/PageNotFound'
 import axios from 'axios'
 import { CategoryContext } from '../../Context/CategoryFilterContext'
+import SearchBar from '../../components/SearchBar'
+import ImgCard from '../../components/ImgCard'
+import SearchResult from '../../components/SearchResult'
 
 function ProductList() {
     const { gender } = useParams();
@@ -16,6 +19,8 @@ function ProductList() {
     const [selectedBrand, setSelectedBrand] = useState('all');
     const [selectedSlab, setSelectedSlab] = useState('all');
     const [selectedSize, setSelectedSize] = useState("all");
+    const [searchResult, setSearchResult] = useState([]);
+    const [isSearching, setIsSearching] = useState(false);
     const { selectCategory, setSelectCategory } = useContext(CategoryContext);
     const [sortOrder, setSortOrder] = useState('none');
     const [isNew, setIsNew] = useState(false);
@@ -33,7 +38,7 @@ function ProductList() {
         staleTime: 10 * 60 * 1000,
         keepPreviousData: true,
     })
-    
+
     useEffect(() => {
         if (data?.totalPages > currentPage) {
             queryClient.prefetchQuery({
@@ -56,16 +61,22 @@ function ProductList() {
         );
 
     }
-    
     return (
         <div>
             <div>
-                <div className='text-4xl text-center font-bold p-2 flex justify-center'>
-                    <h1 className='uppercase mt-28'>{`${gender}'s Section`}</h1></div>
-                <Filters data={data} updatefilter={setSelectedBrand} updatePriceSlab={setSelectedSlab} updateSize={setSelectedSize} updateCategory={setSelectCategory} />
-                <Sorting sortHtLOrder={setSortOrder} sortHtLOrderVal={sortOrder} sortIsNewVal={isNew} sortIsNew={setIsNew} />
-                <div className='flex justify-center'>
-                    <ProductGrid setCurrentPage={setCurrentPage} isLoading={isLoading} data={data} currentPage={currentPage} gender={gender} selectedBrand={selectedBrand} selectedSlab={selectedSlab} selectedSize={selectedSize} selectedCategory={selectCategory} sortedHtLOrder={sortOrder} sortIsNewVal={isNew} />
+                <div className='text-center font-bold p-2 flex justify-center'>
+                    <div className='mt-28'>
+                        <SearchBar searchResult={searchResult} setSearchResult={setSearchResult} setIsSearching={setIsSearching} />
+                        <h1 className='uppercase text-4xl p-1'>{`${gender}'s Section`}</h1></div>
+                </div>
+                {!isSearching &&
+                    <div>
+                        <Filters data={data} updatefilter={setSelectedBrand} updatePriceSlab={setSelectedSlab} updateSize={setSelectedSize} updateCategory={setSelectCategory} />
+                        <Sorting sortHtLOrder={setSortOrder} sortHtLOrderVal={sortOrder} sortIsNewVal={isNew} sortIsNew={setIsNew} />
+                    </div>
+                }
+                <div className='flex h-full justify-center'>
+                    {isSearching && searchResult.length > 0 ? <SearchResult shoe={searchResult} /> : <ProductGrid setCurrentPage={setCurrentPage} isLoading={isLoading} data={data} currentPage={currentPage} gender={gender} selectedBrand={selectedBrand} selectedSlab={selectedSlab} selectedSize={selectedSize} selectedCategory={selectCategory} sortedHtLOrder={sortOrder} sortIsNewVal={isNew} />}
                 </div>
             </div>
 

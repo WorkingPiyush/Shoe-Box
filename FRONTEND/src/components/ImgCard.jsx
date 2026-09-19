@@ -2,6 +2,8 @@ import { IoStarSharp } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 
 function ImgCard({ shoe }) {
+    // console.log(shoe?.price.toLocaleString('en-IN'))
+    const name = shoe?.name ?? "";
     const navigate = useNavigate();
     return (
         <div onClick={() => navigate(`/products/${shoe.gender}/${shoe.slug}`)} className='flex p-1'>
@@ -11,14 +13,14 @@ function ImgCard({ shoe }) {
                         objectFit: 'contain',
                     }} src={shoe.thumbnail} alt="shoeImg" />
                     <p className='font-bold text-gray-400 text-center text-xs uppercase md:text-xl'>{shoe.brand}</p>
-                    <h1 className='text-center font-bold text-sm text-wrap md:text-xl'>{shoe.name.length > 30 ? shoe.name.slice(0, 22) + "...." : shoe.name}</h1>
+                    <h1 className='text-center font-bold text-sm text-wrap md:text-xl'>{ name.length > 30 ? name.slice(0, 10) + "...." : name}</h1>
                 </div>
                 <div className='flex justify-around items-center my-2'>
                     <div className='bg-blue-500 flex justify-center items-center px-1 rounded md:gap-2 md:px-2'>
                         <IoStarSharp />
                         <p className='text-white'>{shoe.rating}</p>
                     </div>
-                    <p className='text-center'>₹{shoe.price.toLocaleString('en-IN')}</p>
+                    <p className='text-center'>₹{shoe?.price.toLocaleString('en-IN')}</p>
                 </div>
             </div>
         </div>

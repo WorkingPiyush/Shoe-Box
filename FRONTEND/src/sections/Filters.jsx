@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom'
 import { CategoryContext } from '../Context/CategoryFilterContext.jsx';
 
 function Filters({ updatefilter, updatePriceSlab, updateSize, data }) {
-    const productArr = data.product;
+    const productArr = data;
     const { gender } = useParams()
-    const filteredListArr = productArr.filter(i => i.gender == gender);
+    const filteredListArr = productArr?.product.filter(i => i.gender == gender);
     const { selectCategory, setSelectCategory } = useContext(CategoryContext);
     const [alive, setAlive] = useState(false);
     const [open, setOpen] = useState(false);
