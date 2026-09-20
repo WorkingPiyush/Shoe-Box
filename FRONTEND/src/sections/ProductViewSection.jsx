@@ -1,4 +1,4 @@
-import React, { useContext, } from 'react'
+import React, { useContext, useState, } from 'react'
 import { IoStarSharp } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa6";
 import CheckBox from '../components/CheckBox';
@@ -14,12 +14,16 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useCart } from '../Context/CartContext.jsx';
 
 function ProductViewSection({ item }) {
+    const [imgIndex, setImgIndex] = useState(0);
+    const [touchStart, setTouchStart] = useState(null);
+    const [touchEnd, setTouchEnd] = useState(null);
+    const minSwipeDistance = 50;
     const { setWishList, wishList } = useContext(WishListContext)
     const queryClient = useQueryClient();
     const { shoeSize } = useContext(ItemSizeContext);
     const { refetch } = useCart();
     const { data: user } = useUser();
-
+    
     const handleAddToCart = async (product, shoeSize) => {
         // if the user not selected the shoe size
         if (shoeSize.length === 0) {
@@ -44,7 +48,7 @@ function ProductViewSection({ item }) {
         } catch (error) {
             console.error("Add to cart failed", error);
         }
-    }
+    };
     const AddToWishList = (product) => {
         if (user) {
             try {
@@ -79,14 +83,51 @@ function ProductViewSection({ item }) {
             setWishList(updatedList)
             localStorage.setItem("wishlist", JSON.stringify(updatedList));
         }
-    }
+    };
+
+    const handleTouchStart = (e) => {
+        setTouchStart(e.targetTouches[0].clientX)
+    };
+
+    const hanldeTouchMove = (e) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+
+        const distance = touchStart - touchEnd;
+
+
+        // swipe left to right
+        if (distance > minSwipeDistance) {
+            setImgIndex((prev) =>
+                Math.min(prev + 1, item.images.length - 1)
+            );
+        }
+
+        // swipe right to left
+        if (distance < minSwipeDistance) {
+            setImgIndex((prev) =>
+                Math.max(prev - 1, 0)
+            );
+        }
+    };
+
+
+
     let date = new Date();
     date.setDate(date.getDate() + 7);
     let currentDate = date.toLocaleDateString("de-DE");
+
     return (
-        <div className='h-screen py-20 flex flex-col md:flex-row'>
-            <div className=' w-full p-4 flex flex-col justify-around items-center rounded-3xl md:w-1/2'>
-                <SlidingImgPanel imgList={item.images} />
+        <div
+            onTouchStart={handleTouchStart}
+            onTouchMove={hanldeTouchMove}
+            onTouchEnd={handleTouchEnd}
+            className='h-screen py-20 flex flex-col md:flex-row'>
+            <div className='w-full p-4 flex flex-col justify-around items-center rounded-3xl md:w-1/2'>
+                <SlidingImgPanel imgList={item.images} setImgIndex={setImgIndex} imgIndex={imgIndex} />
             </div>
             <div className=' text-black w-full p-8 md:w-1/2 md:p-15 md:text'>
                 <h5 className='text-2xl p-4 font-bold md:w-full md:p-0 md:text-3xl'>{item.name}</h5>

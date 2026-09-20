@@ -1,14 +1,16 @@
-import React, { useEffect, useEffectEvent, useState } from 'react'
+import React from 'react'
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 
-function SlidingImgPanel({ imgList }) {
-    const [imgIndex, setImgIndex] = useState(0);
+function SlidingImgPanel({ imgList, imgIndex, setImgIndex }) {
+
     const moveLeftImg = () => {
         setImgIndex(prev => prev <= 0 ? imgList.length - 1 : prev - 1)
-    }
+    };
+
     const moveRightImg = () => {
         setImgIndex(prev => prev >= imgList.length - 1 ? 0 : prev + 1)
-    }
+    };
+    
     return (
         <div className='relative h-[40vh] w-full p-8 sm:h-[55vh] md:h-[80vh] my-20'>
             <img draggable="false" className='h-95 w-full object-contain select-none drag-none rounded-xl shadow-xl/30' src={imgList[imgIndex]} alt="ProductImg" />

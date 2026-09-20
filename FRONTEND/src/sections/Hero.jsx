@@ -21,11 +21,14 @@ function Hero() {
     const minSwipeDistance = 50;
 
     useEffect(() => {
-        const timer = setInterval(() => {
+        if (!imgList.length) return;
+
+        const timer = setTimeout(() => {
             setImgIndex(prev => prev >= imgList.length - 1 ? 0 : prev + 1)
         }, 10000);
-        return () => clearInterval(timer)
-    }, [imgList.length])
+
+        return () => clearTimeout(timer)
+    }, [imgList.length, imgIndex])
 
     const moveLeftImg = () => {
         setImgIndex(prev => prev <= 0 ? imgList.length - 1 : prev - 1)
