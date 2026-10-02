@@ -119,7 +119,6 @@ function ProductViewSection({ item }) {
     let date = new Date();
     date.setDate(date.getDate() + 7);
     let currentDate = date.toLocaleDateString("de-DE");
-
     return (
         <div
             onTouchStart={handleTouchStart}

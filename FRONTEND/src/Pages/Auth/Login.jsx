@@ -31,11 +31,14 @@ function Login() {
           withCredentials: true,
         }
       );
+
       if (res.data.success) {
+
         const user = await queryClient.fetchQuery({
           queryKey: ['user'],
           queryFn: fetchUser,
         });
+
         queryClient.setQueryData(['user'], user);
         localStorage.removeItem("cart");
         localStorage.removeItem("wishlist");

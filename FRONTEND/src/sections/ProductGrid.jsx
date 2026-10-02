@@ -1,19 +1,23 @@
-import React, { useContext, useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import ImgCard from '../components/ImgCard'
 import PageChangeBtn from '../components/Buttons/PageChangeBtn';
 import { CategoryContext } from '../Context/CategoryFilterContext';
-function ProductGrid({ gender, selectedBrand, selectedSlab, selectedSize, sortedHtLOrder, sortIsNewVal, data, currentPage, isLoading, setCurrentPage }) {
-    // console.log("data",data)
+function ProductGrid({ gender, selectedBrand, selectedSlab, selectedSize, sortedHtLOrder, sortIsNewVal, data, currentPage, isLoading, setSearchParams }) {
     const { selectCategory, setSelectCategory } = useContext(CategoryContext);
+
     const handlePrevPage = () => {
         if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
+            setSearchParams({
+                page: String(currentPage - 1),
+            });
         }
     };
 
     const handleNextPage = () => {
         if (currentPage < data?.totalPages) {
-            setCurrentPage(currentPage + 1);
+            setSearchParams({
+                page: String(currentPage + 1),
+            });
         }
     };
 
@@ -25,7 +29,7 @@ function ProductGrid({ gender, selectedBrand, selectedSlab, selectedSize, sorted
         ["slab-5", [4000, 5000]],
         ["slab-6", [5000, Infinity]],
     ];
-    
+
     let ProductList = data || [];
     const filterdBrandedList = useMemo(() => {
 
