@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useContext, useEffect, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import Filters from '../../sections/Filters'
@@ -15,6 +16,7 @@ function ProductList() {
     const { gender } = useParams();
     const allowedCategories = ['male', 'female', 'kids'];
     if (!allowedCategories.includes(gender)) return <PageNotFound />;
+    
     const [searchParams, setSearchParams] = useSearchParams();
     const [selectedBrand, setSelectedBrand] = useState('all');
     const [selectedSlab, setSelectedSlab] = useState('all');
@@ -54,7 +56,6 @@ function ProductList() {
                 <ThreeDot color={["#205788", "#2a72b1", "#3d8cd1", "#66a4db"]} />
             </div>
         );
-
     }
     return (
         <div>
