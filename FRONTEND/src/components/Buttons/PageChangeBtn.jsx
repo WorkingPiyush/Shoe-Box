@@ -1,4 +1,3 @@
-import React from 'react'
 
 function PageChangeBtn({ handlePrevPage, handleNextPage, currentPage, data }) {
     return (
