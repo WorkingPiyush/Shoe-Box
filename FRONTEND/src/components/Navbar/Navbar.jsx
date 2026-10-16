@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaShoppingCart } from "react-icons/fa";
-import { RiMenu3Fill } from "react-icons/ri";
 import SlidingMenu from '../SlidingMenu';
 import profileImg from '../../assets/Images/headphone.jpg'
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import GetInCall from './GetInCall';
 import { useUser } from '../../hooks/useUser';
 import GetOutCall from './GetOutCall';
@@ -15,7 +14,7 @@ function Navbar() {
   const [isimgClicked, setIsImgClicked] = useState(false);
   const [isiconClicked, setIsIconClicked] = useState(false);
   const { data: user } = useUser();
-   const { cart, isLoading } = useCart();
+  const { cart, isLoading } = useCart();
   const navigate = useNavigate();
   const showGetCall = () => { setIsImgClicked(!isimgClicked) }
   const ShowOutCall = () => { setIsIconClicked(!isiconClicked) }
@@ -32,20 +31,41 @@ function Navbar() {
     window.addEventListener('scroll', handelScrolling)
     return () => { window.removeEventListener('scroll', handelScrolling) };
   }, [])
-  
+
   if (!cart) {
     return <div>Loading..</div>
+  }
+
+  const navLinks = [
+    {
+      to: "/",
+      tag: "HOME"
+    },
+    {
+      to: "/products/male",
+      tag: "MEN"
+    },
+    {
+      to: "/products/female",
+      tag: "WOMEN"
+    },
+    {
+      to: "/products/kids",
+      tag: "KIDS"
+    },
+  ]
+  if (isLoading) {
+    return <h1>Loading...</h1>
   }
   return (
     <nav className='bg-white flex justify-center w-full relative' >
       <div className={`mt-5 p-4 rounded-2xl fixed top-0 z-100 backdrop-blur-sm transition-all duration-300 ease-in-out ${scrolled ? "w-90 md:w-[65%]" : "w-95 md:w-[70%]"}`}>
         <div className=' w-full flex justify-between items-center'>
           <h1 className='font-extrabold text-xl'><Link to="/">Shoe Box</Link></h1>
-          <div className="flex gap-9 font-bold max-md:hidden">
-            <div><Link to="/">HOME</Link></div>
-            <div><Link to="/products/male">MEN</Link></div>
-            <div><Link to="/products/female">WOMEN</Link></div>
-            <div><Link to="/products/kids">KIDS</Link></div>
+          <div className="flex gap-18 font-bold max-md:hidden">
+            {navLinks.map((n) => (
+              <NavLink className={({ isActive }) => (isActive ? "bg-amber-900 text-white p-1.5 text-center rounded transition-colors delay-3" : "p-1.5")} to={n.to}>{n.tag}</NavLink>
+            ))}
           </div>
           <div className='w-30 flex justify-around items-center relative'>
             <div onClick={() => navigate('/cart')} className='relative h-8 w-10 rounded flex items-center justify-center cursor-pointer active:bg-gray-400/10'>
